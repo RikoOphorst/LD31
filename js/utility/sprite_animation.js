@@ -60,7 +60,10 @@ var SpriteAnimation = function(element, frames)
 
 		if (frame.event !== undefined)
 		{
-			frame.event();
+			if (frame.ctx)
+				frame.event.call(frame.ctx);
+			else
+				frame.event();
 		}
 
 		this._element.setUniform("float4", "AnimationMetrics", offsetX, offsetY, width, height);
@@ -72,9 +75,10 @@ var SpriteAnimation = function(element, frames)
 		this._loop = loop;
 	}
 
-	this.on = function(type, func)
+	this.on = function(type, func, ctx)
 	{
 		this._callbacks[type] = func;
+		this._callbacks[type].ctx = ctx;
 	}
 
 	this.update = function(dt)
@@ -105,7 +109,10 @@ var SpriteAnimation = function(element, frames)
 
 			if (this._currentFrame >= this._frames.length)
 			{
-				this._callbacks["ended"]();
+				if (this._callbacks["ended"].ctx)
+					this._callbacks["ended"].call(this._callbacks["ended"].ctx);
+				else
+					this._callbacks["ended"]();
 
 				if (this._loop == true)
 				{

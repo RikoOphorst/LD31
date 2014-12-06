@@ -35,6 +35,28 @@ var Player = function()
 	this._animation.setSpeed(80);
 	this._animation.start();
 	this._animation.setLoop(true);
+	this._currentAnimation = this._animation;
+
+	var frames = [];
+
+	for (var i = 0; i < 16; ++i)
+	{
+		frames.push({
+			x: i*223,
+			y: 0,
+			width: 223,
+			height: 202
+		});
+	}
+
+	this._animationAxe = new SpriteAnimation(this, frames);
+	this._animationAxe.setSpeed(80);
+	this._animationAxe.setLoop(false);
+	this._animationAxe.on("ended", function () {
+		this.setTexture("textures/characters/character_walk.png");
+
+		this._currentAnimation = this._animation;
+	}, this);
 
 	this.setScale(0.75, 0.75);
 	this.setShader("shaders/animation.fx");
@@ -86,7 +108,7 @@ var Player = function()
 
 		var s = (Math.abs(movement.x)/movement.x);
 		this.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
-		
+
 		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > this._movementMargin)
 		{
 			this._wobble += dt*10;
@@ -139,6 +161,15 @@ var Player = function()
 			this.setRotation(0,0,0);
 			this._wobble = 0;
 		}
-		this._animation.update(dt);
+
+		if (Keyboard.isPressed("A"))
+		{
+			this._currentAnimation.stop();
+			this._animationAxe.start();
+			this._currentAnimation = this._animationAxe;
+			this.setTexture("textures/characters/character_axe.png");
+		}
+
+		this._currentAnimation.update(dt);
 	}
 }
