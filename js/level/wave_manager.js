@@ -57,5 +57,17 @@ var WaveManager = function (lightOverlay)
         {
             this.op = 'minus';
         }
+
+        this.spawnWave();
     };
+
+    this.spawnWave = function ()
+    {
+        var amountMobs = Math.floor(2 + ((++this._currentWave) * Math.random()) * 0.5);
+
+        for (var i = 0; i < amountMobs; i++)
+        {
+            
+        }
+    }
 };
