@@ -4,6 +4,7 @@ require("js/level/hud");
 require("js/level/light_overlay");
 require("js/level/storage");
 require("js/level/torch");
+require("js/level/wave_manager");
 
 var Level = function()
 {
@@ -22,20 +23,17 @@ var Level = function()
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
 
 	this._player = new Player();
-	this._enemy = new Enemy(250, 50);
-	this._enemy2 = new Enemy(50, 250);
 	this._hud = new HUD();
 	this._stash = new Storage(20);
 	this._inventory = new Storage(50);
 
 	this._lightOverlay = new LightOverlay();
+	this._waveManager = new WaveManager(this._lightOverlay);
 
 	this.update = function(dt)
 	{
 		this._player.update(dt);
-		this._enemy.update(dt, this._player);
-		this._enemy2.update(dt, this._player);
-		this._lightOverlay.update(dt);
+		this._waveManager.update(dt);
 		for (var i = 0; i < this._torches.length; ++i)
 		{
 			this._torches[i].update(dt);
