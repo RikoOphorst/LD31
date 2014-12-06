@@ -66,6 +66,27 @@ var Player = function()
 			this._position.x += movement.x;
 			this._position.y += movement.y;
 
+			
+			while (this._position.x - this.size().w / 2 < -(RenderSettings.resolution().w / 2))
+			{
+				this._position.x += 1;
+			}
+
+			while (this._position.x + this.size().w / 2 > (RenderSettings.resolution().w / 2))
+			{
+				this._position.x -= 1;
+			}
+
+			while (this._position.y - this.size().h < -(RenderSettings.resolution().h / 2))
+			{
+				this._position.y += 1;
+			}
+
+			while (this._position.y > (RenderSettings.resolution().h / 2))
+			{
+				this._position.y -= 1;
+			}
+
 			var translation = this.translation();
 
 			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, 360 + this._position.y+8);
