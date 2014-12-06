@@ -1,3 +1,5 @@
+require("js/ui/waypoint")
+
 var Player = function()
 {
 	this._quad = Quad2D.new();
@@ -5,13 +7,13 @@ var Player = function()
 	extend(this, this._quad);
 
 	this.setOffset(0.5, 1);
-	this.setTexture("textures/character/character_walk.png");
+	this.setTexture("textures/characters/character_walk.png");
 	this.setToTexture();
 	this.setTranslation(0, 0, 1);
 	this.spawn("Default");
 
 	this._moveSpeed = 275;
-	this._movementMargin = 3;
+	this._movementMargin = 8;
 	this._moveTarget = {
 		x: 0,
 		y: 0
@@ -40,6 +42,8 @@ var Player = function()
 	this._xscale = 1;
 	this._wobble = 0;
 
+	this._waypoint = new Waypoint();
+
 	this._position = {
 		x: 0,
 		y: 0
@@ -52,13 +56,21 @@ var Player = function()
 			this._moveTarget = Mouse.position(Mouse.Relative);
 		}
 
+		if (Mouse.isPressed(0))
+		{
+			this._waypoint.pop(this._moveTarget.x, this._moveTarget.y);
+		}
+
+		this._waypoint.update(dt);
+
 		var direction = Math.atan2(this._moveTarget.y - this._position.y, this._moveTarget.x - this._position.x);
 		var movement = {
 			x: Math.cos(direction) * dt * this._moveSpeed,
 			y: Math.sin(direction) * dt * this._moveSpeed
 		}
 
-		this.setScale(this._xscale * Math.abs(movement.x)/movement.x, 1);
+		var s = (Math.abs(movement.x)/movement.x);
+		this.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
 
 		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > this._movementMargin)
 		{
@@ -66,25 +78,34 @@ var Player = function()
 			this._position.x += movement.x;
 			this._position.y += movement.y;
 
-			
+			var clamped = false;
 			while (this._position.x - this.size().w / 2 < -(RenderSettings.resolution().w / 2))
 			{
 				this._position.x += 1;
+				clamped = true;
 			}
 
 			while (this._position.x + this.size().w / 2 > (RenderSettings.resolution().w / 2))
 			{
 				this._position.x -= 1;
+				clamped = true;
 			}
 
 			while (this._position.y - this.size().h < -(RenderSettings.resolution().h / 2))
 			{
 				this._position.y += 1;
+				clamped = true;
 			}
 
 			while (this._position.y > (RenderSettings.resolution().h / 2))
 			{
 				this._position.y -= 1;
+				clamped = true;
+			}
+
+			if (clamped == true)
+			{
+				this._moveTarget = this._position;
 			}
 
 			var translation = this.translation();
