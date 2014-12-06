@@ -36,31 +36,31 @@ var HUD = function ()
     this._lumo.spawn("UI");
 
     this.setFireStones = function (amt) {
-        this._fireStones.setText("Firestones: "+amt);
+        this._fireStones.setText("[size=23]Firestones: "+amt+"[/size]");
     };
 
     this.setOil = function (amt) {
-        this._oil.setText("Oil: "+amt);
+        this._oil.setText("[size=23]Oil: "+amt+"[/size]");
     };
 
     this.setWood = function (amt) {
-        this._wood.setText("Wood: "+amt);
+        this._wood.setText("[size=23]Wood: "+amt+"[/size]");
     };
 
     this.setSeeds = function (amt) {
-        this._seeds.setText("Seeds: "+amt);
+        this._seeds.setText("[size=23]Seeds: "+amt+"[/size]");
     };
 
     this.setScore = function (amt) {
-        this._score.setText("Score: "+amt);
+        this._score.setText("[size=23]Score: "+amt+"[/size]");
     };
 
     this.setKills = function (amt) {
-        this._kills.setText("Kills: "+amt);
+        this._kills.setText("[size=23]Kills: "+amt+"[/size]");
     };
 
     this.setLumo = function (amt) {
-        this._lumo.setText("Lumo: "+amt);
+        this._lumo.setText("[size=23]Lumo: "+amt+"[/size]");
     };
 
     this.setFireStones(0);

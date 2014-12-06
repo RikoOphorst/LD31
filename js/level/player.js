@@ -10,7 +10,7 @@ var Player = function()
 	this.setTranslation(0, 0, 1);
 	this.spawn("Default");
 
-	this._moveSpeed = 250;
+	this._moveSpeed = 275;
 	this._movementMargin = 3;
 	this._moveTarget = {
 		x: 0,
@@ -30,7 +30,7 @@ var Player = function()
 	}
 
 	this._animation = new SpriteAnimation(this, frames);
-	this._animation.setSpeed(60);
+	this._animation.setSpeed(80);
 	this._animation.start();
 	this._animation.setLoop(true);
 
@@ -68,11 +68,14 @@ var Player = function()
 
 			var translation = this.translation();
 
-			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, translation.z);
+			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, 360 + this._position.y+32);
+			this.setRotation(0,0,Math.sin(this._wobble*1.1)/15);
 		}
 		else
 		{
 			this._animation.setFrame(0);
+			this.setRotation(0,0,0);
+			this._wobble = 0;
 		}
 
 		this._animation.update(dt);
