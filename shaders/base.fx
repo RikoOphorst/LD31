@@ -12,7 +12,7 @@ cbuffer ConstantBuffer : register(b0)
 
 cbuffer Uniforms : register(b1)
 {
-	float4 AnimationMetrics;
+
 }
 
 struct VOut
@@ -38,9 +38,7 @@ SamplerState SampleType;
 
 float4 PS(VOut input) : SV_TARGET
 {
-	float x = (input.texcoord.x * AnimationMetrics.z) + AnimationMetrics.x;
-	float y = (input.texcoord.y * AnimationMetrics.w) + AnimationMetrics.y;
-	float4 textureColour = textures[0].Sample(SampleType, float2(x,y));
+	float4 textureColour = textures[0].Sample(SampleType, input.texcoord);
 	float4 colour = float4(textureColour.rgb * Blend * input.colour.rgb, textureColour.a);
 	colour.a *= Alpha;
 	return colour;

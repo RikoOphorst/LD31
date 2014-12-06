@@ -1,0 +1,4 @@
+load("texture","textures/level/background.png")
+load("texture","textures/level/player.png")
+load("texture","textures/level/overlay.png")
+load("shader","shaders/lighting.fx")

@@ -5,15 +5,18 @@ require("js/utility/weighted_collection");
 require("js/utility/helper");
 require("js/utility/sprite_animation");
 
-require("js/test_state");
+require("js/level/level_state");
 
-var RenderTargets = {
-	default: RenderTarget.new("Default")
+var RenderTargets = RenderTargets || {
+	default: RenderTarget.new("Default"),
+	lighting: RenderTarget.new("Lighting")
 }
 
 Game.Initialise = function()
 {
-	Game.setName("Snuffbox Template");
+	ContentManager.load("box", "boxes/boot.box");
+
+	Game.setName("Light 'Em Up");
 
 	RenderSettings.setVsync(true);
 	RenderSettings.setResolution(1280,720);
@@ -23,7 +26,7 @@ Game.Initialise = function()
 	Game.debug = true;
 	Game.speed = 1;
 
-	StateManager.switchState(TestState);
+	StateManager.switchState(LevelState);
 }
 
 Game.Update = function(dt)
