@@ -4,11 +4,12 @@ require("js/level/hud");
 require("js/level/light_overlay");
 require("js/level/storage");
 require("js/level/torch");
+require("js/level/wave_manager");
 
 var Level = function()
 {
 	this._horizon = Quad2D.new();
-	this._horizon.setTexture("textures/level/night_sky.png");
+	this._horizon.setTexture("textures/level/daytime.png");
 	this._horizon.setToTexture();
 	this._horizon.spawn("Default");
 	this._horizon.setOffset(0.5,0.48);
@@ -44,11 +45,14 @@ var Level = function()
 	this._inventory = new Storage(50);
 
 	this._lightOverlay = new LightOverlay();
+	this._waveManager = new WaveManager(this._lightOverlay);
 
 	this.update = function(dt)
 	{
 		this._player.update(dt, this._horizon, this._surface, this._torches);
 		this._lightOverlay.update(dt);
+
+		this._waveManager.update(dt);
 
 		for (var i = 0; i < this._torches.length; ++i)
 		{
