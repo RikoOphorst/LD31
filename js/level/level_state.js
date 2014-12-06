@@ -24,7 +24,6 @@ var LevelState = function()
 	this.reload = function(path)
 	{
 		this._level = new Level();
-		this._ui = new UI();
 	}
 
 	this.destroy = function()

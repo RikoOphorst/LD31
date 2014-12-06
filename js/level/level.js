@@ -1,5 +1,6 @@
 require("js/level/player");
 require("js/level/hud");
+require("js/level/light_overlay");
 
 var Level = function()
 {
@@ -10,18 +11,15 @@ var Level = function()
 	this._surface.setOffset(0.5, 0.5);
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
-	this._overlay = Quad2D.new();
-	this._overlay.spawn("Lighting");
-	this._overlay.setTexture("textures/level/overlay.png");
-	this._overlay.setToTexture();
-	this._overlay.setOffset(0.5, 0.5);
-	this._overlay.setTranslation(0, 0, 3);
 
 	this._player = new Player();
 	this._hud = new HUD();
 
+	this._lightOverlay = new LightOverlay();
+
 	this.update = function(dt)
 	{
 		this._player.update(dt);
+		this._lightOverlay.update(dt);
 	}
 }
