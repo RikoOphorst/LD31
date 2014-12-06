@@ -10,6 +10,7 @@ var Torch = function(x,y)
 	this.setTranslation(x,y,360+y);
 	this.setShader("shaders/animation.fx");
 	this.setOffset(0.5,1);
+	this.setScale(1+y/720,1+y/720);
 
 	this._light = Quad2D.new();
 	this._light.setTexture("textures/level/torch/torch_light.png");
