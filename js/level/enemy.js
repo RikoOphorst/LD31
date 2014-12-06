@@ -123,6 +123,11 @@ var Enemy = function (x, y)
 
                     var angle = Math.atan2(delta.y, delta.x);
                     var pushSpeed = 30 * (1-(distance/other.radius()));
+
+                    if (pushSpeed < 18)
+                    {
+                        pushSpeed = 0;
+                    }
                     var push = {
                         x: Math.cos(angle + Math.PI) * pushSpeed * dt,
                         y: Math.sin(angle + Math.PI) * pushSpeed * dt,

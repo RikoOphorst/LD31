@@ -23,6 +23,10 @@ var Waypoint = function()
 
 	this.pop = function(x,y)
 	{
+		if (y < -190)
+		{
+			return;
+		}
 		this._position = {
 			x: x,
 			y: y

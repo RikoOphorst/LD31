@@ -25,10 +25,10 @@ var Level = function()
 	this._surface.setScale(1.05,1.05);
 	this._torches = [];
 
-	// for (var i = 0; i < 10; ++i)
-	// {
-	// 	this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
-	// }
+	for (var i = 0; i < 4; ++i)
+	{
+		this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
+	}
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
 

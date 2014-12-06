@@ -49,6 +49,21 @@ var Player = function()
 		y: 0
 	}
 
+
+	this._lanternStick = Quad2D.new();
+	this._lanternStick.setTexture("textures/characters/lantern_stick.png");
+	this._lanternStick.setOffset(0.2,1);
+	this._lanternStick.setToTexture();
+	this._lanternStick.spawn("Default");
+
+	this._lantern = Quad2D.new();
+	this._lantern.setTexture("textures/characters/lantern.png");
+	this._lantern.setToTexture();
+	this._lantern.setOffset(0.3,0);
+	this._lantern.spawn("Default");
+
+	this._rotateLantern = 0;
+
 	this.moveEnvironment = function(horizon, surface, torches, x, y)
 	{
 		horizon.translateBy(x/80, y/80, 0);
@@ -82,6 +97,8 @@ var Player = function()
 
 		var s = (Math.abs(movement.x)/movement.x);
 		this.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
+		this._lanternStick.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
+		this._lantern.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
 
 		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > this._movementMargin)
 		{
@@ -128,14 +145,18 @@ var Player = function()
 			var translation = this.translation();
 
 			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, 360 + this._position.y+8);
-			this.setRotation(0,0,Math.sin(this._wobble*1.1)/15);
 		}
 		else
 		{
 			this._animation.setFrame(0);
 			this.setRotation(0,0,0);
 			this._wobble = 0;
+			this._lanternStick.setRotation(0,0,0);
 		}
+
+		var t = this.translation();
+		var s = this.scale();
+		this._lanternStick.setTranslation(t.x - 5 * s.x, t.y - 120, 360 + t.y - 11 + 7);
 
 		this._animation.update(dt);
 	}
