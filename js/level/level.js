@@ -51,17 +51,13 @@ var Level = function()
 	this._player = new Player();
 	this._enemies = [];
 
-	for (var i = 0; i < 5; ++i)
-	{
-		this._enemies.push(new Enemy(250, 50));
-	}
-
 	this._hud = new HUD();
 	this._stash = new Storage(20);
 	this._inventory = new Storage(50);
 
 	this._lightOverlay = new LightOverlay();
 	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies);
+	this._waveManager.spawnWave();
 
 	this.update = function(dt)
 	{
