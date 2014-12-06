@@ -8,7 +8,7 @@ var Player = function()
 	this.setTexture("textures/level/player.png");
 	this.setToTexture();
 	this.setTranslation(0, 0, 1);
-	this.spawn("Default");
+	//this.spawn("Default");
 
 	this._moveSpeed = 200;
 	this._movementMargin = 4;
