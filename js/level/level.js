@@ -3,6 +3,7 @@ require("js/level/enemy");
 require("js/level/hud");
 require("js/level/light_overlay");
 require("js/level/storage");
+require("js/level/torch");
 
 var Level = function()
 {
@@ -11,6 +12,12 @@ var Level = function()
 	this._surface.setTexture("textures/level/background.png");
 	this._surface.setToTexture();
 	this._surface.setOffset(0.5, 0.5);
+	this._torches = [];
+
+	for (var i = 0; i < 10; ++i)
+	{
+		this._torches.push(new Torch(-640+Math.random()*1280, -360 + Math.random()*720));
+	}
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
 
@@ -27,5 +34,9 @@ var Level = function()
 		this._player.update(dt);
 		this._enemy.update(dt, this._player);
 		this._lightOverlay.update(dt);
+		for (var i = 0; i < this._torches.length; ++i)
+		{
+			this._torches[i].update(dt);
+		}
 	}
 }
