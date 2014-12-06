@@ -9,7 +9,7 @@ var Player = function()
 	this.setOffset(0.5, 1);
 	this.setTexture("textures/characters/character_walk.png");
 	this.setToTexture();
-	this.setTranslation(0, 0, 1);
+	this.setTranslation(0, 0, 360 + 8);
 	this.spawn("Default");
 
 	this._moveSpeed = 275;
@@ -49,6 +49,36 @@ var Player = function()
 		y: 0
 	}
 
+	this._lanternOrigin = {
+		x: 15,
+		y: -90
+	}
+
+	this._lanternStick = Quad2D.new();
+	this._lanternStick.setOffset(0.42, 0.96);
+	this._lanternStick.setTexture("textures/characters/lantern_stick.png");
+	this._lanternStick.setToTexture();
+	this._lanternStick.setTranslation(this._lanternOrigin.x, this._lanternOrigin.y, 360 + 6);
+	this._lanternStick.spawn("Default");
+
+	this._lantern = Quad2D.new();
+	this._lantern.setOffset(0.5, 0.075);
+	this._lantern.setTexture("textures/characters/lantern.png");
+	this._lantern.setToTexture();
+	this._lantern.setTranslation(this._lanternOrigin.x + 20, this._lanternOrigin.y - 75, 360 + 7);
+	this._lantern.spawn("Default");
+
+	this._lanternLight = Quad2D.new();
+	this._lanternLight.setOffset(0.5, 0.35);
+	this._lanternLight.setTexture("textures/level/torch/torch_light.png");
+	this._lanternLight.setToTexture();
+	this._lanternLight.setTranslation(this._lanternOrigin.x + 20, this._lanternOrigin.y - 75, 360 + 7);
+	this._lanternLight.spawn("Lighting");
+	this._lanternLight.setBlend(1,0.9,0.4);
+	this._lanternLight.setScale(2.5,2.5);
+
+	this._lightTimer = 0;
+
 	this.moveEnvironment = function(horizons, surface, torches, x, y)
 	{
 		for (var i = 0; i < horizons.length; ++i)
@@ -66,6 +96,8 @@ var Player = function()
 
 	this.update = function(dt,horizons,surface,torches)
 	{
+		this._lightTimer += dt;
+
 		if (Mouse.isDown(0))
 		{
 			this._moveTarget = Mouse.position(Mouse.Relative);
@@ -132,13 +164,35 @@ var Player = function()
 			var translation = this.translation();
 
 			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, 360 + this._position.y+8);
+			
+			translation = this.translation();
+			this._lanternStick.setTranslation(translation.x + this._lanternOrigin.x*s, translation.y + this._lanternOrigin.y, 360 + this._position.y + 6);
+			this._lanternStick.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
+			
+			this._lanternStick.spawn("Default");
+
+			this._lantern.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
+
+			var lanternX = translation.x + (this._lanternOrigin.x + 20) *s;
+			var lanternY = translation.y + (this._lanternOrigin.y - 75);
+
+			this._lantern.setTranslation(lanternX, lanternY, 360 + this._position.y + 7);
+			this._lanternLight.setTranslation(lanternX, lanternY, 360 + this._position.y + 7);
+
+			this._lantern.setRotation(0, 0, Math.sin(this._wobble)/2);
+			this._lanternLight.setRotation(0, 0, Math.sin(this._wobble)/2);
 		}
 		else
 		{
 			this._animation.setFrame(0);
 			this.setRotation(0,0,0);
 			this._wobble = 0;
+			this._lantern.setRotation(0, 0, 0);
 		}
+
+		var s = 2+Math.abs(Math.sin(this._lightTimer/2))*1;
+		this._lanternLight.setScale(s, s);
+
 		this._animation.update(dt);
 	}
 }
