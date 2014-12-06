@@ -1,8 +1,9 @@
-var WaveManager = function (lightOverlay)
+var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHorizon, enemies)
 {
     this._currentWave = 0;
     this._lightOverlay = lightOverlay;
     this.t = 0;
+    this.turnTimer = 0;
     this.op = 'plus';
 
 
@@ -13,15 +14,20 @@ var WaveManager = function (lightOverlay)
 
     this.update = function (dt)
     {
-        switch (this.op)
+        if (this.turnTimer <= 0)
         {
-            case 'plus':
-                this.t+=dt*0.045;
-                break;
-            case 'minus':
-                this.t-=dt*0.045;
-                break;
+            switch (this.op)
+            {
+                case 'plus':
+                    this.t+=dt*0.08;
+                    break;
+                case 'minus':
+                    this.t-=dt*0.045;
+                    break;
+            }
         }
+
+        this.turnTimer--;
 
         if (this.t < 0.5)
         {
@@ -46,17 +52,45 @@ var WaveManager = function (lightOverlay)
         if (this.t <= 0)
         {
             this.op = 'plus';
+            this.t += dt;
+            this.turnTimer = 1200;
+
+            Log.fatal('PAUSING AT MIDNIGHT');
         }
         
         if (this.t >= 1)
         {
             this.op = 'minus';
+            this.t -= dt;
+            this.turnTimer = 0;
+
+            Log.fatal('PAUSING AT MIDDAY');
         }
 
-        this.spawnWave();
+        // 0 - night_sky
+        // 0.5 - evening_sky
+        // 1 - daytime
+
+        if (this.t >= 0 && this.t < 0.5)
+        {
+            nightHorizon.setAlpha(1 - this.t * 2);
+            eveningHorizon.setAlpha(this.t * 2);
+
+            Log.debug('night is active');
+        }
+
+        if (this.t >= 0.5 && this.t < 1)
+        {
+            Log.debug((this.t - 0.5) * 2);
+
+            dayHorizon.setAlpha((this.t - 0.5) * 2);
+            eveningHorizon.setAlpha(1-((this.t - 0.5) * 2));
+        }
+
+        //this.spawnWave();
     };
 
-    this.spawnWave = function ()
+    /*this.spawnWave = function ()
     {
         var amountMobs = Math.floor(2 + ((++this._currentWave) * Math.random()) * 0.5);
 
@@ -64,5 +98,5 @@ var WaveManager = function (lightOverlay)
         {
             
         }
-    }
+    }*/
 };

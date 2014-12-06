@@ -51,7 +51,7 @@ var Player = function()
 
 	this.moveEnvironment = function(horizon, surface, torches, x, y)
 	{
-		horizon.translateBy(x/80, y/80, 0);
+		//horizon.translateBy(x/80, y/80, 0);
 		surface.translateBy(-x/50, -y/50, 0);
 
 		for (var i = 0; i < torches.length; ++i)
