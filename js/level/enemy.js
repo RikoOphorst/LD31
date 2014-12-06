@@ -1,4 +1,4 @@
-var Enemy = function () 
+var Enemy = function (x, y) 
 {
     this._quad2d = Quad2D.new();
 
@@ -7,10 +7,12 @@ var Enemy = function ()
     this.setTexture("textures/level/enemy.png");
     this.setToTexture();
     this.setOffset(0.5, 1);
-    this.setTranslation(0, 0, 3);
+    this.setTranslation(x, y, 3);
     this.spawn("Default");
 
     this._moveSpeed = 130;
+    this._moveSpeedFactor = 1;
+    this._moveSpeedFactorSteps = 0;
 
     this.update = function (dt, target)
     {
@@ -27,8 +29,22 @@ var Enemy = function ()
 
         var direction = Math.atan2(y1 - y2, x1 - x2);
         var movement = {
-            x: Math.cos(direction) * dt * this._moveSpeed,
-            y: Math.sin(direction) * dt * this._moveSpeed
+            x: Math.cos(direction) * dt * this._moveSpeed * this._moveSpeedFactor,
+            y: Math.sin(direction) * dt * this._moveSpeed * this._moveSpeedFactor,
+        };
+
+        if (this._moveSpeedFactorSteps <= 0)
+        {
+            this._moveSpeedFactor = 1;
+            if (Math.round(Math.random() * 180) == 1)
+            {
+                this._moveSpeedFactor = 0.8 + Math.random() * 0.1;
+                this._moveSpeedFactorSteps = 180 + Math.random() * 180;
+            }
+        }
+        else
+        {
+            this._moveSpeedFactorSteps--;
         }
 
         if (Math.max(y1, y2) - Math.min(y1, y2) > movementMargin)
