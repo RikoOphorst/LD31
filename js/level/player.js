@@ -49,7 +49,18 @@ var Player = function()
 		y: 0
 	}
 
-	this.update = function(dt)
+	this.moveEnvironment = function(horizon, surface, torches, x, y)
+	{
+		horizon.translateBy(x/80, y/80, 0);
+		surface.translateBy(-x/50, -y/50, 0);
+
+		for (var i = 0; i < torches.length; ++i)
+		{
+			torches[i].translateBy(-x/50, -y/50, 0);
+		}
+	}
+
+	this.update = function(dt,horizon,surface,torches)
 	{
 		if (Mouse.isDown(0))
 		{
@@ -78,28 +89,34 @@ var Player = function()
 			this._position.x += movement.x;
 			this._position.y += movement.y;
 
+			this.moveEnvironment(horizon, surface, torches, movement.x, movement.y);
+
 			var clamped = false;
 			while (this._position.x - this.size().w / 2 < -(RenderSettings.resolution().w / 2))
 			{
 				this._position.x += 1;
+				this.moveEnvironment(horizon, surface, torches, 1, 0);
 				clamped = true;
 			}
 
 			while (this._position.x + this.size().w / 2 > (RenderSettings.resolution().w / 2))
 			{
 				this._position.x -= 1;
+				this.moveEnvironment(horizon, surface, torches, -1, 0);
 				clamped = true;
 			}
 
 			while (this._position.y - this.size().h < -(RenderSettings.resolution().h / 2))
 			{
 				this._position.y += 1;
+				this.moveEnvironment(horizon, surface, torches, 0, 1);
 				clamped = true;
 			}
 
 			while (this._position.y > (RenderSettings.resolution().h / 2))
 			{
 				this._position.y -= 1;
+				this.moveEnvironment(horizon, surface, torches, 0, -1);
 				clamped = true;
 			}
 

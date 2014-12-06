@@ -7,11 +7,21 @@ require("js/level/torch");
 
 var Level = function()
 {
+	this._horizon = Quad2D.new();
+	this._horizon.setTexture("textures/level/night_sky.png");
+	this._horizon.setToTexture();
+	this._horizon.spawn("Default");
+	this._horizon.setOffset(0.5,0.48);
+	this._horizon.setScale(1.1,1.1);
+	this._horizon.setTranslation(0,0,0);
+
 	this._surface = Quad2D.new();
 	this._surface.spawn("Default");
 	this._surface.setTexture("textures/level/background.png");
 	this._surface.setToTexture();
 	this._surface.setOffset(0.5, 0.5);
+	this._surface.setTranslation(0,0,0.1);
+	this._surface.setScale(1.05,1.05);
 	this._torches = [];
 
 	for (var i = 0; i < 10; ++i)
@@ -37,7 +47,7 @@ var Level = function()
 
 	this.update = function(dt)
 	{
-		this._player.update(dt);
+		this._player.update(dt, this._horizon, this._surface, this._torches);
 		this._lightOverlay.update(dt);
 
 		for (var i = 0; i < this._torches.length; ++i)
