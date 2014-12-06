@@ -9,7 +9,7 @@ require("js/level/wave_manager");
 var Level = function()
 {
 	this._horizon = Quad2D.new();
-	this._horizon.setTexture("textures/level/daytime.png");
+	this._horizon.setTexture("textures/level/night_sky.png");
 	this._horizon.setToTexture();
 	this._horizon.spawn("Default");
 	this._horizon.setOffset(0.5,0.48);
@@ -25,10 +25,10 @@ var Level = function()
 	this._surface.setScale(1.05,1.05);
 	this._torches = [];
 
-	for (var i = 0; i < 10; ++i)
-	{
-		this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
-	}
+	// for (var i = 0; i < 10; ++i)
+	// {
+	// 	this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
+	// }
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
 
