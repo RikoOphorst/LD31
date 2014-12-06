@@ -9,26 +9,25 @@ var Torch = function(x,y)
 	this.spawn("Default");
 	this.setTranslation(x,y,360+y);
 	this.setShader("shaders/animation.fx");
-	this.setScale(0.5,0.5);
 	this.setOffset(0.5,1);
 
 	this._light = Quad2D.new();
 	this._light.setTexture("textures/level/torch/torch_light.png");
 	this._light.setToTexture();
 	this._light.spawn("Lighting");
-	this._light.setTranslation(x,y-170,360+y);
+	this._light.setTranslation(x,y-80,360+y);
 	this._light.setOffset(0.5, 0.5);
 	this._light.setBlend(1,0.9,0.4);
 
 	var frames = [];
 
-	for (var i = 0; i < 10; ++i)
+	for (var i = 0; i < 9; ++i)
 	{
 		frames.push({
-			x: 332*i,
-			y: 512,
-			width: 332,
-			height: 512
+			x: 93*i,
+			y: 144,
+			width: 93,
+			height: 144
 		});
 	}
 
@@ -49,7 +48,7 @@ var Torch = function(x,y)
 		{
 			this._timer  = 0;
 			this._targetTime = Math.randomRange(0, 0.3);
-			var scale = Math.randomRange(2.5,2.55);
+			var scale = Math.randomRange(2,2.05);
 			this._light.setScale(scale,scale);
 			var alpha = Math.randomRange(0.9,1);
 			this._light.setAlpha(alpha);

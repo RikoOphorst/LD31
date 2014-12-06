@@ -17,13 +17,13 @@ var Enemy = function ()
         var translation = this.translation();
         var tTranslation = target.translation();
         var tSize = target.size();
-        var movementMargin = target.size().w / 2;
+        var movementMargin = 5;
 
         var x1 = tTranslation.x;
-        var y1 = tTranslation.y - tSize.h / 2;
+        var y1 = tTranslation.y;
 
         var x2 = translation.x;
-        var y2 = translation.y - this.size().h / 2;
+        var y2 = translation.y;
 
         var direction = Math.atan2(y1 - y2, x1 - x2);
         var movement = {
@@ -31,9 +31,21 @@ var Enemy = function ()
             y: Math.sin(direction) * dt * this._moveSpeed
         }
 
-        if (Math.distance(x1, y1, x2, y2) > movementMargin)
+        if (Math.max(y1, y2) - Math.min(y1, y2) > movementMargin)
         {
-            this.translateBy(movement.x, movement.y, this.translation().y);
+            this.translateBy(0, movement.y, 0);
+            translation = this.translation();
+            this.setTranslation(translation.x, translation.y, 360 + translation.y);
+
+            if (Math.max(x1, x2) - Math.min(x1, x2) < tSize.w / 2)
+                this.translateBy(0, movement.y, 0);
+        }
+
+        if (Math.max(x1, x2) - Math.min(x1, x2) > tSize.w / 2)
+        {
+            this.translateBy(movement.x, 0, 0);
+            translation = this.translation();
+            this.setTranslation(translation.x, translation.y, 360 + translation.y);
         }
     }
 }
