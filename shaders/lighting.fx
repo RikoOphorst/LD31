@@ -5,7 +5,7 @@ cbuffer ConstantBuffer : register(b0)
 
 cbuffer Uniforms : register(b1)
 {
-
+	float Wiggle;
 }
 
 struct VOut
@@ -29,6 +29,8 @@ SamplerState SampleType;
 
 float4 PS(VOut input) : SV_TARGET
 {
+	input.texcoord.x += sin(input.texcoord.y*20+Time)/150;
+	input.texcoord.y += sin(input.texcoord.x*20+Wiggle*2)/150;
 	float4 colour = tex2D.Sample(SampleType, input.texcoord);
-	return float4(colour.rgb, (1-(colour.r + colour.b + colour.g)/4)*0.9);
+	return float4(colour.rgb, (1-(colour.r + colour.b + colour.g)/3)*0.9);
 }

@@ -23,6 +23,7 @@ Game.Initialise = function()
 	RenderSettings.setResolution(1280,720);
 	RenderSettings.setYDown(true);
 	RenderSettings.setWindowSize(1280,720);
+	RenderSettings.setCullMode(RenderSettings.CullNone);
 
 	Game.debug = true;
 	Game.speed = 1;
