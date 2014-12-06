@@ -53,7 +53,7 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
         {
             this.op = 'plus';
             this.t += dt;
-            this.turnTimer = 1200;
+            this.turnTimer = 100;
         }
         
         if (this.t >= 1)
@@ -71,24 +71,29 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
         {
             nightHorizon.setAlpha(1 - this.t * 2);
             eveningHorizon.setAlpha(this.t * 2);
+
+            if (1 - this.t * 2 <= 0.1 && this.op == 'minus' && !this.spawned)
+            {
+                this.spawned = true;
+                this.spawnWave();
+            }
         }
 
         if (this.t >= 0.5 && this.t < 1)
         {
+            this.spawned = false;
             dayHorizon.setAlpha((this.t - 0.5) * 2);
             eveningHorizon.setAlpha(1-((this.t - 0.5) * 2));
         }
-
-        //this.spawnWave();
     };
 
-    /*this.spawnWave = function ()
+    this.spawnWave = function ()
     {
         var amountMobs = Math.floor(2 + ((++this._currentWave) * Math.random()) * 0.5);
 
         for (var i = 0; i < amountMobs; i++)
         {
-            
+            enemies.push(new Enemy(Math.ceil(Math.random() * 2) == 1 ? RenderSettings.resolution().w / 2 : -(RenderSettings.resolution().w / 2),Math.random() * RenderSettings.resolution().h));
         }
-    }*/
+    }
 };
