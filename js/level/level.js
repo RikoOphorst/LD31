@@ -25,7 +25,7 @@ var Level = function()
 	this._eveningHorizon.setTranslation(0,0,0);
 
 	this._dayHorizon = Quad2D.new();
-	this._dayHorizon.setTexture("textures/level/daytime.png");
+	this._dayHorizon.setTexture("textures/level/daytime_sky.png");
 	this._dayHorizon.setToTexture();
 	this._dayHorizon.spawn("Default");
 	this._dayHorizon.setOffset(0.5,0.48);
