@@ -8,13 +8,29 @@ require("js/level/wave_manager");
 
 var Level = function()
 {
-	this._horizon = Quad2D.new();
-	this._horizon.setTexture("textures/level/night_sky.png");
-	this._horizon.setToTexture();
-	this._horizon.spawn("Default");
-	this._horizon.setOffset(0.5,0.48);
-	this._horizon.setScale(1.1,1.1);
-	this._horizon.setTranslation(0,0,0);
+	this._nightHorizon = Quad2D.new();
+	this._nightHorizon.setTexture("textures/level/night_sky.png");
+	this._nightHorizon.setToTexture();
+	this._nightHorizon.spawn("Default");
+	this._nightHorizon.setOffset(0.5,0.48);
+	this._nightHorizon.setScale(1.1,1.1);
+	this._nightHorizon.setTranslation(0,0,0);
+
+	this._eveningHorizon = Quad2D.new();
+	this._eveningHorizon.setTexture("textures/level/evening_sky.png");
+	this._eveningHorizon.setToTexture();
+	this._eveningHorizon.spawn("Default");
+	this._eveningHorizon.setOffset(0.5,0.48);
+	this._eveningHorizon.setScale(1.1,1.1);
+	this._eveningHorizon.setTranslation(0,0,0);
+
+	this._dayHorizon = Quad2D.new();
+	this._dayHorizon.setTexture("textures/level/daytime_sky.png");
+	this._dayHorizon.setToTexture();
+	this._dayHorizon.spawn("Default");
+	this._dayHorizon.setOffset(0.5,0.48);
+	this._dayHorizon.setScale(1.1,1.1);
+	this._dayHorizon.setTranslation(0,0,0);
 
 	this._surface = Quad2D.new();
 	this._surface.spawn("Default");
@@ -45,7 +61,7 @@ var Level = function()
 	this._inventory = new Storage(50);
 
 	this._lightOverlay = new LightOverlay();
-	this._waveManager = new WaveManager(this._lightOverlay);
+	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies);
 
 	this.update = function(dt)
 	{
