@@ -8,7 +8,7 @@ var Level = function()
 {
 	this._surface = Quad2D.new();
 	this._surface.spawn("Default");
-	this._surface.setTexture("textures/level/background.png");
+	this._surface.setTexture("textures/level/background2.png");
 	this._surface.setToTexture();
 	this._surface.setOffset(0.5, 0.5);
 

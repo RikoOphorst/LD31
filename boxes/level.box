@@ -1,4 +1,5 @@
 load("texture","textures/level/background.png")
+load("texture","textures/level/background2.png")
 load("texture","textures/level/light.tif")
 load("texture","textures/level/overlay.tif")
 load("texture","textures/character/character_walk.png")
