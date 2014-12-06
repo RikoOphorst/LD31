@@ -16,7 +16,7 @@ var Level = function()
 
 	for (var i = 0; i < 10; ++i)
 	{
-		this._torches.push(new Torch(-640+Math.random()*1280, -360 + Math.random()*720));
+		this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
 	}
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
