@@ -1,5 +1,4 @@
 require("js/level/level");
-require("js/level/ui");
 
 var LevelState = function()
 {
@@ -10,8 +9,6 @@ var LevelState = function()
 	{
 		ContentManager.load("box", "boxes/level.box")
 		this._level = new Level();
-
-		this._ui = new UI();
 	}
 
 	this.update = function(dt)

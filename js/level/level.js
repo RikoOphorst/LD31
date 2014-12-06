@@ -1,4 +1,5 @@
 require("js/level/player");
+require("js/level/hud");
 
 var Level = function()
 {
@@ -17,6 +18,7 @@ var Level = function()
 	this._overlay.setTranslation(0, 0, 3);
 
 	this._player = new Player();
+	this._hud = new HUD();
 
 	this.update = function(dt)
 	{
