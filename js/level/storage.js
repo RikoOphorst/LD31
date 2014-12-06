@@ -1,5 +1,7 @@
 var Storage = function (size)
 {
+    size = size !== undefined ? size : 20;
+
     this._items = [];
     for (var i = 0; i < size; i++)
     {
@@ -38,13 +40,14 @@ var Storage = function (size)
     this.getAll = function () 
     {
         return this._items;
-    }
+    };
 
     this.save = function (path) {
         var savedata = JSON.stringify(this._items);
         IO.save(path || 'stash', savedata);
         return savedata;
     };
+
     this.load = function (path) {
         this._items = JSON.parse(IO.open(path || 'stash'));
     };
