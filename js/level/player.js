@@ -7,7 +7,7 @@ var Player = function()
 	extend(this, this._quad);
 
 	this.setOffset(0.5, 1);
-	this.setTexture("textures/character/character_walk.png");
+	this.setTexture("textures/characters/character_walk.png");
 	this.setToTexture();
 	this.setTranslation(0, 0, 1);
 	this.spawn("Default");

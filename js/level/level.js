@@ -22,8 +22,13 @@ var Level = function()
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
 
 	this._player = new Player();
-	this._enemy = new Enemy(250, 50);
-	this._enemy2 = new Enemy(50, 250);
+	this._enemies = [];
+
+	for (var i = 0; i < 5; ++i)
+	{
+		this._enemies.push(new Enemy(250, 50));
+	}
+
 	this._hud = new HUD();
 	this._stash = new Storage(20);
 	this._inventory = new Storage(50);
@@ -33,12 +38,16 @@ var Level = function()
 	this.update = function(dt)
 	{
 		this._player.update(dt);
-		this._enemy.update(dt, this._player);
-		this._enemy2.update(dt, this._player);
 		this._lightOverlay.update(dt);
+
 		for (var i = 0; i < this._torches.length; ++i)
 		{
 			this._torches[i].update(dt);
+		}
+
+		for (var i = 0; i < this._enemies.length; ++i)
+		{
+			this._enemies[i].update(dt,this._player,this._enemies);
 		}
 	}
 }
