@@ -1,5 +1,6 @@
 load("texture","textures/level/background.png")
-load("texture","textures/level/player.png")
 load("texture","textures/level/light.tif")
 load("texture","textures/level/overlay.tif")
+load("texture","textures/character/character_walk.png")
 load("shader","shaders/lighting.fx")
+load("shader","shaders/animation.fx")
