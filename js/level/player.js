@@ -68,7 +68,7 @@ var Player = function()
 
 			var translation = this.translation();
 
-			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, 360 + this._position.y+32);
+			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, 360 + this._position.y+8);
 			this.setRotation(0,0,Math.sin(this._wobble*1.1)/15);
 		}
 		else
