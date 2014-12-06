@@ -2,7 +2,7 @@ var UI = function ()
 {
 
     this._fireStones = Text.new();
-    this._fireStones.setTranslation(100, -500, 0);
+    this._fireStones.setTranslation(100, -200, 0);
     this._fireStones.setText("Firestones: 10");
     this._fireStones.spawn("Default");
 

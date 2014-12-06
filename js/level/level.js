@@ -9,7 +9,7 @@ var Level = function()
 	this._surface.setOffset(0.5, 0.5);
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
-	this._overlay = Widget.new();
+	this._overlay = Quad2D.new();
 	this._overlay.spawn("Lighting");
 	this._overlay.setTexture("textures/level/overlay.png");
 	this._overlay.setToTexture();
