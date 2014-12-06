@@ -41,21 +41,25 @@ var Player = function()
 
 	for (var i = 0; i < 16; ++i)
 	{
-		frames.push({
-			x: i*223,
-			y: 0,
-			width: 223,
-			height: 202
-		});
+		if (i % 2 == 0)
+		{
+			frames.push({
+				x: i*223,
+				y: 0,
+				width: 223,
+				height: 202
+			});
+		}
 	}
 
 	this._animationAxe = new SpriteAnimation(this, frames);
-	this._animationAxe.setSpeed(80);
+	this._animationAxe.setSpeed(60);
 	this._animationAxe.setLoop(false);
 	this._animationAxe.on("ended", function () {
 		this.setTexture("textures/characters/character_walk.png");
 
 		this._currentAnimation = this._animation;
+		this._currentAnimation.start();
 	}, this);
 
 	this.setScale(0.75, 0.75);
@@ -100,6 +104,16 @@ var Player = function()
 	this._lanternLight.setScale(2.5,2.5);
 
 	this._lightTimer = 0;
+	this._attackTimer = 1;
+
+	this.setUniform("float", "Hit", 0);
+
+	this._selectedEnemy = undefined;
+
+	this.setSelectedEnemy = function(selected)
+	{
+		this._selectedEnemy = selected;
+	}
 
 	this.moveEnvironment = function(horizons, surface, torches, x, y)
 	{
@@ -116,13 +130,23 @@ var Player = function()
 		}
 	}
 
-	this.update = function(dt,horizons,surface,torches)
+	this.update = function(dt,horizons,surface,torches,enemies)
 	{
 		this._lightTimer += dt;
+		this._enemies = enemies;
 
 		if (Mouse.isDown(0))
 		{
-			this._moveTarget = Mouse.position(Mouse.Relative);
+			if (this._selectedEnemy === undefined)
+			{
+				this._moveTarget = Mouse.position(Mouse.Relative);
+				this._moveTarget.enemy = undefined;
+			}
+			else
+			{
+				this._moveTarget = this._selectedEnemy.translation();
+				this._moveTarget.enemy = this._selectedEnemy;
+			}
 		}
 
 		if (Mouse.isPressed(0))
@@ -141,7 +165,9 @@ var Player = function()
 		var s = (Math.abs(movement.x)/movement.x);
 		this.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
 
-		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > this._movementMargin)
+		var movementMargin = this._moveTarget.enemy == undefined ? this._movementMargin : 190;
+
+		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > movementMargin)
 		{
 			this._wobble += dt*10;
 			this._position.x += movement.x;
@@ -206,18 +232,33 @@ var Player = function()
 		}
 		else
 		{
+			if (this._moveTarget.enemy !== undefined && this._attackTimer >= 1)
+			{
+				this._moveTarget.enemy.damage(20);
+				this._moveTarget.enemy.setUniform("float", "Selected", 0);
+				this._attackTimer = 0;
+				this._currentAnimation.stop();
+				this._animationAxe.start();
+				this._currentAnimation = this._animationAxe;
+				this.setTexture("textures/characters/character_axe.png");
+
+				this._moveTarget.enemy = undefined;
+			}
 			this._animation.setFrame(0);
 			this.setRotation(0,0,0);
 			this._wobble = 0;
 			this._lantern.setRotation(0, 0, 0);
 		}
 
-		if (Keyboard.isPressed("A"))
+		if (this._attackTimer < 1)
 		{
-			this._currentAnimation.stop();
-			this._animationAxe.start();
-			this._currentAnimation = this._animationAxe;
-			this.setTexture("textures/characters/character_axe.png");
+			this._attackTimer += dt*4;
+			var s = Math.abs(this.scale().x)/this.scale().x;
+			this.setRotation(0, 0, Math.sin(this._attackTimer*Math.PI*2)/8*s);
+		}
+		else
+		{
+			this._attackTimer = 1;
 		}
 
 		this._currentAnimation.update(dt);
