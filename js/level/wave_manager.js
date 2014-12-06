@@ -54,8 +54,6 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
             this.op = 'plus';
             this.t += dt;
             this.turnTimer = 1200;
-
-            Log.fatal('PAUSING AT MIDNIGHT');
         }
         
         if (this.t >= 1)
@@ -63,8 +61,6 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
             this.op = 'minus';
             this.t -= dt;
             this.turnTimer = 0;
-
-            Log.fatal('PAUSING AT MIDDAY');
         }
 
         // 0 - night_sky
@@ -75,14 +71,10 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
         {
             nightHorizon.setAlpha(1 - this.t * 2);
             eveningHorizon.setAlpha(this.t * 2);
-
-            Log.debug('night is active');
         }
 
         if (this.t >= 0.5 && this.t < 1)
         {
-            Log.debug((this.t - 0.5) * 2);
-
             dayHorizon.setAlpha((this.t - 0.5) * 2);
             eveningHorizon.setAlpha(1-((this.t - 0.5) * 2));
         }

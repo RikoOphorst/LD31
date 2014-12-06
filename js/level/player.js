@@ -49,24 +49,13 @@ var Player = function()
 		y: 0
 	}
 
-
-	this._lanternStick = Quad2D.new();
-	this._lanternStick.setTexture("textures/characters/lantern_stick.png");
-	this._lanternStick.setOffset(0.2,1);
-	this._lanternStick.setToTexture();
-	this._lanternStick.spawn("Default");
-
-	this._lantern = Quad2D.new();
-	this._lantern.setTexture("textures/characters/lantern.png");
-	this._lantern.setToTexture();
-	this._lantern.setOffset(0.3,0);
-	this._lantern.spawn("Default");
-
-	this._rotateLantern = 0;
-
-	this.moveEnvironment = function(horizon, surface, torches, x, y)
+	this.moveEnvironment = function(horizons, surface, torches, x, y)
 	{
-		//horizon.translateBy(x/80, y/80, 0);
+		for (var i = 0; i < horizons.length; ++i)
+		{
+			horizons[i].translateBy(x/80, y/80, 0);
+		}
+		
 		surface.translateBy(-x/50, -y/50, 0);
 
 		for (var i = 0; i < torches.length; ++i)
@@ -75,7 +64,7 @@ var Player = function()
 		}
 	}
 
-	this.update = function(dt,horizon,surface,torches)
+	this.update = function(dt,horizons,surface,torches)
 	{
 		if (Mouse.isDown(0))
 		{
@@ -97,43 +86,41 @@ var Player = function()
 
 		var s = (Math.abs(movement.x)/movement.x);
 		this.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
-		this._lanternStick.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
-		this._lantern.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
-
+		
 		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > this._movementMargin)
 		{
 			this._wobble += dt*10;
 			this._position.x += movement.x;
 			this._position.y += movement.y;
 
-			this.moveEnvironment(horizon, surface, torches, movement.x, movement.y);
+			this.moveEnvironment(horizons, surface, torches, movement.x, movement.y);
 
 			var clamped = false;
 			while (this._position.x - this.size().w / 2 < -(RenderSettings.resolution().w / 2))
 			{
 				this._position.x += 1;
-				this.moveEnvironment(horizon, surface, torches, 1, 0);
+				this.moveEnvironment(horizons, surface, torches, 1, 0);
 				clamped = true;
 			}
 
 			while (this._position.x + this.size().w / 2 > (RenderSettings.resolution().w / 2))
 			{
 				this._position.x -= 1;
-				this.moveEnvironment(horizon, surface, torches, -1, 0);
+				this.moveEnvironment(horizons, surface, torches, -1, 0);
 				clamped = true;
 			}
 
 			while (this._position.y - this.size().h < -(RenderSettings.resolution().h / 2))
 			{
 				this._position.y += 1;
-				this.moveEnvironment(horizon, surface, torches, 0, 1);
+				this.moveEnvironment(horizons, surface, torches, 0, 1);
 				clamped = true;
 			}
 
 			while (this._position.y > (RenderSettings.resolution().h / 2))
 			{
 				this._position.y -= 1;
-				this.moveEnvironment(horizon, surface, torches, 0, -1);
+				this.moveEnvironment(horizons, surface, torches, 0, -1);
 				clamped = true;
 			}
 
@@ -151,13 +138,7 @@ var Player = function()
 			this._animation.setFrame(0);
 			this.setRotation(0,0,0);
 			this._wobble = 0;
-			this._lanternStick.setRotation(0,0,0);
 		}
-
-		var t = this.translation();
-		var s = this.scale();
-		this._lanternStick.setTranslation(t.x - 5 * s.x, t.y - 120, 360 + t.y - 11 + 7);
-
 		this._animation.update(dt);
 	}
 }

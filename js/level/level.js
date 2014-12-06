@@ -65,7 +65,7 @@ var Level = function()
 
 	this.update = function(dt)
 	{
-		this._player.update(dt, this._horizon, this._surface, this._torches);
+		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches);
 		this._lightOverlay.update(dt);
 
 		this._waveManager.update(dt);
