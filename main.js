@@ -5,6 +5,7 @@ require("js/utility/weighted_collection");
 require("js/utility/helper");
 require("js/utility/sprite_animation");
 
+require("js/test_state");
 require("js/level/level_state");
 
 var RenderTargets = RenderTargets || {
@@ -28,7 +29,7 @@ Game.Initialise = function()
 	Game.debug = true;
 	Game.speed = 1;
 
-	StateManager.switchState(LevelState);
+	StateManager.switchState(TestState);
 }
 
 Game.Update = function(dt)

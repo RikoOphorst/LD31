@@ -72,7 +72,7 @@ var Player = function()
 	}
 
 	this._animationIdle = new SpriteAnimation(this, frames);
-	this._animationIdle.setSpeed(20);
+	this._animationIdle.setSpeed(13);
 	this._animationIdle.setLoop(false);
 	this._animationIdle.on("ended", function () {
 		this.setTexture("textures/characters/character_walk.png");
