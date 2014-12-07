@@ -200,8 +200,11 @@ var Player = function()
 
 		var s = (Math.abs(movement.x)/movement.x);
 		this.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
+		this._lantern.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
+		this._lanternStick.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
 
 		var movementMargin = this._moveTarget.enemy == undefined ? this._movementMargin : 190;
+		var translation = this.translation();
 
 		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > movementMargin)
 		{
@@ -245,23 +248,9 @@ var Player = function()
 				this._moveTarget = this._position;
 			}
 
-			var translation = this.translation();
+			translation = this.translation();
 
 			this.setTranslation(this._position.x, this._position.y + Math.abs(Math.sin(this._wobble))*12, 360 + this._position.y+8);
-			
-			translation = this.translation();
-			this._lanternStick.setTranslation(translation.x + this._lanternOrigin.x*s, translation.y + this._lanternOrigin.y, 360 + this._position.y + 6);
-			this._lanternStick.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
-			
-			this._lanternStick.spawn("Default");
-
-			this._lantern.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
-
-			var lanternX = translation.x + (this._lanternOrigin.x + 20) *s;
-			var lanternY = translation.y + (this._lanternOrigin.y - 75);
-
-			this._lantern.setTranslation(lanternX, lanternY, 360 + this._position.y + 7);
-			this._lanternLight.setTranslation(lanternX, lanternY, 360 + this._position.y + 7);
 
 			this._lantern.setRotation(0, 0, Math.sin(this._wobble)/2);
 			this._lanternLight.setRotation(0, 0, Math.sin(this._wobble)/2);
@@ -289,11 +278,21 @@ var Player = function()
 			this._lantern.setRotation(0, 0, 0);
 		}
 
+		this._lanternStick.setTranslation(translation.x + this._lanternOrigin.x*s, translation.y + this._lanternOrigin.y, 360 + this._position.y + 6);
+
+		var lanternX = translation.x + (this._lanternOrigin.x + 20) *s;
+		var lanternY = translation.y + (this._lanternOrigin.y - 75);
+
+		this._lantern.setTranslation(lanternX, lanternY, 360 + this._position.y + 7);
+		this._lanternLight.setTranslation(lanternX, lanternY, 360 + this._position.y + 7);
+
 		if (this._attackTimer < 1)
 		{
 			this._attackTimer += dt*4;
 			var s = Math.abs(this.scale().x)/this.scale().x;
 			this.setRotation(0, 0, Math.sin(this._attackTimer*Math.PI*2)/8*s);
+			this._lanternStick.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
+			this._lantern.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
 		}
 		else
 		{
@@ -303,9 +302,13 @@ var Player = function()
 		if (this._dashTimer < 1)
 		{
 			this.rotateBy(0,0,(Math.sin(this._dashTimer*Math.PI)/2.5)*s);
+
+			var t = Math.sin(this._dashTimer*Math.PI)*3000*dt*s;
+			this._lanternStick.translateBy(t, 0, 0);
+			this._lantern.translateBy(t, 0, 0);
 		}
 
-		this._currentAnimation.update(dt);
+		this._currentAnimation.update(dt);	
 
 		var s = 2+Math.abs(Math.sin(this._lightTimer/2))*1;
 		this._lanternLight.setScale(s, s);

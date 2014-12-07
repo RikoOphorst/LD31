@@ -101,7 +101,7 @@ var Level = function()
 	this._lightOverlay = new LightOverlay();
 
 	this._loot = [];
-	this._effect = WeatherEffects.None;
+	this._effect = WeatherEffects.Rain;
 
 	this.setWeatherEffect = function(effect)
 	{
