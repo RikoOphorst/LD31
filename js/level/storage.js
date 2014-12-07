@@ -1,3 +1,5 @@
+enumerator('LootTypes', ['WOOD', 'OIL']);
+
 var Storage = function (size)
 {
     size = size !== undefined ? size : 20;

@@ -115,7 +115,7 @@ var Player = function()
 		this._selectedEnemy = selected;
 	}
 
-	this.moveEnvironment = function(horizons, surface, torches, x, y)
+	this.moveEnvironment = function(horizons, surface, torches, loot, x, y)
 	{
 		for (var i = 0; i < horizons.length; ++i)
 		{
@@ -124,13 +124,18 @@ var Player = function()
 		
 		surface.translateBy(-x/50, -y/50, 0);
 
+		for (var i = 0; i < loot.length; i++)
+		{
+			loot[i].translateBy(-x/50, -y/50, 0);
+		}
+
 		for (var i = 0; i < torches.length; ++i)
 		{
 			torches[i].translateBy(-x/50, -y/50, 0);
 		}
 	}
 
-	this.update = function(dt,horizons,surface,torches,enemies)
+	this.update = function(dt, horizons, surface, torches, enemies, loot)
 	{
 		this._lightTimer += dt;
 		this._enemies = enemies;
@@ -173,34 +178,34 @@ var Player = function()
 			this._position.x += movement.x;
 			this._position.y += movement.y;
 
-			this.moveEnvironment(horizons, surface, torches, movement.x, movement.y);
+			this.moveEnvironment(horizons, surface, torches, loot, movement.x, movement.y);
 
 			var clamped = false;
 			while (this._position.x - this.size().w / 2 < -(RenderSettings.resolution().w / 2))
 			{
 				this._position.x += 1;
-				this.moveEnvironment(horizons, surface, torches, 1, 0);
+				this.moveEnvironment(horizons, surface, torches, loot, 1, 0);
 				clamped = true;
 			}
 
 			while (this._position.x + this.size().w / 2 > (RenderSettings.resolution().w / 2))
 			{
 				this._position.x -= 1;
-				this.moveEnvironment(horizons, surface, torches, -1, 0);
+				this.moveEnvironment(horizons, surface, torches, loot, -1, 0);
 				clamped = true;
 			}
 
 			while (this._position.y - this.size().h < -(RenderSettings.resolution().h / 2))
 			{
 				this._position.y += 1;
-				this.moveEnvironment(horizons, surface, torches, 0, 1);
-				clamped = true;
+				this.moveEnvironment(horizons, surface, torches, loot, 0, 1);
+				clamped = true; 
 			}
 
 			while (this._position.y > (RenderSettings.resolution().h / 2))
 			{
 				this._position.y -= 1;
-				this.moveEnvironment(horizons, surface, torches, 0, -1);
+				this.moveEnvironment(horizons, surface, torches, loot, 0, -1);
 				clamped = true;
 			}
 

@@ -6,10 +6,6 @@ function extend(classA, classB)
 {
 	for (var b in classB)
 	{
-		if (b == "__quad")
-		{
-			continue;
-		}
 		classA[b] = classB[b];
 	}
 }

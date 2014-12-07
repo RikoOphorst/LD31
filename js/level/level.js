@@ -5,6 +5,7 @@ require("js/level/light_overlay");
 require("js/level/storage");
 require("js/level/torch");
 require("js/level/wave_manager");
+require("js/level/loot_wood");
 
 var Level = function()
 {
@@ -59,9 +60,11 @@ var Level = function()
 	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies);
 	this._waveManager.spawnWave();
 
+	this._loot = [new Wood(0, -150), new Wood(0, 150)];
+
 	this.update = function(dt)
 	{
-		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies);
+		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies, this._loot);
 		this._lightOverlay.update(dt);
 
 		this._waveManager.update(dt);
@@ -76,7 +79,7 @@ var Level = function()
 		var hitTest = false;
 		var testedEnemy = undefined;
 		
-		for (var i = this._enemies.length-1; i >= 0; --i)
+		for (var i = this._enemies.length - 1; i >= 0; --i)
 		{	
 			var enemy = this._enemies[i];
 
@@ -104,6 +107,11 @@ var Level = function()
 			{
 				this._enemies[i].deselect();
 			}
+		}
+
+		for (var i = this._loot.length - 1; i >= 0; --i)
+		{
+			this._loot[i].update(dt, this._player);
 		}
 
 		this._player.setSelectedEnemy(testedEnemy);
