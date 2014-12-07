@@ -70,8 +70,8 @@ float4 PS(VOut input) : SV_TARGET
  
   float4 col;
  
-  if (((t1 * t1) + (t2 * t2)) > 0.9 && input.texcoord.x > 0.05 && input.texcoord.x < 0.95 && input.texcoord.y > 0.05 && input.texcoord.y < 0.95) {
-  col = float4(lerp(0.3,0.7,input.texcoord.y),0,0,1);
+  if (((t1 * t1) + (t2 * t2)) > 0.5 && input.texcoord.x > 0.05 && input.texcoord.x < 0.95 && input.texcoord.y > 0.05 && input.texcoord.y < 0.95) {
+  col = float4(lerp(0.8,1,input.texcoord.y),0,0,1);
   } else {
     col = float4(0,0,0,0);
   }
