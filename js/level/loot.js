@@ -46,7 +46,7 @@ var Loot = function (x, y, texture)
                 );
             }
 
-            if (this.timer >= 5)
+            if (this.timer >= 50)
             {
                 var t = (this.timer - 5);
 
@@ -95,6 +95,8 @@ var Loot = function (x, y, texture)
                 this._tooltip.destroy();
             }
         }
+
+        this._tooltip.update(dt);
     }
 
     this.pickUp = function (player) 

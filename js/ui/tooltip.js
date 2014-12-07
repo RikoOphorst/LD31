@@ -1,38 +1,37 @@
 var Tooltip = function (parent, text) {
-    this._mouseArea = MouseArea.new(0, 0, 0, 0);
-
-    this._text = Text.new();
-    this._text.setText(text);
 
     this._background = Widget.new();
-    this._background.setSize(100, 100);
-    this._background.setTranslation(0, 0, 0);
+    this._text = Text.new(this._background);
 
-    this._mouseArea.setMetrics(parent.translation().x - (parent.size().w * parent.offset().x), parent.translation().y - (parent.size().h * parent.offset().y), parent.size().w, parent.size().h);
+    this._text.setText(text);
 
-    this.abc = "def";
+    this._background.setSize(this._text.metrics().width, this._text.metrics().height);
+    
+    this._background.setBlend(0, 0, 0);
+    this._text.setBlend(1, 1, 1);
 
-    this._mouseArea.setOnEnter(function (self) {
-        /*self._text.spawn("UI");
-        self._background.spawn("UI");
+    this.update = function (dt) {
+        var mousePos = Mouse.position(Mouse.Relative);
+        var trans = parent.translation();
+        var size = parent.size();
+        if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
+            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h)
+        {
+            this._background.spawn("UI");
+            this._text.spawn("UI");
 
-        Log.fatal(parent.translation().x);
-        Log.fatal(parent.translation().y);
-        self._text.setTranslation(parent.translation().x, parent.translation().y - parent.offset().h * parent.size().y, 1000);
-        self._background.setTranslation(parent.translation().x, parent.translation().y - parent.offset().h * parent.size().y, 1000);*/
-    }, this.abc);
-
-    this._mouseArea.setOnLeave(function (self) {
-        /*self._text.destroy();
-        self._background.destroy();*/
-    }, this.abc);
+            this._background.setTranslation(mousePos.x, mousePos.y, 800);
+        }
+        else
+        {
+            this._background.destroy();
+            this._text.destroy();
+        }
+    }
 
     this.destroy = function () 
     {
-        this._mouseArea.setActivated(false);
         this._text.destroy();
         this._background.destroy();
-
-        this._mouseArea = null;
     };
 }

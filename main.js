@@ -66,7 +66,7 @@ Game.Draw = function(dt)
 
 Game.Shutdown = function()
 {
-
+	Mouse.clearAreas();
 }
 
 Game.OnReload = function(path)
