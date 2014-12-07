@@ -76,7 +76,7 @@ var Player = function()
 	}
 
 	this._lanternOrigin = {
-		x: 15,
+		x: 10,
 		y: -90
 	}
 
@@ -109,6 +109,7 @@ var Player = function()
 	this.setUniform("float", "Hit", 0);
 
 	this._selectedEnemy = undefined;
+	this._dashTimer = 1;
 
 	this.setSelectedEnemy = function(selected)
 	{
@@ -140,12 +141,42 @@ var Player = function()
 		this._lightTimer += dt;
 		this._enemies = enemies;
 
-		if (Mouse.isDown(0))
+		if (this._dashTimer < 2)
+		{
+			this._dashTimer += dt*4;
+
+			if (this._dashTimer < 1)
+			{
+				this._moveSpeed = Math.lerp(1200, 275, this._dashTimer);
+			}
+			else
+			{
+				this._moveSpeed = 275;
+			}
+		}
+		else
+		{
+			this._dashTimer = 2;
+		}
+
+		if (Keyboard.isPressed("Q") && this._dashTimer >= 2)
+		{
+			this._moveTarget = Mouse.position(Mouse.Relative);
+			this._moveSpeed = 900;
+			this._dashTimer = 0;
+		}
+
+		if (Mouse.isDown(0)  && this._attackTimer >= 1)
 		{
 			if (this._selectedEnemy === undefined)
 			{
 				this._moveTarget = Mouse.position(Mouse.Relative);
 				this._moveTarget.enemy = undefined;
+
+				if (this._movementMargin == 190)
+				{
+					this._movementMargin = 8;
+				}
 			}
 			else
 			{
@@ -234,6 +265,8 @@ var Player = function()
 
 			this._lantern.setRotation(0, 0, Math.sin(this._wobble)/2);
 			this._lanternLight.setRotation(0, 0, Math.sin(this._wobble)/2);
+
+			this.setRotation(0, 0, Math.sin(this._wobble)/100 * s);
 		}
 		else
 		{
@@ -247,7 +280,8 @@ var Player = function()
 				this._currentAnimation = this._animationAxe;
 				this.setTexture("textures/characters/character_axe.png");
 
-				this._moveTarget.enemy = undefined;
+				this._movementMargin = 190;
+				this._moveTarget = {x: this._moveTarget.enemy.translation().x, y: this._moveTarget.enemy.translation().y }
 			}
 			this._animation.setFrame(0);
 			this.setRotation(0,0,0);
@@ -264,6 +298,11 @@ var Player = function()
 		else
 		{
 			this._attackTimer = 1;
+		}
+
+		if (this._dashTimer < 1)
+		{
+			this.rotateBy(0,0,(Math.sin(this._dashTimer*Math.PI)/2.5)*s);
 		}
 
 		this._currentAnimation.update(dt);
