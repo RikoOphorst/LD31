@@ -12,7 +12,7 @@ var Enemy = function (x, y)
 
     this.spawn("Default");
 
-    this._moveSpeed = 130;
+    this._moveSpeed = 200;
     this._moveSpeedFactor = 1;
     this._moveSpeedFactorSteps = 0;
 
@@ -34,7 +34,7 @@ var Enemy = function (x, y)
     this._animation.setSpeed(20);
 
     this._wobble = 0;
-    this._radius = 100;
+    this._radius = 120;
     this._hitTimer = 1;
     this._health = 100;
 
@@ -82,7 +82,7 @@ var Enemy = function (x, y)
     }
 
     this.update = function (dt, target, enemies, loot)
-    {
+    {  
         this._loot = loot;
         if (this._hitTimer < 1)
         {
@@ -174,7 +174,7 @@ var Enemy = function (x, y)
                     }
 
                     var angle = Math.atan2(delta.y, delta.x);
-                    var pushSpeed = 30 * (1-(distance/other.radius()));
+                    var pushSpeed = 80 * (1-(distance/other.radius()));
 
                     if (pushSpeed < 18)
                     {
@@ -191,6 +191,37 @@ var Enemy = function (x, y)
                     other.translateBy(push.otherX, push.otherY, 0);
                 }
             }
+        }
+
+        var trans = this.translation();
+        var clamped = false;
+        if (trans.x - this.size().w / 2 < -(RenderSettings.resolution().w / 2))
+        {
+            trans.x = -((RenderSettings.resolution().w / 2) - this.size().w / 2) + 1;
+            clamped = true;
+        }
+
+        if (trans.x + this.size().w / 2 > (RenderSettings.resolution().w / 2))
+        {
+            trans.x = ((RenderSettings.resolution().w / 2) - this.size().w / 2) - 1;
+            clamped = true;
+        }
+
+        if (trans.y - this.size().h < -(RenderSettings.resolution().h / 2))
+        {
+            trans.y = -((RenderSettings.resolution().h / 2) - this.size().h) + 1;
+            clamped = true; 
+        }
+
+        if (trans.y > (RenderSettings.resolution().h / 2))
+        {
+            trans.y = (RenderSettings.resolution().h / 2) - 1;
+            clamped = true;
+        }
+
+        if (clamped == true)
+        {
+            this.setTranslation(trans.x, trans.y, 360 + trans.y);
         }
     }
 

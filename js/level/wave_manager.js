@@ -1,4 +1,4 @@
-var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHorizon, enemies)
+var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHorizon, enemies, level)
 {
     this._currentWave = 0;
     this._lightOverlay = lightOverlay;
@@ -6,6 +6,7 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
     this.turnTimer = 0;
     this.op = 'plus';
 
+    Log.watch("Wave manager level", level);
 
     this.start = function ()
     {
@@ -90,6 +91,19 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
     this.spawnWave = function ()
     {
         var amountMobs = Math.floor(2 + ((++this._currentWave) * Math.random()) * 0.5);
+
+        var rand = Math.random();
+
+        if (rand < 0.3)
+        {
+            rand = Math.random();
+
+            level.setWeatherEffect(rand < 0.5 ? WeatherEffects.Snow : WeatherEffects.Rain);
+        }
+        else
+        {
+            level.setWeatherEffect(WeatherEffects.None);
+        }
 
         for (var i = 0; i < amountMobs; i++)
         {

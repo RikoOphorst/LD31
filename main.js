@@ -16,7 +16,7 @@ Game.Initialise = function()
 {
 	ContentManager.load("box", "boxes/boot.box");
 
-	Game.setName("Light 'Em Up");
+	Game.setName("Dwindling Fire");
 
 	RenderSettings.setVsync(true);
 	RenderSettings.setResolution(1280,720);

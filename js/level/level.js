@@ -7,6 +7,11 @@ require("js/level/torch");
 require("js/level/wave_manager");
 require("js/level/loot_wood");
 
+enumerator("WeatherEffects", [
+	"None",
+	"Snow",
+	"Rain"]);
+
 var Level = function()
 {
 	this._nightHorizon = Quad2D.new();
@@ -93,13 +98,78 @@ var Level = function()
 	this._inventory = new Storage(50);
 
 	this._lightOverlay = new LightOverlay();
-	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies);
-	this._waveManager.spawnWave();
 
 	this._loot = [];
+	this._effect = WeatherEffects.None;
+
+	this.setWeatherEffect = function(effect)
+	{
+		this._effect = effect;
+	}
 
 	this.update = function(dt)
 	{
+		if (this._effect == WeatherEffects.Rain)
+		{
+			if (this._rainModifier < 1)
+			{
+				this._rainModifier += dt/2;
+			}
+			else
+			{
+				this._rainModifier = 1;
+			}
+
+			if (this._snowModifier > 0)
+			{
+				this._snowModifier -= dt/2;
+			}
+			else
+			{
+				this._snowModifier = 0;
+			}
+		}
+		else if (this._effect == WeatherEffects.Snow)
+		{
+			if (this._snowModifier < 1)
+			{
+				this._snowModifier += dt/2;
+			}
+			else
+			{
+				this._snowModifier = 1;
+			}
+
+			if (this._rainModifier > 0)
+			{
+				this._rainModifier -= dt/2;
+			}
+			else
+			{
+				this._rainModifier = 0;
+			}
+		}
+		else
+		{
+			if (this._rainModifier > 0)
+			{
+				this._rainModifier -= dt/2;
+			}
+			else
+			{
+				this._rainModifier = 0;
+			}
+
+			if (this._snowModifier > 0)
+			{
+				this._snowModifier -= dt/2;
+			}
+			else
+			{
+				this._snowModifier = 0;
+			}
+		}
+
 		this._rainOffset += dt;
 
 		this._rain.setUniform("float2", "Offset", this._rainOffset/3, -this._rainOffset*2);
@@ -198,4 +268,7 @@ var Level = function()
 
 		this._player.setSelectedEnemy(testedEnemy);
 	}
+
+	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies, this);
+	this._waveManager.spawnWave();
 }
