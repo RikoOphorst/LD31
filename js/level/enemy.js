@@ -201,7 +201,7 @@ var Enemy = function (x, y)
 
     this.kill = function()
     {
-        this._loot.push(new Wood(this.translation().x + (-50 + Math.random() * 100), this.translation().y + (-50 + Math.random() * 100)));
+        this._loot.push(new Loot(this.translation().x + (-50 + Math.random() * 100), this.translation().y + (-50 + Math.random() * 100), "textures/ui/wood_icon.png"));
         this._killed = true;
         this.destroy();
     }
