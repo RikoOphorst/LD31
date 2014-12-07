@@ -4,7 +4,7 @@ var HUD = function ()
     this._background.setTexture("textures/ui/hud.png");
     this._background.setOffset(0.5, 0.5);
     this._background.setSize(1014,140);
-    this._background.setTranslation(0, 313, 0);
+    this._background.setTranslation(0, 308, 0);
     this._background.spawn("UI");
 
     this._fireStones = Text.new(this._background);
@@ -77,7 +77,7 @@ var HUD = function ()
     this._healthIcon.setTranslation(-462, 27, 1);
     this._healthIcon.spawn("UI");
 
-    this._background.setScale(0.7, 0.7);
+    this._background.setScale(0.75, 0.75);
 
     this.setFireStones = function (amt) {
         this._fireStones.setText("[size=23]Flint: "+amt+"[/size]");
