@@ -1,11 +1,11 @@
 require("js/ui/waypoint");
 
-var Player = function()
+var Player = function(level)
 {
 	this._quad = Quad2D.new();
 
 	extend(this, this._quad);
-
+	this._level = level;
 	this.setOffset(0.5, 1);
 	this.setTexture("textures/characters/character_walk.png");
 	this.setToTexture();
@@ -102,9 +102,10 @@ var Player = function()
 	this._animationAttack1.setLoop(false);
 	this._animationAttack1.on("ended", function () {
 		this.setTexture("textures/characters/character_walk.png");
-
+		this.setOffset(0.5,1);
 		this._currentAnimation = this._animation;
 		this._currentAnimation.start();
+		this._currentAnimation.setToFrame(0);
 	}, this);
 
 	this.setScale(0.75, 0.75);
@@ -262,7 +263,7 @@ var Player = function()
 				this._currentAnimation.start();
 			}
 			
-
+			this._idleTimer = 0;
 			this._wobble += dt*10;
 			this._position.x += movement.x;
 			this._position.y += movement.y;
@@ -316,6 +317,7 @@ var Player = function()
 		{
 			if (this._moveTarget.enemy !== undefined && this._attackTimer >= 1)
 			{
+				this._level.shakeCamera(10,3);
 				this._moveTarget.enemy.damage(20);
 				this._moveTarget.enemy.setUniform("float", "Selected", 0);
 				this._attackTimer = 0;
@@ -343,19 +345,34 @@ var Player = function()
 
 		if (this._attackTimer < 1)
 		{
-			this._attackTimer += dt*4;
+			this._idleTimer = 0;
+			this._attackTimer += dt*2;
 			var s = Math.abs(this.scale().x)/this.scale().x;
 			this.setRotation(0, 0, Math.sin(this._attackTimer*Math.PI*2)/8*s);
 			this._lanternStick.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
 			this._lantern.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
+
+			if (s == 1)
+			{
+				this.setOffset(0.43,0.96);
+			}
+			else
+			{
+				this.setOffset(0.43,0.96);
+			}
 		}
 		else
 		{
+			if (this._idle == false)
+			{
+				this.setOffset(0.5,1);
+			}
 			this._attackTimer = 1;
 		}
 
 		if (this._dashTimer < 1)
 		{
+			this._idleTimer = 0;
 			this.rotateBy(0,0,(Math.sin(this._dashTimer*Math.PI)/2.5)*s);
 
 			var t = Math.sin(this._dashTimer*Math.PI)*3000*dt*s;

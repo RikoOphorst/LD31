@@ -14,8 +14,9 @@ enumerator("WeatherEffects", [
 	"Snow",
 	"Rain"]);
 
-var Level = function()
+var Level = function(camera)
 {
+	this._camera = camera;
 	this._nightHorizon = Quad2D.new();
 	this._nightHorizon.setTexture("textures/level/night_sky.png");
 	this._nightHorizon.setToTexture();
@@ -92,7 +93,7 @@ var Level = function()
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
 
-	this._player = new Player();
+	this._player = new Player(this);
 	this._enemies = [];
 
 	this._hud = new HUD();
@@ -103,6 +104,14 @@ var Level = function()
 
 	this._loot = [];
 	this._effect = WeatherEffects.Rain;
+	this._shakeTimer = 0;
+	this._shakeMagnitude = 0;
+
+	this.shakeCamera = function(magnitude, duration)
+	{
+		this._shakeTimer = duration;
+		this._shakeMagnitude = magnitude;
+	}
 
 	this.setWeatherEffect = function(effect)
 	{
@@ -111,6 +120,7 @@ var Level = function()
 
 	this.update = function(dt)
 	{
+		this._camera.setTranslation(0, 0, 0);
 		if (this._effect == WeatherEffects.Rain)
 		{
 			if (this._rainModifier < 1)
@@ -213,7 +223,7 @@ var Level = function()
 			this._thunderDecay = 1;
 		}
 
-		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies, this._loot);
+		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies, this._loot, this);
 		this._lightOverlay.update(dt);
 
 		this._waveManager.update(dt);
@@ -266,6 +276,18 @@ var Level = function()
 			{
 				this._loot.splice(i, 1);
 			}
+		}
+
+		if (this._shakeTimer > 0)
+		{
+			this._shakeTimer -= dt*10;
+			var shake = Math.shake(this._shakeMagnitude, (1-this._shakeTimer));
+
+			this._camera.translateBy(shake.x, shake.y, 0);
+		}
+		else
+		{
+			this._shakeTimer = 0;
 		}
 
 		this._player.setSelectedEnemy(testedEnemy);
