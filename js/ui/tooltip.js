@@ -1,35 +1,37 @@
-var Tooltip = function (parent, text) {
+var Tooltip = function (parent, text, bordersize) {
 
     this._background = Widget.new();
     this._text = Text.new(this._background);
 
-    this._text.setFontFamily("fonts/test.ttf");
-    this._text.setText("[colour=92bf67]Wood[/colour]\n\nDikke pjenis is een term die breed\nwordt gebruikt door R. Ophorst in het\nbelang van schelden.\nDit als zijn code niet functioneerd of als hij daadwerkelijk een dikke\npenis ziet, deze meestal van zichzelf.");
-    this._text.setTranslation(10, 10, 801);
+    this._text.setFontFamily("fonts/arial.ttf");
     this._text.setFontSize(12);
+    this._text.setText(text);
+    this._text.setTranslation(10, 10, 801);
 
     this._background.setSize(this._text.metrics().width+20, this._text.metrics().height+20);
     this._background.setTexture('textures/ui/tooltip_bg.png');
 
+    this._bordersize = bordersize !== undefined ? bordersize : 1;
+
     this._topBorder = Widget.new(this._background);
-    this._topBorder.setSize(this._background.size().w, 1);
+    this._topBorder.setSize(this._background.size().w, this._bordersize);
     this._topBorder.setTexture('textures/ui/tooltip_border.png');
     this._topBorder.setTranslation(0, 0, 801);
 
     this._leftBorder = Widget.new(this._background);
-    this._leftBorder.setSize(1, this._background.size().h);
+    this._leftBorder.setSize(this._bordersize, this._background.size().h);
     this._leftBorder.setTexture('textures/ui/tooltip_border.png');
     this._leftBorder.setTranslation(0, 0, 801);
 
     this._rightBorder = Widget.new(this._background);
-    this._rightBorder.setSize(1, this._background.size().h);
+    this._rightBorder.setSize(this._bordersize, this._background.size().h);
     this._rightBorder.setTexture('textures/ui/tooltip_border.png');
-    this._rightBorder.setTranslation(this._background.size().w, 0, 801);
+    this._rightBorder.setTranslation(this._background.size().w - this._bordersize, 0, 801);
 
     this._bottomBorder = Widget.new(this._background);
-    this._bottomBorder.setSize(this._background.size().w, 1);
+    this._bottomBorder.setSize(this._background.size().w, this._bordersize);
     this._bottomBorder.setTexture('textures/ui/tooltip_border.png');
-    this._bottomBorder.setTranslation(0, this._background.size().h, 801);
+    this._bottomBorder.setTranslation(0, this._background.size().h - this._bordersize, 801);
 
     this.update = function (dt) {
         var mousePos = Mouse.position(Mouse.Relative);
