@@ -10,7 +10,6 @@ require("js/level/level_state");
 var RenderTargets = RenderTargets || {
 	default: RenderTarget.new("Default"),
 	lighting: RenderTarget.new("Lighting"),
-	ui: RenderTarget.new("UI")
 }
 
 Game.Initialise = function()
@@ -43,6 +42,10 @@ Game.Update = function(dt)
 		else if (Keyboard.isReleased("OEM6"))
 		{
 			Game.speed *= 1.5;
+		}
+		else if (Keyboard.isReleased("OEM5"))
+		{
+			Game.speed = 1;
 		}
 
 		if (oldSpeed != Game.speed)

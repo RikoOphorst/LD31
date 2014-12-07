@@ -81,8 +81,9 @@ var Enemy = function (x, y)
         return false;
     }
 
-    this.update = function (dt, target, enemies)
+    this.update = function (dt, target, enemies, loot)
     {
+        this._loot = loot;
         if (this._hitTimer < 1)
         {
             this._hitTimer += dt*10;
@@ -200,6 +201,7 @@ var Enemy = function (x, y)
 
     this.kill = function()
     {
+        this._loot.push(new Wood(this.translation().x, this.translation().y));
         this._killed = true;
         this.destroy();
     }

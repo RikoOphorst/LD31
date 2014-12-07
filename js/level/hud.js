@@ -5,86 +5,63 @@ var HUD = function ()
     this._background.setOffset(0.5, 0.5);
     this._background.setSize(1014,140);
     this._background.setTranslation(0, 308, 0);
-    this._background.spawn("UI");
+    this._background.setScale(0.75, 0.75);
+    this._background.spawn("Default");
 
-    this._fireStones = Text.new(this._background);
-    this._fireStones.setTranslation(160, 20, 1);
-    this._fireStones.setOffset(0.5, 0.5);
-    this._fireStones.setText("");
-    this._fireStones.spawn("UI");
-
-    this._oil = Text.new(this._background);
-    this._oil.setTranslation(-460, 20, 1);
-    this._oil.setOffset(0.5, 0.5);
-    this._oil.setText("");
-    //this._oil.spawn("UI");
+    this._flint = Text.new(this._background);
+    this._flint.setTranslation(160, 20, 1);
+    this._flint.setOffset(0.5, 0.5);
+    this._flint.setText("");
+    this._flint.spawn("Default");
 
     this._wood = Text.new(this._background);
     this._wood.setTranslation(-160, 20, 1);
     this._wood.setOffset(0.5, 0.5);
     this._wood.setText("");
-    this._wood.spawn("UI");
+    this._wood.spawn("Default");
 
     this._seeds = Text.new(this._background);
     this._seeds.setTranslation(-60, 20, 1);
     this._seeds.setOffset(0.5, 0.5);
     this._seeds.setText("");
-    this._seeds.spawn("UI");
-
-    this._score = Text.new(this._background);
-    this._score.setTranslation(0, 0, 1);
-    this._score.setOffset(0.5, 0.5);
-    this._score.setText("");
-    //this._score.spawn("UI");
-
-    this._kills = Text.new(this._background);
-    this._kills.setTranslation(0, 0, 1);
-    this._kills.setOffset(0.5, 0.5);
-    this._kills.setText("");
-    //this._kills.spawn("UI");
+    this._seeds.spawn("Default");
 
     this._lumo = Text.new(this._background);
     this._lumo.setTranslation(60, 20, 1);
     this._lumo.setOffset(0.5, 0.5);
     this._lumo.setText("");
-    this._lumo.spawn("UI");
+    this._lumo.spawn("Default");
 
-    this._healthbar = Widget.new(this._background);
-    this._healthbar.setTexture("textures/ui/healthbar.png");
-    this._healthbar.setOffset(0, 0.5);
-    this._healthbar.setSize(164,58);
-    this._healthbar.setTranslation(240, 20, 0);
-    this._healthbar.spawn("UI");
+    this._healthBar = Widget.new(this._background);
+    this._healthBar.setTexture("textures/ui/healthbar.png");
+    this._healthBar.setOffset(0, 0.5);
+    this._healthBar.setSize(164,58);
+    this._healthBar.setTranslation(240, 20, 0);
+    this._healthBar.spawn("Default");
 
     this._healthIcon = Widget.new(this._background);
     this._healthIcon.setTexture("textures/ui/health_icon.png");
     this._healthIcon.setOffset(0.5, 0.5);
     this._healthIcon.setSize(48,50);
     this._healthIcon.setTranslation(465, 23, 1);
-    this._healthIcon.spawn("UI");
+    this._healthIcon.spawn("Default");
 
-    this._oilbar = Widget.new(this._background);
-    this._oilbar.setTexture("textures/ui/healthbar.png");
-    this._oilbar.setOffset(1, 0.5);
-    this._oilbar.setSize(164,58);
-    this._oilbar.setTranslation(-240, 21, 0);
-    this._oilbar.spawn("UI");
+    this._oilBar = Widget.new(this._background);
+    this._oilBar.setTexture("textures/ui/healthbar.png");
+    this._oilBar.setOffset(1, 0.5);
+    this._oilBar.setSize(164,58);
+    this._oilBar.setTranslation(-240, 21, 0);
+    this._oilBar.spawn("Default");
 
-    this._healthIcon = Widget.new(this._background);
-    this._healthIcon.setTexture("textures/ui/lantern_icon.png");
-    this._healthIcon.setOffset(0.5, 0.5);
-    this._healthIcon.setSize(46,61);
-    this._healthIcon.setTranslation(-462, 27, 1);
-    this._healthIcon.spawn("UI");
+    this._oilIcon = Widget.new(this._background);
+    this._oilIcon.setTexture("textures/ui/lantern_icon.png");
+    this._oilIcon.setOffset(0.5, 0.5);
+    this._oilIcon.setSize(46,61);
+    this._oilIcon.setTranslation(-462, 27, 1);
+    this._oilIcon.spawn("Default");
 
-    this._background.setScale(0.75, 0.75);
-
-    this.setFireStones = function (amt) {
-        this._fireStones.setText("[size=23]Flint: "+amt+"[/size]");
-    };
-
-    this.setOil = function (amt) {
-        this._oil.setText("[size=23]Oil: "+amt+"[/size]");
+    this.setFlint = function (amt) {
+        this._flint.setText("[size=23]Flint: "+amt+"[/size]");
     };
 
     this.setWood = function (amt) {
@@ -95,23 +72,12 @@ var HUD = function ()
         this._seeds.setText("[size=23]Seeds: "+amt+"[/size]");
     };
 
-    this.setScore = function (amt) {
-        this._score.setText("[size=23]Score: "+amt+"[/size]");
-    };
-
-    this.setKills = function (amt) {
-        this._kills.setText("[size=23]Kills: "+amt+"[/size]");
-    };
-
     this.setLumo = function (amt) {
         this._lumo.setText("[size=23]Lumo: "+amt+"[/size]");
     };
 
-    this.setFireStones(0);
-    this.setOil(0);
+    this.setFlint(0);
     this.setWood(0);
     this.setSeeds(0);
-    this.setScore(0);
-    this.setKills(0);
     this.setLumo(0);
 }

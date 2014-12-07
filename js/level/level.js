@@ -5,6 +5,7 @@ require("js/level/light_overlay");
 require("js/level/storage");
 require("js/level/torch");
 require("js/level/wave_manager");
+require("js/level/loot_wood");
 
 var Level = function()
 {
@@ -12,33 +13,33 @@ var Level = function()
 	this._nightHorizon.setTexture("textures/level/night_sky.png");
 	this._nightHorizon.setToTexture();
 	this._nightHorizon.spawn("Default");
-	this._nightHorizon.setOffset(0.5,0.48);
-	this._nightHorizon.setScale(1.1,1.1);
-	this._nightHorizon.setTranslation(0,0,0);
+	this._nightHorizon.setOffset(0.5, 0.48);
+	this._nightHorizon.setScale(1.1, 1.1);
+	this._nightHorizon.setTranslation(0, 0, 0);
 
 	this._eveningHorizon = Quad2D.new();
 	this._eveningHorizon.setTexture("textures/level/evening_sky.png");
 	this._eveningHorizon.setToTexture();
 	this._eveningHorizon.spawn("Default");
-	this._eveningHorizon.setOffset(0.5,0.48);
-	this._eveningHorizon.setScale(1.1,1.1);
-	this._eveningHorizon.setTranslation(0,0,0);
+	this._eveningHorizon.setOffset(0.5, 0.48);
+	this._eveningHorizon.setScale(1.1, 1.1);
+	this._eveningHorizon.setTranslation(0, 0, 0);
 
 	this._dayHorizon = Quad2D.new();
 	this._dayHorizon.setTexture("textures/level/daytime_sky.png");
 	this._dayHorizon.setToTexture();
 	this._dayHorizon.spawn("Default");
-	this._dayHorizon.setOffset(0.5,0.48);
-	this._dayHorizon.setScale(1.1,1.1);
-	this._dayHorizon.setTranslation(0,0,0);
+	this._dayHorizon.setOffset(0.5, 0.48);
+	this._dayHorizon.setScale(1.1, 1.1);
+	this._dayHorizon.setTranslation(0, 0, 0);
 
 	this._surface = Quad2D.new();
 	this._surface.spawn("Default");
 	this._surface.setTexture("textures/level/background.png");
 	this._surface.setToTexture();
 	this._surface.setOffset(0.5, 0.5);
-	this._surface.setTranslation(0,0,0.1);
-	this._surface.setScale(1.05,1.05);
+	this._surface.setTranslation(0,0, 0.1);
+	this._surface.setScale(1.05, 1.05);
 	this._torches = [];
 
 	this._rain = Quad2D.new();
@@ -95,6 +96,8 @@ var Level = function()
 	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies);
 	this._waveManager.spawnWave();
 
+	this._loot = [];
+
 	this.update = function(dt)
 	{
 		this._rainOffset += dt;
@@ -138,7 +141,7 @@ var Level = function()
 			this._thunderDecay = 1;
 		}
 
-		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies);
+		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies, this._loot);
 		this._lightOverlay.update(dt);
 
 		this._waveManager.update(dt);
@@ -148,12 +151,12 @@ var Level = function()
 			this._torches[i].update(dt);
 		}
 		
-		this._enemies.sort(function(a,b){ return a.translation().y > b.translation().y });
+		this._enemies.sort(function(a, b) { return a.translation().y > b.translation().y });
 		
 		var hitTest = false;
 		var testedEnemy = undefined;
 		
-		for (var i = this._enemies.length-1; i >= 0; --i)
+		for (var i = this._enemies.length - 1; i >= 0; --i)
 		{	
 			var enemy = this._enemies[i];
 
@@ -162,7 +165,7 @@ var Level = function()
 				this._enemies.splice(i, 1);
 				continue;
 			}
-			enemy.update(dt,this._player,this._enemies);
+			enemy.update(dt, this._player, this._enemies, this._loot);
 			if (hitTest == false)
 			{
 				if (enemy.hitTest() == true)
@@ -180,6 +183,16 @@ var Level = function()
 			if (this._enemies[i] != testedEnemy)
 			{
 				this._enemies[i].deselect();
+			}
+		}
+
+		for (var i = this._loot.length - 1; i >= 0; --i)
+		{
+			this._loot[i].update(dt, this._player);
+
+			if (!this._loot[i].alive)
+			{
+				this._loot.splice(i, 1);
 			}
 		}
 
