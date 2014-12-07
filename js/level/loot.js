@@ -26,6 +26,7 @@ var Loot = function (x, y, texture)
 
     this.update = function (dt, player)
     {
+        this._tooltip.update(dt);
         if (!this.pickingUp)
         {
             if (Math.distance(this.translation(), player.translation()) <= this.pickupRange)
@@ -95,8 +96,6 @@ var Loot = function (x, y, texture)
                 this._tooltip.destroy();
             }
         }
-
-        this._tooltip.update(dt);
     }
 
     this.pickUp = function (player) 
