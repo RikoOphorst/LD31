@@ -29,7 +29,7 @@ Game.Initialise = function()
 	Game.debug = true;
 	Game.speed = 1;
 
-	StateManager.switchState(TestState);
+	StateManager.switchState(LevelState);
 }
 
 Game.Update = function(dt)

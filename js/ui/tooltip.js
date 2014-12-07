@@ -3,10 +3,12 @@ var Tooltip = function (parent, text) {
     this._background = Widget.new();
     this._text = Text.new(this._background);
 
-    this._text.setText(text);
-    this._text.setTranslation(0, 0, 801);
+    this._text.setFontFamily("fonts/test.ttf");
+    this._text.setText("[colour=92bf67]Wood[/colour]\n\nDikke pjenis is een term die breed\nwordt gebruikt door R. Ophorst in het\nbelang van schelden.\nDit als zijn code niet functioneerd of als hij daadwerkelijk een dikke\npenis ziet, deze meestal van zichzelf.");
+    this._text.setTranslation(10, 10, 801);
+    this._text.setFontSize(12);
 
-    this._background.setSize(this._text.metrics().width, this._text.metrics().height);
+    this._background.setSize(this._text.metrics().width+20, this._text.metrics().height+20);
     this._background.setTexture('textures/ui/tooltip_bg.png');
 
     this._topBorder = Widget.new(this._background);
