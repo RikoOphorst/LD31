@@ -201,7 +201,13 @@ var Enemy = function (x, y)
 
     this.kill = function()
     {
-        this._loot.push(new Loot(this.translation().x + (-50 + Math.random() * 100), this.translation().y + (-50 + Math.random() * 100), "textures/ui/wood_icon.png", "[colour=92bf67]Wood[/colour]\n\nDikke pjenis is een term die breed\nwordt gebruikt door R. Ophorst in het\nbelang van schelden.\nDit als zijn code niet functioneerd of als hij daadwerkelijk een dikke\npenis ziet, deze meestal van zichzelf."));
+        this._loot.push(
+            new Loot(
+                this.translation().x + (-50 + Math.random() * 100), 
+                this.translation().y + (-50 + Math.random() * 100), 
+                LootData.WOOD
+            )
+        );
         this._killed = true;
         this.destroy();
     }

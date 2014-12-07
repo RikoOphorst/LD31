@@ -1,4 +1,4 @@
-require("js/ui/waypoint")
+require("js/ui/waypoint");
 
 var Player = function()
 {

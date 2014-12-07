@@ -1,10 +1,10 @@
-var Loot = function (x, y, texture, tooltipText)
+var Loot = function (x, y, loot)
 {
     this._quad = Quad2D.new();
     extend(this, this._quad);
 
-    this.type = LootTypes.WOOD;
-    this.setTexture(texture);
+    this.type = loot.type;
+    this.setTexture(loot.texture);
     this.setToTexture();
     this.setTranslation(x, y, 360 + y);
     this.setOffset(0.5, 1);
@@ -15,7 +15,7 @@ var Loot = function (x, y, texture, tooltipText)
     this.pickupRange = 75;
     this.alive = true;
 
-    this._tooltip = new Tooltip(this, tooltipText, 20, 10, 0.5);
+    this._tooltip = new Tooltip(this, loot.text, 20, 10, 0.5);
 
     this._shadow = Quad2D.new();
     this._shadow.setTexture("textures/ui/shadow_loot.png");
@@ -31,7 +31,7 @@ var Loot = function (x, y, texture, tooltipText)
         {
             if (Math.distance(this.translation(), player.translation()) <= this.pickupRange)
             {
-                //this.pickUp(player);
+                this.pickUp(player);
             }
 
             this.timer += dt;
@@ -47,7 +47,7 @@ var Loot = function (x, y, texture, tooltipText)
                 );
             }
 
-            if (this.timer >= 500)
+            if (this.timer >= 5)
             {
                 var t = (this.timer - 5);
 
