@@ -41,6 +41,42 @@ var Level = function()
 	this._surface.setScale(1.05,1.05);
 	this._torches = [];
 
+	this._rain = Quad2D.new();
+	this._rain.setOffset(0.5, 0.5);
+	this._rain.setTexture("textures/level/rain.png");
+	this._rain.setToTexture();
+	this._rain.spawn("Default");
+	this._rain.setTranslation(0, 0, 9999);
+	this._rain.setShader("shaders/rain.fx");
+	this._rain.setUniform("float2", "Offset", 0, 0);
+	this._rainModifier = 0;
+
+	this._snow = Quad2D.new();
+	this._snow.setOffset(0.5, 0.5);
+	this._snow.setTexture("textures/level/snow.png");
+	this._snow.setToTexture();
+	this._snow.spawn("Default");
+	this._snow.setTranslation(0, 0, 9999);
+	this._snow.setShader("shaders/rain.fx");
+	this._snow.setUniform("float2", "Offset", 0, 0);
+	this._snowModifier = 0;
+
+	this._thunder = Quad2D.new();
+	this._thunder.spawn("Default");
+	this._thunder.setTranslation(0, 0, 10000);
+	this._thunder.setSize(1280, 720);
+	this._thunder.setOffset(0.5, 0.5);
+	this._thunder.setBlend(240 / 255, 240 / 255, 1);
+	this._thunder.setAlpha(0);
+
+	this._thunderTimer = 0;
+	this._thunderDecay = 1.1;
+	this._thunderInterval = 2;
+
+	this._rainOffset = 0;
+	this._snowOffset = {x: 0, y: 0};
+	this._snowTimer = 0;
+
 	for (var i = 0; i < 4; ++i)
 	{
 		this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
@@ -61,6 +97,47 @@ var Level = function()
 
 	this.update = function(dt)
 	{
+		this._rainOffset += dt;
+
+		this._rain.setUniform("float2", "Offset", this._rainOffset/3, -this._rainOffset*2);
+		this._rain.setAlpha(this._rainModifier);
+
+		this._snowTimer += dt;
+
+		this._snow.setUniform("float2", "Offset", this._snowOffset.x, -this._snowOffset.y);
+		this._snow.setAlpha(this._snowModifier);
+
+		this._snowOffset.x = Math.sin(this._snowTimer)/40 + this._snowTimer/100;
+		this._snowOffset.y = this._snowTimer/20;
+
+		if (this._thunderDecay > 0 && this._thunderDecay <= 1)
+		{
+			this._thunderDecay -= dt*0.75;
+
+			var value = this._thunderDecay;
+
+			value += Math.randomRange(-0.1,0.1); 
+
+			RenderTargets.lighting.setUniform("float", "Thunder", value * this._rainModifier);
+			this._thunder.setAlpha(value * this._rainModifier);
+		}
+		else if (this._thunderTimer >= this._thunderInterval && this._thunderDecay <= 1)
+		{
+			this._thunderTimer = 0;
+			this._thunderDecay = 1.1;
+
+			this._thunderInterval = Math.randomRange(2, 12);
+		}
+
+		if (this._thunderTimer < this._thunderInterval)
+		{
+			this._thunderTimer += dt;
+		}
+		else if (this._thunderDecay > 1)
+		{
+			this._thunderDecay = 1;
+		}
+
 		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies);
 		this._lightOverlay.update(dt);
 

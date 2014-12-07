@@ -5,7 +5,7 @@ cbuffer ConstantBuffer : register(b0)
 
 cbuffer Uniforms : register(b1)
 {
-
+	float Thunder;
 }
 
 struct VOut
@@ -30,5 +30,5 @@ SamplerState SampleType;
 float4 PS(VOut input) : SV_TARGET
 {
 	float4 colour = tex2D.Sample(SampleType, input.texcoord);
-	return float4(colour.rgb, (1-(colour.r + colour.b + colour.g)/3)*0.8);
+	return float4(colour.rgb, (1-(colour.r + colour.b + colour.g)/3)*(0.8-Thunder*0.8));
 }

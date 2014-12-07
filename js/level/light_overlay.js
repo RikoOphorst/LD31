@@ -8,6 +8,8 @@ var LightOverlay = function()
 	this._overlay.setOffset(0.5, 0.5);
 	this._timer = 0;
 
+	RenderTargets.lighting.setUniform("float", "Thunder", 0);
+
 	this.update = function(dt)
 	{
 		this._timer += dt;
