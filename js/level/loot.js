@@ -12,7 +12,7 @@ var Loot = function (x, y, loot)
 
     this.position = this.translation();
     this.timer = 0;
-    this.pickupRange = 75;
+    this.pickupRange = 35;
     this.alive = true;
 
     this._tooltip = new Tooltip(this, loot.text, 20, 10, 0.5);
@@ -47,9 +47,9 @@ var Loot = function (x, y, loot)
                 );
             }
 
-            if (this.timer >= 5)
+            if (this.timer >= 10)
             {
-                var t = (this.timer - 5);
+                var t = (this.timer - 10);
 
                 var scale = Math.easeToInterpolation(
                         0, 
