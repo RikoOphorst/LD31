@@ -20,6 +20,8 @@ var Torch = function(x,y)
 	this._light.setOffset(0.5, 0.5);
 	this._light.setBlend(1,0.9,0.4);
 
+	this.setUniform("float", "Hit", 0);
+
 	var frames = [];
 
 	for (var i = 0; i < 9; ++i)

@@ -13,6 +13,7 @@ cbuffer ConstantBuffer : register(b0)
 cbuffer Uniforms : register(b1)
 {
 	float4 AnimationMetrics;
+	float Hit;
 }
 
 struct VOut
@@ -43,6 +44,11 @@ float4 PS(VOut input) : SV_TARGET
 	float4 textureColour = textures[0].Sample(SampleType, float2(x,y));
 	float4 colour = float4(textureColour.rgb * Blend * input.colour.rgb, textureColour.a);
 	colour.a *= Alpha;
+
+	if (Hit == 1.0f)
+	{
+		return float4(1.0f,1.0f,1.0f,colour.a);
+	}
 
 	return colour;
 }

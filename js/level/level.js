@@ -61,7 +61,7 @@ var Level = function()
 
 	this.update = function(dt)
 	{
-		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches);
+		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies);
 		this._lightOverlay.update(dt);
 
 		this._waveManager.update(dt);
@@ -70,10 +70,42 @@ var Level = function()
 		{
 			this._torches[i].update(dt);
 		}
+		
+		this._enemies.sort(function(a,b){ return a.translation().y > b.translation().y });
+		
+		var hitTest = false;
+		var testedEnemy = undefined;
+		
+		for (var i = this._enemies.length-1; i >= 0; --i)
+		{	
+			var enemy = this._enemies[i];
+
+			if (enemy.killed() == true)
+			{
+				this._enemies.splice(i, 1);
+				continue;
+			}
+			enemy.update(dt,this._player,this._enemies);
+			if (hitTest == false)
+			{
+				if (enemy.hitTest() == true)
+				{
+					hitTest = true;
+					testedEnemy = enemy;
+					enemy.setUniform("float", "Selected", 1);
+					continue;
+				}
+			}
+		}
 
 		for (var i = 0; i < this._enemies.length; ++i)
 		{
-			this._enemies[i].update(dt,this._player,this._enemies);
+			if (this._enemies[i] != testedEnemy)
+			{
+				this._enemies[i].deselect();
+			}
 		}
+
+		this._player.setSelectedEnemy(testedEnemy);
 	}
 }

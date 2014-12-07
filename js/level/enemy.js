@@ -35,14 +35,65 @@ var Enemy = function (x, y)
 
     this._wobble = 0;
     this._radius = 100;
+    this._hitTimer = 1;
+    this._health = 100;
+
+    this.setUniform("float", "Hit", 0);
+    this.setUniform("float", "Selected", 0);
+    this.addPass("shaders/border_animation.fx");
+
+    this._killed = false;
 
     this.radius = function()
     {
         return this._radius;
     }
 
+    this.damage = function(dmg)
+    {
+        this._hitTimer = 0;
+        this._health -= dmg;
+        this.setUniform("float", "Hit", 1);
+
+        if (this._health < 0)
+        {
+            this.kill();
+        }
+    }
+
+    this.deselect = function()
+    {
+        this.setUniform("float", "Selected", 0);
+    }
+
+    this.hitTest = function()
+    {
+        var mousePos = Mouse.position(Mouse.Relative);
+        var trans = this.translation();
+        var size = this.size();
+
+        if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
+            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     this.update = function (dt, target, enemies)
     {
+        if (this._hitTimer < 1)
+        {
+            this._hitTimer += dt*10;
+            return;
+        }
+        else
+        {
+            this._hitTimer = 1;
+            this.setUniform("float", "Hit", 0);
+        }
+
         this._animation.update(dt);
         var translation = this.translation();
 
@@ -140,5 +191,16 @@ var Enemy = function (x, y)
                 }
             }
         }
+    }
+
+    this.killed = function()
+    {
+        return this._killed;
+    }
+
+    this.kill = function()
+    {
+        this._killed = true;
+        this.destroy();
     }
 }
