@@ -7,6 +7,7 @@ require("js/level/torch");
 require("js/level/wave_manager");
 require("js/level/loot");
 require("js/ui/tooltip");
+require("js/level/loot_data");
 
 enumerator("WeatherEffects", [
 	"None",

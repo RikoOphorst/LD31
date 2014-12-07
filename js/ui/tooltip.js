@@ -1,4 +1,4 @@
-var Tooltip = function (parent, text, bordersize) {
+var Tooltip = function (parent, text, padding, bordersize, alpha) {
 
     this._background = Widget.new();
     this._text = Text.new(this._background);
@@ -6,12 +6,15 @@ var Tooltip = function (parent, text, bordersize) {
     this._text.setFontFamily("fonts/test.ttf");
     this._text.setFontSize(12);
     this._text.setText(text);
-    this._text.setTranslation(10, 10, 801);
+    this._text.setTranslation(padding, padding, 801);
 
-    this._background.setSize(this._text.metrics().width+20, this._text.metrics().height+20);
+    this._background.setSize(this._text.metrics().width + padding * 2, this._text.metrics().height + padding * 2);
     this._background.setTexture('textures/ui/tooltip_bg.png');
+    this._background.setAlpha(alpha !== undefined ? alpha : 1);
 
-    this._bordersize = bordersize !== undefined ? bordersize : 1;
+    this._text.setAlpha(1);
+
+    this._bordersize = bordersize !== undefined ? bordersize : 10;
 
     this._topBorder = Widget.new(this._background);
     this._topBorder.setSize(this._background.size().w, this._bordersize);
@@ -19,43 +22,46 @@ var Tooltip = function (parent, text, bordersize) {
     this._topBorder.setTranslation(0, 0, 801);
 
     this._leftBorder = Widget.new(this._background);
-    this._leftBorder.setSize(this._bordersize, this._background.size().h);
+    this._leftBorder.setSize(this._background.size().h, this._bordersize);
     this._leftBorder.setTexture('textures/ui/tooltip_border.png');
-    this._leftBorder.setTranslation(0, 0, 801);
+    this._leftBorder.setRotation(0, 0, -Math.PI / 2);
+    this._leftBorder.setTranslation(0, this._background.size().h, 801);
 
     this._rightBorder = Widget.new(this._background);
-    this._rightBorder.setSize(this._bordersize, this._background.size().h);
+    this._rightBorder.setSize(this._background.size().h, this._bordersize);
     this._rightBorder.setTexture('textures/ui/tooltip_border.png');
-    this._rightBorder.setTranslation(this._background.size().w - this._bordersize, 0, 801);
+    this._rightBorder.setRotation(0, 0, Math.PI / 2);
+    this._rightBorder.setTranslation(this._background.size().w, 0, 801);
 
     this._bottomBorder = Widget.new(this._background);
     this._bottomBorder.setSize(this._background.size().w, this._bordersize);
     this._bottomBorder.setTexture('textures/ui/tooltip_border.png');
-    this._bottomBorder.setTranslation(0, this._background.size().h - this._bordersize, 801);
+    this._bottomBorder.setRotation(0, 0, Math.PI);
+    this._bottomBorder.setTranslation(this._background.size().w, this._background.size().h, 801);
 
     this._cornerTopLeft = Widget.new(this._background);
     this._cornerTopLeft.setTexture('textures/ui/tooltip_corner.png');
     this._cornerTopLeft.setToTexture();
     this._cornerTopLeft.setOffset(0, 0);
-    this._cornerTopLeft.setTranslation(0, 0, 801);
+    this._cornerTopLeft.setTranslation(0, 0, 802);
 
     this._cornerTopRight = Widget.new(this._background);
     this._cornerTopRight.setTexture('textures/ui/tooltip_corner.png');
     this._cornerTopRight.setToTexture();
     this._cornerTopRight.setOffset(1, 0);
-    this._cornerTopRight.setTranslation(this._background.size().w, 0, 801);
+    this._cornerTopRight.setTranslation(this._background.size().w, 0, 802);
 
     this._cornerBottomLeft = Widget.new(this._background);
     this._cornerBottomLeft.setTexture('textures/ui/tooltip_corner.png');
     this._cornerBottomLeft.setToTexture();
     this._cornerBottomLeft.setOffset(0, 1);
-    this._cornerBottomLeft.setTranslation(0, this._background.size().h, 801);
+    this._cornerBottomLeft.setTranslation(0, this._background.size().h, 802);
 
     this._cornerBottomRight = Widget.new(this._background);
     this._cornerBottomRight.setTexture('textures/ui/tooltip_corner.png');
     this._cornerBottomRight.setToTexture();
     this._cornerBottomRight.setOffset(1, 1);
-    this._cornerBottomRight.setTranslation(this._background.size().w, this._background.size().h, 801);
+    this._cornerBottomRight.setTranslation(this._background.size().w, this._background.size().h, 802);
 
     this.update = function (dt) {
         var mousePos = Mouse.position(Mouse.Relative);
