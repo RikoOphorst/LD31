@@ -4,7 +4,7 @@ var HUD = function ()
     this._background.setTexture("textures/ui/hud.png");
     this._background.setOffset(0.5, 0.5);
     this._background.setSize(1014,140);
-    this._background.setTranslation(0, 290, 0);
+    this._background.setTranslation(0, 313, 0);
     this._background.spawn("UI");
 
     this._fireStones = Text.new(this._background);
@@ -17,13 +17,7 @@ var HUD = function ()
     this._oil.setTranslation(-460, 20, 1);
     this._oil.setOffset(0.5, 0.5);
     this._oil.setText("");
-    this._oil.spawn("UI");
-
-    this._health = Text.new(this._background);
-    this._health.setTranslation(460, 20, 1);
-    this._health.setOffset(0.5, 0.5);
-    this._health.setText("[size=23]Health[/size]");
-    this._health.spawn("UI");
+    //this._oil.spawn("UI");
 
     this._wood = Text.new(this._background);
     this._wood.setTranslation(-160, 20, 1);
@@ -62,14 +56,28 @@ var HUD = function ()
     this._healthbar.setTranslation(240, 20, 0);
     this._healthbar.spawn("UI");
 
+    this._healthIcon = Widget.new(this._background);
+    this._healthIcon.setTexture("textures/ui/health_icon.png");
+    this._healthIcon.setOffset(0.5, 0.5);
+    this._healthIcon.setSize(48,50);
+    this._healthIcon.setTranslation(465, 23, 1);
+    this._healthIcon.spawn("UI");
+
     this._oilbar = Widget.new(this._background);
     this._oilbar.setTexture("textures/ui/healthbar.png");
     this._oilbar.setOffset(1, 0.5);
     this._oilbar.setSize(164,58);
-    this._oilbar.setTranslation(-240, 20, 0);
+    this._oilbar.setTranslation(-240, 21, 0);
     this._oilbar.spawn("UI");
 
-    this._background.setAlpha(0.9);
+    this._healthIcon = Widget.new(this._background);
+    this._healthIcon.setTexture("textures/ui/lantern_icon.png");
+    this._healthIcon.setOffset(0.5, 0.5);
+    this._healthIcon.setSize(46,61);
+    this._healthIcon.setTranslation(-462, 27, 1);
+    this._healthIcon.spawn("UI");
+
+    this._background.setScale(0.7, 0.7);
 
     this.setFireStones = function (amt) {
         this._fireStones.setText("[size=23]Flint: "+amt+"[/size]");
