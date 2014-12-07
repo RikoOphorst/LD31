@@ -15,6 +15,8 @@ var Loot = function (x, y, texture)
     this.pickupRange = 75;
     this.alive = true;
 
+    this._tooltip = new Tooltip(this, "HURDUR");
+
     this._shadow = Quad2D.new();
     this._shadow.setTexture("textures/ui/shadow_loot.png");
     this._shadow.setToTexture();

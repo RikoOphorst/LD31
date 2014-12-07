@@ -10,6 +10,7 @@ require("js/level/level_state");
 var RenderTargets = RenderTargets || {
 	default: RenderTarget.new("Default"),
 	lighting: RenderTarget.new("Lighting"),
+	ui: RenderTarget.new("UI")
 }
 
 Game.Initialise = function()
