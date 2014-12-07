@@ -129,7 +129,7 @@ var Level = function()
 			this._thunderTimer = 0;
 			this._thunderDecay = 1.1;
 
-			this._thunderInterval = Math.randomRange(2, 12);
+			this._thunderInterval = Math.randomRange(8, 12);
 		}
 
 		if (this._thunderTimer < this._thunderInterval)

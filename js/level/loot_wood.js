@@ -17,7 +17,6 @@ var Wood = function (x, y)
 
     this.update = function (dt, player)
     {
-        Log.fatal(Math.distance(this.translation(), player.translation()));
         if (Math.distance(this.translation(), player.translation()) <= this.pickupRange)
         {
             this.pickUp(player);
