@@ -67,6 +67,8 @@ var Loot = function (x, y, texture)
                 {
                     this.alive = false;
                     this.destroy();
+                    this._shadow.destroy();
+                    this._tooltip.destroy();
                 }
             }
         }
@@ -90,6 +92,7 @@ var Loot = function (x, y, texture)
                 this.alive = false;
                 this.destroy();
                 this._shadow.destroy();
+                this._tooltip.destroy();
             }
         }
     }
