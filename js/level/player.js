@@ -61,7 +61,7 @@ var Player = function()
 
 	frames = [];
 
-	for (var i = 0; i < 16; ++i)
+	for (var i = 0; i < 15; ++i)
 	{
 		frames.push({
 			x: i*220,
@@ -72,7 +72,7 @@ var Player = function()
 	}
 
 	this._animationIdle = new SpriteAnimation(this, frames);
-	this._animationIdle.setSpeed(10);
+	this._animationIdle.setSpeed(20);
 	this._animationIdle.setLoop(false);
 	this._animationIdle.on("ended", function () {
 		this.setTexture("textures/characters/character_walk.png");
@@ -82,6 +82,7 @@ var Player = function()
 		this._currentAnimation = this._animation;
 		this._currentAnimation.start();
 		this.setOffset(0.5,1);
+		this._currentAnimation.setToFrame(0);
 	}, this);
 
 	frames = [];
@@ -259,8 +260,6 @@ var Player = function()
 				this._currentAnimation.stop();
 				this._currentAnimation = this._animation;
 				this._currentAnimation.start();
-
-				this.setTexture("textures/characters/character_walk.png");
 			}
 			
 
@@ -376,7 +375,7 @@ var Player = function()
 			this._currentAnimation = this._animationIdle;
 			this.setTexture("textures/characters/character_idle.png");
 			this._idle = true;
-			this.setOffset(0.5,0.9);
+			this.setOffset(0.42,0.91);
 		}
 
 		this._currentAnimation.update(dt);	
