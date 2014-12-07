@@ -19,11 +19,21 @@ var SpriteAnimation = function(element, frames)
 		this._playing = true;
 	}
 
-	this.stop = function()
+	this.stop = function(ignore)
 	{
 		this._playing = false;
 		this._wasPlaying = false;
 		this._currentFrame = 0;
+
+		if (ignore == true)
+		{
+			return;
+		}
+
+		if (this._callbacks["ended"].ctx)
+			this._callbacks["ended"].call(this._callbacks["ended"].ctx);
+		else
+			this._callbacks["ended"]();
 	}
 
 	this.pause = function()
@@ -121,7 +131,7 @@ var SpriteAnimation = function(element, frames)
 				}
 				else
 				{
-					this.stop();
+					this.stop(true);
 					return;
 				}
 			}
