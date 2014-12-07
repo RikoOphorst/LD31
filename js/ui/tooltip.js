@@ -33,6 +33,30 @@ var Tooltip = function (parent, text, bordersize) {
     this._bottomBorder.setTexture('textures/ui/tooltip_border.png');
     this._bottomBorder.setTranslation(0, this._background.size().h - this._bordersize, 801);
 
+    this._cornerTopLeft = Widget.new(this._background);
+    this._cornerTopLeft.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerTopLeft.setToTexture();
+    this._cornerTopLeft.setOffset(0, 0);
+    this._cornerTopLeft.setTranslation(0, 0, 801);
+
+    this._cornerTopRight = Widget.new(this._background);
+    this._cornerTopRight.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerTopRight.setToTexture();
+    this._cornerTopRight.setOffset(1, 0);
+    this._cornerTopRight.setTranslation(this._background.size().w, 0, 801);
+
+    this._cornerBottomLeft = Widget.new(this._background);
+    this._cornerBottomLeft.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerBottomLeft.setToTexture();
+    this._cornerBottomLeft.setOffset(0, 1);
+    this._cornerBottomLeft.setTranslation(0, this._background.size().h, 801);
+
+    this._cornerBottomRight = Widget.new(this._background);
+    this._cornerBottomRight.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerBottomRight.setToTexture();
+    this._cornerBottomRight.setOffset(1, 1);
+    this._cornerBottomRight.setTranslation(this._background.size().w, this._background.size().h, 801);
+
     this.update = function (dt) {
         var mousePos = Mouse.position(Mouse.Relative);
         var trans = parent.translation();
@@ -56,6 +80,10 @@ var Tooltip = function (parent, text, bordersize) {
         this._leftBorder.spawn("UI");
         this._rightBorder.spawn("UI");
         this._bottomBorder.spawn("UI");
+        this._cornerTopLeft.spawn("UI");
+        this._cornerTopRight.spawn("UI");
+        this._cornerBottomLeft.spawn("UI");
+        this._cornerBottomRight.spawn("UI");
         this._text.spawn("UI");
     }
 
@@ -67,5 +95,9 @@ var Tooltip = function (parent, text, bordersize) {
         this._leftBorder.destroy();
         this._rightBorder.destroy();
         this._bottomBorder.destroy();
+        this._cornerTopLeft.destroy();
+        this._cornerTopRight.destroy();
+        this._cornerBottomLeft.destroy();
+        this._cornerBottomRight.destroy();
     };
 }
