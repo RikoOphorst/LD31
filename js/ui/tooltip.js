@@ -3,7 +3,7 @@ var Tooltip = function (parent, text, bordersize) {
     this._background = Widget.new();
     this._text = Text.new(this._background);
 
-    this._text.setFontFamily("fonts/arial.ttf");
+    this._text.setFontFamily("fonts/test.ttf");
     this._text.setFontSize(12);
     this._text.setText(text);
     this._text.setTranslation(10, 10, 801);
