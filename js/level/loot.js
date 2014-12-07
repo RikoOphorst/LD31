@@ -15,7 +15,7 @@ var Loot = function (x, y, texture, tooltipText)
     this.pickupRange = 75;
     this.alive = true;
 
-    this._tooltip = new Tooltip(this, tooltipText);
+    this._tooltip = new Tooltip(this, tooltipText, 20, 10, 0.5);
 
     this._shadow = Quad2D.new();
     this._shadow.setTexture("textures/ui/shadow_loot.png");
@@ -31,7 +31,7 @@ var Loot = function (x, y, texture, tooltipText)
         {
             if (Math.distance(this.translation(), player.translation()) <= this.pickupRange)
             {
-                this.pickUp(player);
+                //this.pickUp(player);
             }
 
             this.timer += dt;
@@ -47,7 +47,7 @@ var Loot = function (x, y, texture, tooltipText)
                 );
             }
 
-            if (this.timer >= 5)
+            if (this.timer >= 500)
             {
                 var t = (this.timer - 5);
 
