@@ -46,7 +46,7 @@ var Loot = function (x, y, texture)
                 );
             }
 
-            if (this.timer >= 50)
+            if (this.timer >= 5)
             {
                 var t = (this.timer - 5);
 
