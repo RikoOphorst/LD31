@@ -12,48 +12,69 @@ var Wood = function (x, y)
 
     this.position = this.translation();
     this.timer = 0;
-    this.pickupRange = 50;
+    this.pickupRange = 75;
     this.alive = true;
 
     this.update = function (dt, player)
     {
-        Log.fatal(Math.distance(this.translation(), player.translation()));
-        if (Math.distance(this.translation(), player.translation()) <= this.pickupRange)
+        if (!this.pickingUp)
         {
-            this.pickUp(player);
-        }
+            if (Math.distance(this.translation(), player.translation()) <= this.pickupRange)
+            {
+                this.pickUp(player);
+            }
 
-        this.timer += dt;
-        this.translateBy(0, Math.cos(this.timer * 8) * 0.2, 0);
+            this.timer += dt;
+            this.translateBy(0, Math.cos(this.timer * 8) * 0.2, 0);
 
-        this.setScale(1 + this.translation().y / 1440, 1 + this.translation().y / 1440);
+            this.setScale(1 + this.translation().y / 1440, 1 + this.translation().y / 1440);
 
-        if (this.timer * 2 < 1)
-        {
-            this.setScale(
-                Math.easeToInterpolation(0, 1 + this.translation().y / 1440, Math.easeOutElastic(this.timer * 2, 0, 1, 1)), 
-                Math.easeToInterpolation(0, 1 + this.translation().y / 1440, Math.easeOutElastic(this.timer * 2, 0, 1, 1))
-            );
-        }
+            if (this.timer * 2 < 1)
+            {
+                this.setScale(
+                    Math.easeToInterpolation(0, 1 + this.translation().y / 1440, Math.easeOutElastic(this.timer * 2, 0, 1, 1)), 
+                    Math.easeToInterpolation(0, 1 + this.translation().y / 1440, Math.easeOutElastic(this.timer * 2, 0, 1, 1))
+                );
+            }
 
-        if (this.timer >= 5)
-        {
-            var t = (this.timer - 5);
+            if (this.timer >= 5)
+            {
+                var t = (this.timer - 5);
 
-            var scale = Math.easeToInterpolation(
-                    0, 
-                    1 + this.translation().y / 1440, 
-                    Math.easeOutElastic(
-                        1 - t * 2, 
+                var scale = Math.easeToInterpolation(
                         0, 
-                        1, 
-                        1
-                    )
-                ); 
+                        1 + this.translation().y / 1440, 
+                        Math.easeOutElastic(
+                            1 - t * 2, 
+                            0, 
+                            1, 
+                            1
+                        )
+                    ); 
 
-            this.setScale(scale, scale);
+                this.setScale(scale, scale);
 
-            if (t * 2 >= 1)
+                if (t * 2 >= 1)
+                {
+                    this.alive = false;
+                    this.destroy();
+                }
+            }
+        }
+        else
+        {
+            this.timer += dt * 2;
+            this.setScale(1 + this.translation().y / 1440, 1 + this.translation().y / 1440);
+
+            this.setTranslation(
+                Math.lerp(this.pickupTranslation.x, player.translation().x, this.timer),
+                Math.lerp(this.pickupTranslation.y, player.translation().y, this.timer),
+                800 + this.translation().y
+            );
+
+            this.setAlpha(1 - this.timer);
+
+            if (this.timer > 1)
             {
                 this.alive = false;
                 this.destroy();
@@ -63,7 +84,8 @@ var Wood = function (x, y)
 
     this.pickUp = function (player) 
     {
-        this.alive = false;
-        this.destroy();
+        this.pickingUp = true;
+        this.timer = 0;
+        this.pickupTranslation = this.translation();
     }
 };
