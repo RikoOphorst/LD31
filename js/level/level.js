@@ -5,7 +5,8 @@ require("js/level/light_overlay");
 require("js/level/storage");
 require("js/level/torch");
 require("js/level/wave_manager");
-require("js/level/loot_wood");
+require("js/level/loot");
+require("js/ui/tooltip");
 
 enumerator("WeatherEffects", [
 	"None",

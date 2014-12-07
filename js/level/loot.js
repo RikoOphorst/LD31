@@ -1,10 +1,10 @@
-var Wood = function (x, y)
+var Loot = function (x, y, texture)
 {
     this._quad = Quad2D.new();
     extend(this, this._quad);
 
     this.type = LootTypes.WOOD;
-    this.setTexture("textures/ui/wood_icon.png");
+    this.setTexture(texture);
     this.setToTexture();
     this.setTranslation(x, y, 360 + y);
     this.setOffset(0.5, 1);
@@ -14,6 +14,8 @@ var Wood = function (x, y)
     this.timer = 0;
     this.pickupRange = 75;
     this.alive = true;
+
+    this._tooltip = new Tooltip(this, "HURDUR");
 
     this._shadow = Quad2D.new();
     this._shadow.setTexture("textures/ui/shadow_loot.png");
