@@ -1,4 +1,4 @@
-var Loot = function (x, y, texture)
+var Loot = function (x, y, texture, tooltipText)
 {
     this._quad = Quad2D.new();
     extend(this, this._quad);
@@ -15,7 +15,7 @@ var Loot = function (x, y, texture)
     this.pickupRange = 75;
     this.alive = true;
 
-    this._tooltip = new Tooltip(this, "[colour=92bf67]Wood[/colour]\n\nDikke pjenis is een term die breed\nwordt gebruikt door R. Ophorst in het\nbelang van schelden.\nDit als zijn code niet functioneerd of als hij daadwerkelijk een dikke\npenis ziet, deze meestal van zichzelf.");
+    this._tooltip = new Tooltip(this, tooltipText);
 
     this._shadow = Quad2D.new();
     this._shadow.setTexture("textures/ui/shadow_loot.png");

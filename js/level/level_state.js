@@ -9,8 +9,6 @@ var LevelState = function()
 	{
 		ContentManager.load("box", "boxes/level.box")
 		this._level = new Level();
-
-		var text = new Tooltip(Quad2D.new(), "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,-=+\\/()*&^@#!_><?");
 	}
 
 	this.update = function(dt)
