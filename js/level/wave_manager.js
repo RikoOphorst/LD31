@@ -63,10 +63,6 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
             this.turnTimer = 0;
         }
 
-        // 0 - night_sky
-        // 0.5 - evening_sky
-        // 1 - daytime
-
         if (this.t >= 0 && this.t < 0.5)
         {
             nightHorizon.setAlpha(1 - this.t * 2);
