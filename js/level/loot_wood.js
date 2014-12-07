@@ -15,6 +15,13 @@ var Wood = function (x, y)
     this.pickupRange = 75;
     this.alive = true;
 
+    this._shadow = Quad2D.new();
+    this._shadow.setTexture("textures/ui/shadow_loot.png");
+    this._shadow.setToTexture();
+    this._shadow.setOffset(0.5, 0);
+    this._shadow.setTranslation(x, y, 360 + y);
+    this._shadow.spawn("Default");
+
     this.update = function (dt, player)
     {
         if (!this.pickingUp)
@@ -68,16 +75,19 @@ var Wood = function (x, y)
 
             this.setTranslation(
                 Math.lerp(this.pickupTranslation.x, player.translation().x, this.timer),
-                Math.lerp(this.pickupTranslation.y, player.translation().y, this.timer),
+                Math.lerp(this.pickupTranslation.y, player.translation().y - player.size().h / 2, this.timer),
                 800 + this.translation().y
             );
 
             this.setAlpha(1 - this.timer);
+            this._shadow.setAlpha(1 - this.timer);
+            this.setScale(1 - this.timer, 1 - this.timer);
 
             if (this.timer > 1)
             {
                 this.alive = false;
                 this.destroy();
+                this._shadow.destroy();
             }
         }
     }
