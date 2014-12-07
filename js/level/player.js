@@ -141,9 +141,9 @@ var Player = function()
 		this._lightTimer += dt;
 		this._enemies = enemies;
 
-		if (this._dashTimer < 2)
+		if (this._dashTimer < 3)
 		{
-			this._dashTimer += dt*4;
+			this._dashTimer += dt*3;
 
 			if (this._dashTimer < 1)
 			{
@@ -156,10 +156,10 @@ var Player = function()
 		}
 		else
 		{
-			this._dashTimer = 2;
+			this._dashTimer = 3;
 		}
 
-		if (Keyboard.isPressed("Q") && this._dashTimer >= 2)
+		if (Keyboard.isPressed("Q") && this._dashTimer >= 3)
 		{
 			this._moveTarget = Mouse.position(Mouse.Relative);
 			this._moveSpeed = 900;

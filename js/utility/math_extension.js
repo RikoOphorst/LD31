@@ -14,6 +14,13 @@ Math.easeOutElastic = function(t, b, c, d)
 	return b+c*(33*tc*ts + -106*ts*ts + 126*tc + -67*ts + 15*t);
 }
 
+Math.easeInElastic = function (t, b, c, d)
+{
+	var ts=(t/=d)*t;
+	var tc=ts*t;
+	return b+c*(33*tc*ts + -59*ts*ts + 32*tc + -5*ts);
+}
+
 /// Eases quadratic in
 Math.easeInQuadratic = function(t, b, c, d)
 {
@@ -41,8 +48,8 @@ Math.distance = function(x1,y1,x2,y2)
 
 	if (x1.x !== undefined && y1.x !== undefined)
 	{
-		dx = x1.x - y1.y;
-		dy = x1.y - y1.y;
+		dx = y1.x - x1.x;
+		dy = y1.y - x1.y;
 	}
 	else
 	{
