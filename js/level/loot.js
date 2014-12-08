@@ -104,6 +104,12 @@ var Loot = function (x, y, loot)
         this.timer = 0;
         this.pickupTranslation = this.translation();
         SoundSystem.play("sounds/pickup.wav", "SFX", false);
+
+        if (this.type == "oil")
+        {
+            StateManager.getState()._level._player.increaseOil(40);
+            return;
+        }
         StateManager.getState()._level._hud.pickup(this.type);
     }
 };

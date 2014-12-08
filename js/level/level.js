@@ -142,6 +142,7 @@ var Level = function(camera)
 		this._hud.update(dt);
 		this._dino.update(dt, this._waveManager);
 		this._camera.setTranslation(0, 0, 0);
+
 		if (this._effect == WeatherEffects.Rain)
 		{
 			if (this._rainModifier < 1)

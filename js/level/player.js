@@ -286,8 +286,25 @@ var Player = function(level)
         this._killReason = reason || KillReasons.Dead;
     };
 
+    this.increaseOil = function(amnt)
+    {
+    	this._stats.oil += amnt;
+
+    	if (this._stats.oil > this._maxOil)
+    	{
+    		this._stats.oil = this._maxOil;
+    	}
+
+    	this._level.hud().setOil(this._stats.oil, this._maxOil);
+    }
+
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
 	{
+		if (this._level._torches.length == 0 && (this._stats.oil <= 0 || this._lanternOn == false) && this._killed == false)
+		{
+			this.kill(KillReasons.Light);
+		}
+
 		if (this._killed == true)
 		{
 			if (this._killTimer < 1)
@@ -404,7 +421,7 @@ var Player = function(level)
 		{
 			this._exampleTorch.setAlpha(1);
 
-			if (this._level.hud().wood() <= 0 && this._level.hud().flints() <= 0 && this._level._rainModifier < 1)
+			if (this._level.hud().wood() <= 0 || this._level.hud().flints() <= 0 || this._level._rainModifier >= 1)
 			{
 				this._exampleTorch.setBlend(1, 0, 0);
 			}
@@ -420,7 +437,7 @@ var Player = function(level)
 		{
 			this._exampleSapling.setAlpha(1);
 
-			if (this._level.hud().seeds() <= 0 && this._level._snowModifier < 1)
+			if (this._level.hud().seeds() <= 0 || this._level._snowModifier >= 1)
 			{
 				this._exampleSapling.setBlend(1, 0, 0);
 			}
@@ -444,6 +461,22 @@ var Player = function(level)
 			}
 			
 			this._level.setArea(false);
+		}
+
+		if (Keyboard.isReleased("2"))
+		{
+			if (this._level.hud().potions() > 0 && this._stats.health < 100)
+			{
+				this._level.hud().decrease("potion");
+				this._stats.health += 20;
+
+				if (this._stats.health > 100)
+				{
+					this._stats.health = 100;
+				}
+
+				this._level.hud().setHealth(this._stats.health, this._maxHealth);
+			}
 		}
 
 		if (Keyboard.isReleased("E"))

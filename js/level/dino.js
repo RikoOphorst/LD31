@@ -35,7 +35,7 @@ var Dino = function ()
         this.timer += dt;
         waveManager.setAdditive(0);
 
-        if (Math.random() < 0.000001 && !this._dropTarget)
+        if (Math.random() < 0.0001 && !this._dropTarget)
         {
             this._dropTarget = {
                 x: Math.round(Math.randomRange(this._dropArea.x, this._dropArea.w)),

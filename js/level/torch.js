@@ -4,6 +4,11 @@ var Torch = function(x,y)
 	{
 		x = 640 - 121;
 	}
+
+	if (y < -320 + 200)
+	{
+		y = -320 + 200;
+	}
 	this._quad = Quad2D.new();
 
 	extend(this, this._quad);
