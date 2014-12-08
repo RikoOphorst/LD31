@@ -4,6 +4,11 @@ var Torch = function(x,y)
 	{
 		x = 640 - 121;
 	}
+
+	if (y < -320 + 200)
+	{
+		y = -320 + 200;
+	}
 	this._quad = Quad2D.new();
 
 	extend(this, this._quad);
@@ -42,13 +47,38 @@ var Torch = function(x,y)
 	this._animation.setSpeed(16);
 	this._animation.start();
 	this._animation.setLoop(true);
+
+	this._currentAnimation = this._animation;
+
+	frames = [];
+
+	for (var i = 0; i < 8; ++i)
+	{
+		frames.push({
+			x: 93*i,
+			y: 144,
+			width: 93,
+			height: 144
+		});
+	}
+
+	this._extinguish = new SpriteAnimation(this, frames);
+	this._extinguish.setSpeed(8);
+	this._extinguish.setLoop(false);
+
+	this._extinguish.on("ended", function()
+	{
+		this.kill();
+	}, this);
+
 	this._timer = 0;
 	this._targetTimer = 0.05;
 
-	this._health = 10;
+	this._health = 50;
 	this._alive = true;
 
 	this._hitTimer = 0;
+	this._lifeTimer = 0;
 
 	this._tooltip = new Tooltip(this, "It's a [colour=00ff00]Torch[/colour], this will attract enemies and\nkeep things lit up for you...", 30, 30, 29, 0.7);
 
@@ -58,9 +88,13 @@ var Torch = function(x,y)
         this._health -= dmg;
         this.setUniform("float", "Hit", 1);
 
-        if (this._health < 0)
+        if (this._health < 0 && this._currentAnimation != this._extinguish)
         {
-            this.kill();
+        	this._currentAnimation.stop();
+            this._currentAnimation = this._extinguish;
+            this.setTexture("textures/level/torch/torch_extinguish.png");
+            this._currentAnimation.start();
+            this._currentAnimation.setToFrame(0);
         }
     };
 
@@ -74,7 +108,7 @@ var Torch = function(x,y)
 
 	this.update = function(dt)
 	{
-		this._animation.update(dt);
+		this._currentAnimation.update(dt);
 		this._tooltip.update(dt);
 
 		this._timer += dt;
@@ -97,6 +131,17 @@ var Torch = function(x,y)
 			this._light.setScale(scale,scale);
 			var alpha = Math.randomRange(0.9,1);
 			this._light.setAlpha(alpha);
+		}
+
+		this._lifeTimer += dt;
+
+		if (this._lifeTimer > 50 && this._currentAnimation != this._extinguish)
+		{
+			this._currentAnimation.stop();
+            this._currentAnimation = this._extinguish;
+            this.setTexture("textures/level/torch/torch_extinguish.png");
+            this._currentAnimation.start();
+            this._currentAnimation.setToFrame(0);
 		}
 	}
 }

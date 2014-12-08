@@ -111,6 +111,11 @@ var Level = function(camera)
 
 	this._dino = new Dino();
 
+	for (var i = 0; i < 2; ++i)
+	{
+		this._torches.push(new Torch(Math.randomRange(-640,640),Math.randomRange(-320,320)));
+	}
+
 	this.shakeCamera = function(magnitude, duration)
 	{
 		this._shakeTimer = duration;
@@ -137,6 +142,7 @@ var Level = function(camera)
 		this._hud.update(dt);
 		this._dino.update(dt, this._waveManager);
 		this._camera.setTranslation(0, 0, 0);
+
 		if (this._effect == WeatherEffects.Rain)
 		{
 			if (this._rainModifier < 1)

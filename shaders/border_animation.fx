@@ -50,8 +50,8 @@ float4 PS(VOut input) : SV_TARGET
   float2 texcoords = float2(x,y);
   float4 lum = float4(0.30, 0.59, 0.11, 1);
   
-  float accuracyX = 800;
-  float accuracyY = 800;
+  float accuracyX = 1280;
+  float accuracyY = 720;
 
   float s11 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / accuracyX, -1.0f / accuracyY)), lum); 
   float s12 = dot(textures[0].Sample(SampleType, texcoords + float2(0, -1.0f / accuracyY)), lum);    
@@ -72,7 +72,7 @@ float4 PS(VOut input) : SV_TARGET
  
   float4 col;
  
-  if (((t1 * t1) + (t2 * t2)) > 0.5 && input.texcoord.x > 0.05 && input.texcoord.x < 0.95 && input.texcoord.y > 0.05 && input.texcoord.y < 0.95) {
+  if (((t1 * t1) + (t2 * t2)) > 0.5 && input.texcoord.x > 0.2 && input.texcoord.x < 0.8 && input.texcoord.y > 0.2 && input.texcoord.y < 0.8) {
   col = float4(lerp(0.8,1,input.texcoord.y),0,0,1);
   } else {
     col = float4(0,0,0,0);

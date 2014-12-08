@@ -188,6 +188,15 @@ var Player = function(level)
 	this._exampleTorch.setBlend(3, 3, 3);
 	this._exampleTorch.spawn("Default");
 
+	this._exampleSapling = Quad2D.new();
+	this._exampleSapling.setTexture("textures/level/trees/tree_sapling.png");
+	this._exampleSapling.setToTexture();
+	this._exampleSapling.setAlpha(0);
+	this._exampleSapling.setOffset(0.5, 1);
+	this._exampleSapling.setTranslation(0, 0, 1000);
+	this._exampleSapling.setBlend(3, 3, 3);
+	this._exampleSapling.spawn("Default");
+
 	this._lanternOn = false;
 	this._footstep = false;
 	this._oldFootstep = 1;
@@ -277,8 +286,25 @@ var Player = function(level)
         this._killReason = reason || KillReasons.Dead;
     };
 
+    this.increaseOil = function(amnt)
+    {
+    	this._stats.oil += amnt;
+
+    	if (this._stats.oil > this._maxOil)
+    	{
+    		this._stats.oil = this._maxOil;
+    	}
+
+    	this._level.hud().setOil(this._stats.oil, this._maxOil);
+    }
+
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
 	{
+		if (this._level._torches.length == 0 && (this._stats.oil <= 0 || this._lanternOn == false) && this._killed == false)
+		{
+			this.kill(KillReasons.Light);
+		}
+
 		if (this._killed == true)
 		{
 			if (this._killTimer < 1)
@@ -395,7 +421,7 @@ var Player = function(level)
 		{
 			this._exampleTorch.setAlpha(1);
 
-			if (this._level.hud().wood() <= 0)
+			if (this._level.hud().wood() <= 0 || this._level.hud().flints() <= 0 || this._level._rainModifier >= 1)
 			{
 				this._exampleTorch.setBlend(1, 0, 0);
 			}
@@ -407,14 +433,60 @@ var Player = function(level)
 			this._level.setArea(true);
 		}
 
+		if (Keyboard.isDown("E"))
+		{
+			this._exampleSapling.setAlpha(1);
+
+			if (this._level.hud().seeds() <= 0 || this._level._snowModifier >= 1)
+			{
+				this._exampleSapling.setBlend(1, 0, 0);
+			}
+			else
+			{
+				this._exampleSapling.setBlend(3, 3, 3);
+			}
+			this._exampleSapling.setTranslation(this.translation().x + 100 * this.scale().x, this.translation().y, 1000);
+			this._level.setArea(true);
+		}
+
 		if (Keyboard.isReleased("W"))
 		{
 			this._exampleTorch.setAlpha(0);
 
-			if (this._level.hud().wood() > 0)
+			if (this._level.hud().wood() > 0 && this._level.hud().flints() > 0 && this._level._rainModifier < 1)
 			{
 				torches.push(new Torch(this._exampleTorch.translation().x, this._exampleTorch.translation().y));
 				this._level.hud().decrease("wood");
+				this._level.hud().decrease("flints");
+			}
+			
+			this._level.setArea(false);
+		}
+
+		if (Keyboard.isReleased("2"))
+		{
+			if (this._level.hud().potions() > 0 && this._stats.health < 100)
+			{
+				this._level.hud().decrease("potion");
+				this._stats.health += 20;
+
+				if (this._stats.health > 100)
+				{
+					this._stats.health = 100;
+				}
+
+				this._level.hud().setHealth(this._stats.health, this._maxHealth);
+			}
+		}
+
+		if (Keyboard.isReleased("E"))
+		{
+			this._exampleSapling.setAlpha(0);
+
+			if (this._level.hud().seeds() > 0 && this._level._snowModifier < 1)
+			{
+				trees.push(new Tree(this._exampleSapling.translation().x, this._exampleSapling.translation().y, this._level._loot));
+				this._level.hud().decrease("seeds");
 			}
 			
 			this._level.setArea(false);
@@ -681,7 +753,7 @@ var Player = function(level)
 
 		this._currentAnimation.update(dt);
 
-		if (Keyboard.isPressed("E"))
+		if (Keyboard.isPressed("1"))
 		{
 			this._lanternOn = !this._lanternOn;
 			SoundSystem.play("sounds/toggle_light.wav", "SFX", false);

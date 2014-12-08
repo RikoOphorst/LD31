@@ -124,10 +124,15 @@ var HUD = function ()
     this.addText(this._seedsIcon);
     this.addText(this._potionIcon);
 
-    this._woodValue = 0;
-    this._flintsValue = 0;
-    this._seedsValue = 0;
-    this._potionValue = 0;
+    this._woodValue = 3;
+    this._flintsValue = 3;
+    this._seedsValue = 1;
+    this._potionValue = 1;
+
+    this._woodIcon.text.setText("[b]" + this._woodValue + "[/b]");
+    this._flintsIcon.text.setText("[b]" + this._flintsValue + "[/b]");
+    this._seedsIcon.text.setText("[b]" + this._seedsValue + "[/b]");
+    this._potionIcon.text.setText("[b]" + this._potionValue + "[/b]");
 
     this.setHealth = function(val, max)
     {
