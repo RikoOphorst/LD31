@@ -4,6 +4,7 @@ var LevelState = function()
 {
 	this.name = "Level";
 	this._camera = Camera.new("orthographic");
+	this._camera.setZoom(1.05);
 
 	this.initialise = function()
 	{
@@ -11,7 +12,7 @@ var LevelState = function()
 		ContentManager.loadFont("fonts/test.ttf", 12);
 		ContentManager.loadFont("fonts/test.ttf", 16);
 		ContentManager.loadFont("fonts/test.ttf", 24);
-		this._level = new Level();
+		this._level = new Level(this._camera);
 	}
 
 	this.update = function(dt)
@@ -26,7 +27,7 @@ var LevelState = function()
 
 	this.reload = function(path)
 	{
-		this._level = new Level();
+		this._level = new Level(this._camera);
 	}
 
 	this.destroy = function()
