@@ -1,1 +1,6 @@
-load("texture","textures/level/background.png")
+load("shader","shaders/lighting.fx")
+load("shader","shaders/animation.fx")
+load("shader","shaders/border_animation.fx")
+load("shader","shaders/rain.fx")
+load("shader","shaders/tooltip.fx")
+load("shader","shaders/bars.fx")

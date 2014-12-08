@@ -13,16 +13,15 @@ var StateManager = StateManager ||
 	switchState: function(state)
 	{
 		this._pendingState = state;
+		for (var i in RenderTargets)
+		{
+			RenderTargets[i].clear();
+		}
 	},
 
 	doSwitch: function()
 	{
 		Mouse.clearAreas();
-
-		for (var i in RenderTargets)
-		{
-			RenderTargets[i].clear();
-		}
 
 		var newState = new this._pendingState();
 		
