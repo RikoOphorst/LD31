@@ -19,6 +19,14 @@ var Player = function(level)
 		y: 0
 	}
 
+	this._stats = {
+		health: 100,
+		oil: 100
+	}
+
+	this._maxHealth = 100;
+	this._maxOil = 100;
+
 	var frames = [];
 
 	for (var i = 0; i < 16; ++i)
@@ -170,6 +178,8 @@ var Player = function(level)
 	this._exampleTorch.setBlend(3, 3, 3);
 	this._exampleTorch.spawn("Default");
 
+	this._lanternOn = false;
+
 	this.setSelectedEnemy = function(selected)
 	{
 		this._selectedEnemy = selected;
@@ -178,6 +188,11 @@ var Player = function(level)
 	this.setSelectedTree = function(selected)
 	{
 		this._selectedTree = selected;
+	}
+
+	this.stats = function()
+	{
+		return this._stats;
 	}
 
 	this.moveEnvironment = function(horizons, surface, torches, trees, loot, x, y)
@@ -363,7 +378,7 @@ var Player = function(level)
 		{
 			if (this._moveTarget.enemy !== undefined && this._attackTimer >= 1)
 			{
-				this._level.shakeCamera(4,2);
+				this._level.shakeCamera(2, 2);
 				this._moveTarget.enemy.damage(20);
 				this._moveTarget.enemy.setUniform("float", "Selected", 0);
 				this._attackTimer = 0;
@@ -377,7 +392,7 @@ var Player = function(level)
 			}
 			else if (this._moveTarget.tree !== undefined && this._chopTimer >= 1.75 && this._moveTarget.tree.canChop())
 			{
-				this._level.shakeCamera(4, 2);
+				this._level.shakeCamera(2, 2);
 				this._moveTarget.tree.chop();
 				this._moveTarget.tree.setUniform("float", "Selected", 0);
 
@@ -465,9 +480,28 @@ var Player = function(level)
 			this.setOffset(0.42,0.91);
 		}
 
-		this._currentAnimation.update(dt);	
+		this._currentAnimation.update(dt);
+
+		if (Keyboard.isPressed("E"))
+		{
+			this._lanternOn = !this._lanternOn;
+		}	
+
+		if (this._lanternOn == true)
+		{
+			this._stats.oil -= dt * 10;
+
+			if (this._stats.oil < 0)
+			{
+				this._stats.oil = 0;
+				this._lanternOn = false;
+			}
+		}
+
+		this._level.hud().setOil(this._stats.oil, this._maxOil);
 
 		var s = 2+Math.abs(Math.sin(this._lightTimer/2))*1;
 		this._lanternLight.setScale(s, s);
+		this._lanternLight.setAlpha(this._lanternOn == true && this._stats.oil > 0 ? 1 : 0);
 	};
 };
