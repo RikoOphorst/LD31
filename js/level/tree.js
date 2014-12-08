@@ -73,7 +73,7 @@ var Tree = function(x, y, loot)
 
 				var trans = this.translation();
 
-				this._stump.setTranslation(trans.x, trans.y, 360+trans.y-1);
+				this._stump.setTranslation(trans.x, trans.y, 360+trans.y-3);
 				this.setTranslation(trans.x, trans.y - 55, 360+trans.y-1);
 				this._stump.spawn("Default");
 			break;
@@ -127,6 +127,11 @@ var Tree = function(x, y, loot)
 
 	this.chop = function()
 	{
+		if (this._falling == true)
+		{
+			return;
+		}
+
 		--this._health;
 
 		switch (this._health)
@@ -139,6 +144,7 @@ var Tree = function(x, y, loot)
 				break;
 			case 0:
 				this._falling = true;
+				SoundSystem.play("sounds/tree_fall.wav", "SFX", false);
 				break;
 		}
 

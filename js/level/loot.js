@@ -103,5 +103,6 @@ var Loot = function (x, y, loot)
         this.pickingUp = true;
         this.timer = 0;
         this.pickupTranslation = this.translation();
+        SoundSystem.play("sounds/pickup.wav", "SFX", false);
     }
 };

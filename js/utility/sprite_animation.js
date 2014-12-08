@@ -8,6 +8,7 @@ var SpriteAnimation = function(element, frames)
 	this._currentFrame = 0;
 	this._loop = false;
 	this._wasPlaying = false;
+	this._prevFrame = 0;
 
 	this._callbacks = {
 		started: function(){},
@@ -68,7 +69,7 @@ var SpriteAnimation = function(element, frames)
 		var offsetX = frame.x / textureMetrics.width;
 		var offsetY = frame.y / textureMetrics.height;
 
-		if (frame.event !== undefined)
+		if (frame.event !== undefined && this._playing == true && this._currentFrame != this._prevFrame)
 		{
 			if (frame.ctx)
 				frame.event.call(frame.ctx);
@@ -93,6 +94,7 @@ var SpriteAnimation = function(element, frames)
 
 	this.update = function(dt)
 	{
+		this._prevFrame = this._currentFrame;
 		if (this._playing == false)
 		{
 			return;

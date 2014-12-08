@@ -90,7 +90,7 @@ var HUD = function ()
         }
         else
         {
-            this._healthBar.setBlend((1-val/max), val/max, 0);
+            this._healthBar.setBlend((1-val/max), val/max*0.75, 0);
         }
     }
 

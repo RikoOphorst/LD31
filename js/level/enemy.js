@@ -85,6 +85,9 @@ var Enemy = function (x, y)
         {
             this.kill();
         }
+
+        var rand = Math.floor(Math.random()*3)+1;
+        SoundSystem.play("sounds/chop_sound_" + rand + ".wav", "SFX", false);
     }
 
     this.deselect = function()
