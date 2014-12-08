@@ -7,7 +7,6 @@ require("js/utility/sprite_animation");
 
 require("js/test_state");
 require("js/level/level_state");
-require("js/level/menu_state");
 
 var RenderTargets = RenderTargets || {
 	default: RenderTarget.new("Default"),
@@ -30,7 +29,13 @@ Game.Initialise = function()
 	Game.debug = true;
 	Game.speed = 1;
 
-	StateManager.switchState(MenuState);
+	StateManager.switchState(LevelState);
+
+	SoundSystem.addChannelGroup("SFX");
+	SoundSystem.addChannelGroup("Music");
+	SoundSystem.addChannelGroup("Rain");
+	SoundSystem.addChannelGroup("Snow");
+	SoundSystem.addChannelGroup("Wind");
 }
 
 Game.Update = function(dt)
