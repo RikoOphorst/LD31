@@ -224,7 +224,7 @@ var Player = function(level)
     this.kill = function () 
     {
         assert('reknak daniel is een kanker fag');
-    }
+    };
 
     this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
     {
@@ -253,7 +253,6 @@ var Player = function(level)
         if (this._hitTimer > 0)
         {
             this.setUniform("float", "Hit", Math.round(Math.abs(Math.sin(this._hitTimer * 25))));
-            Log.fatal(Math.round(Math.abs(Math.sin(this._hitTimer))));
         }
         else
         {
