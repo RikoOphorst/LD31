@@ -48,6 +48,13 @@ var Enemy = function (x, y)
         });
     }
 
+    frames[3].event = function ()
+    {
+        this._target.damage(1);
+    };
+
+    frames[3].ctx = this;
+
     this._animationAttack = new SpriteAnimation(this,frames);
     this._animationAttack.setLoop(false);
     this._animationAttack.setSpeed(20);
@@ -104,10 +111,11 @@ var Enemy = function (x, y)
     this.update = function (dt, target, enemies, loot)
     {
         this._loot = loot;
+        this._target = target;
         if (this._hitTimer < 1)
         {
             this._hitTimer += dt*10;
-            this.setRotation(0, 0, Math.sin(this._hitTimer/10*Math.PI*2)/4*-this.scale().x);
+            this.setRotation(0, 0, Math.sin(this._hitTimer / 10 * Math.PI * 2) / 4 * - this.scale().x);
             return;
         }
         else
@@ -222,7 +230,7 @@ var Enemy = function (x, y)
 
     this.playWalk = function ()
     {
-        if (this._currentAnimation !== this._animation)
+        if (this._currentAnimation !== this._animation || !this._currentAnimation._playing)
         {
             this.setTexture("textures/characters/tree_walk.png");
             this._currentAnimation.stop();
@@ -234,7 +242,7 @@ var Enemy = function (x, y)
 
     this.playAttack = function ()
     {
-        if (this._currentAnimation !== this._animationAttack)
+        if (this._currentAnimation !== this._animationAttack || !this._currentAnimation._playing)
         {
             this.setTexture("textures/characters/tree_attack.png");
             this._currentAnimation.stop();
