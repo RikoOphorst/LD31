@@ -20,9 +20,16 @@ var Menu = function ()
     this._logo.setTranslation(0, 0, 1);
     this._logo.spawn("Default");
 
+    this._logoHead = Widget.new();
+    this._logoHead.setTexture("textures/ui/logo_head.png");
+    this._logoHead.setToTexture();
+    this._logoHead.setOffset(0.5, 0.5);
+    this._logoHead.setTranslation(-260, -53, 2);
+    this._logoHead.spawn("Default");
+
     this._rain = Widget.new();
     this._rain.setOffset(0.5, 0.5);
-    this._rain.setTexture("textures/level/rain_menu.tif");
+    this._rain.setTexture("textures/level/rain_menu.png");
     this._rain.setSize(1280, 428);
     this._rain.spawn("Default");
     this._rain.setTranslation(0, 0, 9999);
@@ -30,6 +37,60 @@ var Menu = function ()
     this._rain.setUniform("float2", "Offset", 0, 0);
     this._rainModifier = 0;
     this._rainOffset = 0;
+
+    this._topBorder = Widget.new();
+    this._topBorder.setSize(1280, 30);
+    this._topBorder.setTexture('textures/ui/tooltip_border.png');
+    this._topBorder.setTranslation(-640, -228, 801);
+    this._topBorder.setScale(1, 0.5);
+
+    this._leftBorder = Widget.new();
+    this._leftBorder.setSize(430, 30);
+    this._leftBorder.setTexture('textures/ui/tooltip_border.png');
+    this._leftBorder.setRotation(0, 0, -Math.PI / 2);
+    this._leftBorder.setTranslation(-641, 215, 801);
+    this._leftBorder.setScale(1, 0.5);
+
+    this._rightBorder = Widget.new();
+    this._rightBorder.setSize(430, 30);
+    this._rightBorder.setTexture('textures/ui/tooltip_border.png');
+    this._rightBorder.setRotation(0, 0, Math.PI / 2);
+    this._rightBorder.setTranslation(641, -215, 801);
+    this._rightBorder.setScale(1, 0.5);
+
+    this._bottomBorder = Widget.new();
+    this._bottomBorder.setSize(1280, 30);
+    this._bottomBorder.setTexture('textures/ui/tooltip_border.png');
+    this._bottomBorder.setRotation(0, 0, Math.PI);
+    this._bottomBorder.setTranslation(640, 228, 801);
+    this._bottomBorder.setScale(1, 0.5);
+
+    this._cornerTopLeft = Widget.new();
+    this._cornerTopLeft.setTexture('textures/ui/tooltip_corner_topleft.png');
+    this._cornerTopLeft.setToTexture();
+    this._cornerTopLeft.setTranslation(-640, -228, 802);
+    this._cornerTopLeft.setScale(0.5, 0.5);
+
+    this._cornerTopRight = Widget.new();
+    this._cornerTopRight.setTexture('textures/ui/tooltip_corner_topright.png');
+    this._cornerTopRight.setToTexture();
+    this._cornerTopRight.setOffset(1, 0);
+    this._cornerTopRight.setTranslation(641, -228, 802);
+    this._cornerTopRight.setScale(0.5, 0.5);
+
+    this._cornerBottomLeft = Widget.new();
+    this._cornerBottomLeft.setTexture('textures/ui/tooltip_corner_bottomleft.png');
+    this._cornerBottomLeft.setToTexture();
+    this._cornerBottomLeft.setOffset(0, 1);
+    this._cornerBottomLeft.setTranslation(-640, 228, 802);
+    this._cornerBottomLeft.setScale(0.5, 0.5);
+
+    this._cornerBottomRight = Widget.new();
+    this._cornerBottomRight.setTexture('textures/ui/tooltip_corner_bottomright.png');
+    this._cornerBottomRight.setToTexture();
+    this._cornerBottomRight.setOffset(1, 1);
+    this._cornerBottomRight.setTranslation(641, 228, 802);
+    this._cornerBottomRight.setScale(0.5, 0.5);
 
     this.timer = 0;
 
@@ -45,12 +106,48 @@ var Menu = function ()
             this._rainModifier = 1;
         }
 
-        this._rainOffset += dt * 0.8;
+        this._rainOffset += dt * 1.2;
 
-        this._rain.setUniform("float2", "Offset", this._rainOffset/3, -this._rainOffset*2);
+        this._rain.setUniform("float2", "Offset", this._rainOffset/2, -this._rainOffset*2);
         this._rain.setAlpha(0.5 + Math.abs(Math.sin(this.timer)) * 0.5);
+
+        var mousePos = Mouse.position(Mouse.Relative);
+        this._logoHead.setTranslation(-260 - mousePos.x / 100, -53 - mousePos.y / 100, 2);
 
         this._torch.setAlpha(0.7 + Math.abs(Math.sin(this.timer * 2)) * 0.3);
         this._logo.setAlpha(this.timer);
     };
+
+    this.spawn = function () {
+        ShownTooltip = this;
+        this._topBorder.spawn("UI");
+        this._leftBorder.spawn("UI");
+        this._rightBorder.spawn("UI");
+        this._bottomBorder.spawn("UI");
+        this._cornerTopLeft.spawn("UI");
+        this._cornerTopRight.spawn("UI");
+        this._cornerBottomLeft.spawn("UI");
+        this._cornerBottomRight.spawn("UI");
+    };
+
+    this.destroy = function () 
+    {
+        if (ShownTooltip == this)
+        {
+            ShownTooltip = undefined;
+        }
+        
+        this._text.destroy();
+        this._background.destroy();
+        this._topBorder.destroy();
+        this._leftBorder.destroy();
+        this._rightBorder.destroy();
+        this._bottomBorder.destroy();
+        this._cornerTopLeft.destroy();
+        this._cornerTopRight.destroy();
+        this._cornerBottomLeft.destroy();
+        this._cornerBottomRight.destroy();
+    };
+
+    this.spawn();
 }
