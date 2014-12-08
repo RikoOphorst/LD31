@@ -104,5 +104,6 @@ var Loot = function (x, y, loot)
         this.timer = 0;
         this.pickupTranslation = this.translation();
         SoundSystem.play("sounds/pickup.wav", "SFX", false);
+        StateManager.getState()._level._hud.pickup("wood");
     }
 };

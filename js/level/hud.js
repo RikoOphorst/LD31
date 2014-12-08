@@ -77,6 +77,10 @@ var HUD = function ()
     this._seedsIcon.setOffset(0.5, 0.5);
     this._seedsIcon.setTranslation(235, -35, 1);
 
+    this._woodTimer = 0;
+    this._flintsTimer = 0;
+    this._seedsTimer = 0;
+
 
     this.setHealth = function(val, max)
     {
@@ -108,5 +112,36 @@ var HUD = function ()
         {
             this._oilText.setBlend((1-val/max), val/max, 0);
         }
+    }
+
+    this.pickup = function(name)
+    {
+        this["_" + name + "Timer"] = 0;
+        this["_" + name + "Icon"].setScale(0, 0);
+    }
+
+    this.easeScale = function(timer, icon, dt)
+    {
+        if (timer < 1)
+        {
+            timer += dt;
+            var e = Math.easeOutElastic(timer, 0, 1, 1);
+            var s = 0.8+0.2*e;
+            icon.setScale(s, s);
+        }
+        else
+        {
+            timer = 1;
+            icon.setScale(1, 1);
+        }
+
+        return timer;
+    }
+
+    this.update = function(dt)
+    {
+        this._woodTimer = this.easeScale(this._woodTimer, this._woodIcon, dt);
+        this._flintsTimer = this.easeScale(this._flintsTimer, this._flintsIcon, dt);
+        this._seedsTimer = this.easeScale(this._seedsTimer, this._seedsIcon, dt); 
     }
 }

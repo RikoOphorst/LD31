@@ -49,6 +49,7 @@ float4 PS(VOut input) : SV_TARGET
 	colour.a *= Alpha;
 
 	colour.a = lerp(0, 1, input.texcoord.y*2);
+	colour.a *= saturate((1-input.texcoord.x));
 
-	return colour;
+	return colour*1.2;
 }

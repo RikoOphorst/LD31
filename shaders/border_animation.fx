@@ -49,21 +49,23 @@ float4 PS(VOut input) : SV_TARGET
   float y = (input.texcoord.y * AnimationMetrics.w) + AnimationMetrics.y;
   float2 texcoords = float2(x,y);
   float4 lum = float4(0.30, 0.59, 0.11, 1);
+  
+  float accuracyX = 800;
+  float accuracyY = 800;
+
+  float s11 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / accuracyX, -1.0f / accuracyY)), lum); 
+  float s12 = dot(textures[0].Sample(SampleType, texcoords + float2(0, -1.0f / accuracyY)), lum);    
+  float s13 = dot(textures[0].Sample(SampleType, texcoords + float2(1.0f / accuracyX, -1.0f / accuracyY)), lum);
  
 
-  float s11 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / 1024.0f, -1.0f / 768.0f)), lum); 
-  float s12 = dot(textures[0].Sample(SampleType, texcoords + float2(0, -1.0f / 768.0f)), lum);    
-  float s13 = dot(textures[0].Sample(SampleType, texcoords + float2(1.0f / 1024.0f, -1.0f / 768.0f)), lum);
+  float s21 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / accuracyX, 0)), lum); 
+
+  float s23 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / accuracyX, 0)), lum); 
  
 
-  float s21 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / 1024.0f, 0)), lum); 
-
-  float s23 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / 1024.0f, 0)), lum); 
- 
-
-  float s31 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / 1024.0f, 1.0f / 768.0f)), lum); 
-  float s32 = dot(textures[0].Sample(SampleType, texcoords + float2(0, 1.0f / 768.0f)), lum);  
-  float s33 = dot(textures[0].Sample(SampleType, texcoords + float2(1.0f / 1024.0f, 1.0f / 768.0f)), lum);
+  float s31 = dot(textures[0].Sample(SampleType, texcoords + float2(-1.0f / accuracyX, 1.0f / accuracyY)), lum); 
+  float s32 = dot(textures[0].Sample(SampleType, texcoords + float2(0, 1.0f / accuracyY)), lum);  
+  float s33 = dot(textures[0].Sample(SampleType, texcoords + float2(1.0f / accuracyX, 1.0f / accuracyY)), lum);
  
   float t1 = s13 + s33 + (2 * s23) - s11 - (2 * s21) - s31;
   float t2 = s31 + (2 * s32) + s33 - s11 - (2 * s12) - s13;
