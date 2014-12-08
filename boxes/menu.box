@@ -1,6 +1,6 @@
 load("texture","textures/ui/logo_wide.png")
 load("texture","textures/ui/logo_light.png")
 load("texture","textures/level/torch/torch_light.png")
-load("texture","textures/level/rain.png")
+load("texture","textures/level/rain_menu.tif")
 load("shader","shaders/rain.fx")
 load("shader","shaders/lighting.fx")

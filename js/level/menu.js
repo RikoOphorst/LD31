@@ -22,7 +22,7 @@ var Menu = function ()
 
     this._rain = Widget.new();
     this._rain.setOffset(0.5, 0.5);
-    this._rain.setTexture("textures/level/rain.png");
+    this._rain.setTexture("textures/level/rain_menu.tif");
     this._rain.setSize(1280, 428);
     this._rain.spawn("Default");
     this._rain.setTranslation(0, 0, 9999);
