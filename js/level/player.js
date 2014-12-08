@@ -159,6 +159,8 @@ var Player = function(level)
 	this._idleTimer = 0;
 	this._idle = false;
 
+	this._chopTimer = 3;
+
 	this._exampleTorch = Quad2D.new();
 	this._exampleTorch.setTexture("textures/level/torch/torch_held.png");
 	this._exampleTorch.setToTexture();
@@ -171,6 +173,11 @@ var Player = function(level)
 	this.setSelectedEnemy = function(selected)
 	{
 		this._selectedEnemy = selected;
+	}
+
+	this.setSelectedTree = function(selected)
+	{
+		this._selectedTree = selected;
 	}
 
 	this.moveEnvironment = function(horizons, surface, torches, trees, loot, x, y)
@@ -244,7 +251,7 @@ var Player = function(level)
 
 		if (Mouse.isDown(0)  && this._attackTimer >= 1)
 		{
-			if (this._selectedEnemy === undefined)
+			if (this._selectedEnemy === undefined && this._selectedTree === undefined)
 			{
 				this._moveTarget = Mouse.position(Mouse.Relative);
 				this._moveTarget.enemy = undefined;
@@ -256,8 +263,19 @@ var Player = function(level)
 			}
 			else
 			{
-				this._moveTarget = this._selectedEnemy.translation();
-				this._moveTarget.enemy = this._selectedEnemy;
+				if (this._selectedEnemy !== undefined)
+				{
+					this._moveTarget = this._selectedEnemy.translation();
+					this._moveTarget.enemy = this._selectedEnemy;
+				}
+				else if (this._selectedTree !== undefined)
+				{
+					this._moveTarget = this._selectedTree.translation();
+					this._moveTarget.x += 190;
+					this._moveTarget.y += 30;
+					this._moveTarget.tree = this._selectedTree;
+					this._movementMargin = 8;
+				}
 			}
 		}
 
@@ -279,7 +297,7 @@ var Player = function(level)
 		this._lantern.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
 		this._lanternStick.setScale((this._xscale * s) + (this._position.y/1440)*s, 1+this._position.y/1440);
 
-		var movementMargin = this._moveTarget.enemy == undefined ? this._movementMargin : 190;
+		var movementMargin = this._moveTarget.enemy === undefined ? this._movementMargin : 190;
 		var translation = this.translation();
 
 		if (Math.distance(this._moveTarget.x, this._moveTarget.y, this._position.x, this._position.y) > movementMargin)
@@ -357,6 +375,21 @@ var Player = function(level)
 				this._movementMargin = 190;
 				this._moveTarget = {x: this._moveTarget.enemy.translation().x, y: this._moveTarget.enemy.translation().y }
 			}
+			else if (this._moveTarget.tree !== undefined && this._chopTimer >= 1.75 && this._moveTarget.tree.canChop())
+			{
+				this._level.shakeCamera(4, 2);
+				this._moveTarget.tree.chop();
+				this._moveTarget.tree.setUniform("float", "Selected", 0);
+
+				this._chopTimer = 0;
+				this._currentAnimation.stop();
+				this._animationAxe.start();
+				this._currentAnimation = this._animationAxe;
+				this.setTexture("textures/characters/character_axe.png");
+
+				this._moveTarget = {x: this._moveTarget.tree.translation().x + 190, y: this._moveTarget.tree.translation().y + 30}
+			}
+
 			this._animation.setFrame(0);
 			this.setRotation(0,0,0);
 			this._wobble = 0;
@@ -406,6 +439,15 @@ var Player = function(level)
 			var t = Math.sin(this._dashTimer*Math.PI)*3000*dt*s;
 			this._lanternStick.translateBy(t, 0, 0);
 			this._lantern.translateBy(t, 0, 0);
+		}
+
+		if (this._chopTimer < 1.75)
+		{
+			this._chopTimer += dt;
+		}
+		else
+		{
+			this._chopTimer = 1.75;
 		}
 
 		if (this._idleTimer < 5)

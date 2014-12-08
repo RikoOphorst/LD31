@@ -89,11 +89,6 @@ var Level = function(camera)
 	this._trees = [];
 	this._torches = [];
 
-	for (var i = 0; i < 4; ++i)
-	{
-		this._trees.push(new Tree(-640+Math.random()*1280, -150 + Math.random()*510));
-	}
-
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
 
 	this._player = new Player(this);
@@ -109,6 +104,11 @@ var Level = function(camera)
 	this._effect = WeatherEffects.Rain;
 	this._shakeTimer = 0;
 	this._shakeMagnitude = 0;
+
+	for (var i = 0; i < 4; ++i)
+	{
+		this._trees.push(new Tree(-640+Math.random()*1280, -150 + Math.random()*510, this._loot));
+	}
 
 	this.shakeCamera = function(magnitude, duration)
 	{
@@ -290,6 +290,12 @@ var Level = function(camera)
 			
 			tree.update(dt);
 
+			if (tree.fell())
+			{
+				this._trees.splice(i, 1);
+				continue;	
+			}
+
 			if (hitTest == false)
 			{
 				if (tree.hitTest() == true)
@@ -302,7 +308,7 @@ var Level = function(camera)
 			}
 		}
 
-		for (var i = 0; i < this._trees.length; ++i)
+		for (var i = this._trees.length-1; i >= 0; --i)
 		{
 			if (this._trees[i] != testedTree)
 			{
@@ -323,6 +329,7 @@ var Level = function(camera)
 		}
 
 		this._player.setSelectedEnemy(testedEnemy);
+		this._player.setSelectedTree(testedTree);
 	}
 
 	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies, this);
