@@ -12,6 +12,12 @@ var MenuState = function()
         ContentManager.loadFont("fonts/test.ttf", 16);
         ContentManager.loadFont("fonts/test.ttf", 24);
 
+        SoundSystem.play("sounds/background_music.mp3", "Music", true);
+        SoundSystem.play("sounds/rain_light.mp3", "Rain", true);
+
+        SoundSystem.setChannelGroupVolume("Rain", 1);
+        SoundSystem.stop("Wind");
+
         this.menu = new Menu();
     }
 

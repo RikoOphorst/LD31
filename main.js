@@ -35,7 +35,6 @@ Game.Initialise = function()
 	SoundSystem.addChannelGroup("SFX");
 	SoundSystem.addChannelGroup("Music");
 	SoundSystem.addChannelGroup("Rain");
-	SoundSystem.addChannelGroup("Snow");
 	SoundSystem.addChannelGroup("Wind");
 }
 
