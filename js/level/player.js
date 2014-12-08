@@ -230,15 +230,16 @@ var Player = function(level)
         this._stats.health -= dmg;
         this.setUniform("float", "Hit", 1);
 
-        if (this._stats.health < 0)
+        if (this._stats.health <= 0)
         {
+        	this._stats.health = 0;
             this.kill();
         }
     };
 
     this.kill = function () 
     {
-        assert('JIJ WEET NIET WIE IK BEN');
+        //assert('JIJ WEET NIET WIE IK BEN');
     };
 
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
