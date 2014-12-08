@@ -39,13 +39,47 @@ var Torch = function(x,y)
 	this._animation.start();
 	this._animation.setLoop(true);
 	this._timer = 0;
-	this._targetTimer = 0.05
+	this._targetTimer = 0.05;
+
+	this._health = 25;
+	this._alive = true;
+
+	this._hitTimer = 0;
+
+    this.damage = function(dmg)
+    {
+        this._hitTimer = 0.2;
+        this._health -= dmg;
+        this.setUniform("float", "Hit", 1);
+
+        if (this._health < 0)
+        {
+            this.kill();
+        }
+    };
+
+    this.kill = function () 
+    {
+    	this._alive = false;
+        this.destroy();
+        this._light.destroy();
+    };
 
 	this.update = function(dt)
 	{
 		this._animation.update(dt);
 
 		this._timer += dt;
+
+		this._hitTimer -= dt;
+		if (this._hitTimer > 0)
+		{
+		    this.setUniform("float", "Hit", Math.round(Math.abs(Math.sin(this._hitTimer * 25))));
+		}
+		else
+		{
+		    this.setUniform("float", "Hit", 0);
+		}
 
 		if (this._timer >= this._targetTimer)
 		{

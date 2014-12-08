@@ -236,8 +236,13 @@ var Level = function(camera)
 
 		this._waveManager.update(this._trees, dt);
 
-		for (var i = 0; i < this._torches.length; ++i)
+		for (var i = this._torches.length - 1; i >= 0; --i)
 		{
+			if (!this._torches[i]._alive)
+			{
+				this._torches.splice(i, 1);
+				continue;
+			}
 			this._torches[i].update(dt);
 		}
 		
@@ -255,7 +260,7 @@ var Level = function(camera)
 				this._enemies.splice(i, 1);
 				continue;
 			}
-			enemy.update(dt, this._player, this._enemies, this._loot);
+			enemy.update(dt, this.calculateClosestTarget(enemy, [[this._player], this._torches]), this._enemies, this._loot);
 			if (hitTest == false)
 			{
 				if (enemy.hitTest() == true)
@@ -335,6 +340,30 @@ var Level = function(camera)
 
 		this._player.setSelectedEnemy(testedEnemy);
 		this._player.setSelectedTree(testedTree);
+	}
+
+	this.calculateClosestTarget = function (me, targets) 
+	{
+		var lowestDistance;
+		var closest;
+
+		for (var j = 0; j < targets.length; j++)
+		{
+			var targetArray = targets[j];
+			for (var i = 0; i < targetArray.length; i++)
+			{
+				var target = targetArray[i];
+				var dist = Math.distance(me.translation().x, target.translation().x, me.translation().y, target.translation().y);
+
+				if (lowestDistance === undefined || dist < lowestDistance)
+				{
+					lowestDistance = dist;
+					closest = target;
+				}
+			}
+		}
+
+		return closest;
 	}
 
 	this._waveManager = new WaveManager(this._lightOverlay, this._nightHorizon, this._eveningHorizon, this._dayHorizon, this._enemies, this);
