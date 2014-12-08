@@ -30,6 +30,14 @@ var Menu = function ()
     this._logoHead.setTranslation(-260, -53, 2);
     this._logoHead.spawn("Default");
 
+    this._logoText = Widget.new();
+    this._logoText.setTexture("textures/ui/logo_text.png");
+    this._logoText.setToTexture();
+    this._logoText.setOffset(0.5, 0.5);
+    this._logoText.setTranslation(380, -80, 2);
+    this._logoText.setScale(0.7, 0.7);
+    this._logoText.spawn("Default");
+
     this._logoBreath = Widget.new();
     this._logoBreath.setTexture("textures/ui/logo_breath.png");
     this._logoBreath.setToTexture();
@@ -143,10 +151,12 @@ var Menu = function ()
         this._logoHead.setTranslation(-260, -58 + Math.sin(this.timer) * 10, 2);
         this._logoBreath.setAlpha(Math.sin(this.timer) + (Math.sin(this.timer * 13) * 0.05));
 
-        this._logoHead.setAlpha(this.timer * 1.4);
+        this._logoText.setScale(0.6 + Math.sin(this.timer) * 0.01, 0.6 + Math.sin(this.timer) * 0.01);
+
+        this._logoHead.setAlpha(this.timer * 1.4 < 1 ? this.timer * 1.4 : 1);
 
         this._torch.setAlpha(0.7 + Math.abs(Math.sin(this.timer * 2)) * 0.3);
-        this._logo.setAlpha(this.timer);
+        this._logo.setAlpha(this.timer < 1 ? this.timer : 1);
     };
 
     this.spawn = function () {
