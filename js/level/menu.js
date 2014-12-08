@@ -16,6 +16,13 @@ var Menu = function ()
     this._logo.setTranslation(0, 0, 1);
     this._logo.spawn("Default");
 
+    this._logoShadow = Widget.new();
+    this._logoShadow.setTexture("textures/ui/logo_shadow.png");
+    this._logoShadow.setToTexture();
+    this._logoShadow.setOffset(0.5, 0.5);
+    this._logoShadow.setTranslation(0, 0, 5);
+    this._logoShadow.spawn("Default");
+
     this._logoHead = Widget.new();
     this._logoHead.setTexture("textures/ui/logo_head.png");
     this._logoHead.setToTexture();
