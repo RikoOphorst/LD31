@@ -34,9 +34,8 @@ var Dino = function ()
     this.update = function (dt, waveManager) {
         this.timer += dt;
         waveManager.setAdditive(0);
-        var seed = Math.round(Math.randomRange(1, 2000));
 
-        if (seed === 5 && !this._dropTarget)
+        if (Math.random() < 0.000001 && !this._dropTarget)
         {
             this._dropTarget = {
                 x: Math.round(Math.randomRange(this._dropArea.x, this._dropArea.w)),
@@ -158,6 +157,8 @@ var Dino = function ()
                             {
                                 player.damage(1000);
                             }
+
+                            SoundSystem.play('sounds/crack.wav', 'SFX', false);
                         }
 
                         this.riseTimer += dt;
