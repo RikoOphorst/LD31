@@ -353,7 +353,7 @@ var Level = function(camera)
 			for (var i = 0; i < targetArray.length; i++)
 			{
 				var target = targetArray[i];
-				var dist = Math.distance(me.translation().x, target.translation().x, me.translation().y, target.translation().y);
+				var dist = Math.distance(me.translation().x, me.translation().y, target.translation().x, target.translation().y);
 
 				if (lowestDistance === undefined || dist < lowestDistance)
 				{
@@ -361,6 +361,11 @@ var Level = function(camera)
 					closest = target;
 				}
 			}
+		}
+
+		if (Math.distance(me.translation().x, me.translation().y, this._player.translation().x, this._player.translation().y) < 250)
+		{
+			return this._player;
 		}
 
 		return closest;

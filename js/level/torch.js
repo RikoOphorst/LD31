@@ -41,7 +41,7 @@ var Torch = function(x,y)
 	this._timer = 0;
 	this._targetTimer = 0.05;
 
-	this._health = 25;
+	this._health = 10;
 	this._alive = true;
 
 	this._hitTimer = 0;
