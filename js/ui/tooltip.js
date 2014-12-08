@@ -1,6 +1,6 @@
 ShownTooltip = undefined;
 
-var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, alpha) {
+var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, alpha, isStatic, staticPos) {
 
     this._background = Widget.new();
     this._text = Text.new(this._background);
@@ -86,41 +86,46 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
     this._text.setAlpha(1);
 
     this.update = function (dt) {
-        var mousePos = Mouse.position(Mouse.Relative);
-        var trans = parent.translation();
-        var size = parent.size();
-
-        if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
-            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h && (ShownTooltip === undefined || ShownTooltip == null || ShownTooltip == this))
+        if (!isStatic)
         {
-            this.spawn();
-
-            if (mousePos.x - this._background.size().w < -RenderSettings.resolution().w / 2)
+            var mousePos = Mouse.position(Mouse.Relative);
+            var trans = parent.translation();
+            var size = parent.size();
+            if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
+                mousePos.y <= trans.y && mousePos.y >= trans.y - size.h && (ShownTooltip === undefined || ShownTooltip == null || ShownTooltip == this))
             {
-                if (mousePos.y - this._background.size().h > -RenderSettings.resolution().h / 2)
+                this.spawn();
+
+                if (mousePos.x - this._background.size().w < -RenderSettings.resolution().w / 2)
                 {
-                    this._background.setTranslation(mousePos.x, mousePos.y - this._background.size().h, 800);
+                    if (mousePos.y - this._background.size().h > -RenderSettings.resolution().h / 2)
+                    {
+                        this._background.setTranslation(mousePos.x, mousePos.y - this._background.size().h, 800);
+                    }
+                    else
+                    {
+                        this._background.setTranslation(mousePos.x, mousePos.y, 800);
+                    }
                 }
                 else
                 {
-                    this._background.setTranslation(mousePos.x, mousePos.y, 800);
+                    if (mousePos.y - this._background.size().h > -RenderSettings.resolution().h / 2)
+                    {
+                        this._background.setTranslation(mousePos.x - this._background.size().w, mousePos.y - this._background.size().h, 800);
+                    }
+                    else
+                    {
+                        this._background.setTranslation(mousePos.x - this._background.size().w, mousePos.y, 800);
+                    }
                 }
             }
-            else
+            else if (ShownTooltip == this)
             {
-                if (mousePos.y - this._background.size().h > -RenderSettings.resolution().h / 2)
-                {
-                    this._background.setTranslation(mousePos.x - this._background.size().w, mousePos.y - this._background.size().h, 800);
-                }
-                else
-                {
-                    this._background.setTranslation(mousePos.x - this._background.size().w, mousePos.y, 800);
-                }
+                this.destroy();
             }
         }
-        else if (ShownTooltip == this)
+        else
         {
-            this.destroy();
         }
     }
 
@@ -158,4 +163,10 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
         }
         
     };
+
+    if (isStatic)
+    {
+        this.spawn();
+        this._background.setTranslation(staticPos.x, staticPos.y, 800);
+    }
 }
