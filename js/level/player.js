@@ -195,6 +195,8 @@ var Player = function(level)
 		return this._stats;
 	}
 
+
+
 	this.moveEnvironment = function(horizons, surface, torches, trees, loot, x, y)
 	{
 		for (var i = 0; i < horizons.length; ++i)
@@ -220,10 +222,40 @@ var Player = function(level)
 		}
 	}
 
+	this._hitTimer = 0;
+
+    this.damage = function(dmg)
+    {
+        this._hitTimer = 0.2;
+        this._stats.health -= dmg;
+        this.setUniform("float", "Hit", 1);
+
+        if (this._stats.health < 0)
+        {
+            this.kill();
+        }
+    };
+
+    this.kill = function () 
+    {
+        assert('JIJ WEET NIET WIE IK BEN');
+    };
+
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
 	{
 		this._lightTimer += dt;
 		this._enemies = enemies;
+
+		this._hitTimer -= dt;
+        if (this._hitTimer > 0)
+        {
+            this.setUniform("float", "Hit", Math.round(Math.abs(Math.sin(this._hitTimer * 25))));
+            return;
+        }
+        else
+        {
+            this.setUniform("float", "Hit", 0);
+        }
 
 		if (this._dashTimer < 3)
 		{
@@ -499,9 +531,10 @@ var Player = function(level)
 		}
 
 		this._level.hud().setOil(this._stats.oil, this._maxOil);
+		this._level.hud().setHealth(this._stats.health, this._maxHealth);
 
 		var s = 2+Math.abs(Math.sin(this._lightTimer/2))*1;
 		this._lanternLight.setScale(s, s);
 		this._lanternLight.setAlpha(this._lanternOn == true && this._stats.oil > 0 ? 1 : 0);
 	};
-};
+}
