@@ -230,15 +230,16 @@ var Player = function(level)
         this._stats.health -= dmg;
         this.setUniform("float", "Hit", 1);
 
-        if (this._stats.health < 0)
+        if (this._stats.health <= 0)
         {
+        	this._stats.health = 0;
             this.kill();
         }
     };
 
     this.kill = function () 
     {
-        assert('JIJ WEET NIET WIE IK BEN');
+        //assert('JIJ WEET NIET WIE IK BEN');
     };
 
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
@@ -314,7 +315,7 @@ var Player = function(level)
 					this._moveTarget = this._selectedEnemy.translation();
 					this._moveTarget.enemy = this._selectedEnemy;
 				}
-				else if (this._selectedTree !== undefined)
+				else if (this._selectedTree !== undefined && this._selectedTree.canChop())
 				{
 					this._moveTarget = this._selectedTree.translation();
 					this._moveTarget.x += 190;
@@ -433,7 +434,7 @@ var Player = function(level)
 				this._currentAnimation = this._animationAxe;
 				this.setTexture("textures/characters/character_axe.png");
 
-				this._moveTarget = {x: this._moveTarget.tree.translation().x + 190, y: this._moveTarget.tree.translation().y + 30}
+				this._moveTarget = {x: this._moveTarget.tree.translation().x+185, y: this._moveTarget.tree.translation().y + 30}
 			}
 
 			this._animation.setFrame(0);

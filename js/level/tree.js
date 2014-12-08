@@ -105,8 +105,8 @@ var Tree = function(x, y, loot)
         var trans = this.translation();
         var size = this.size();
 
-        if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
-            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h)
+        if (mousePos.x >= trans.x - size.w / 4 && mousePos.x <= trans.x + size.w / 4 &&
+            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h / 3)
         {
             return true;
         }
