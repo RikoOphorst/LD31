@@ -102,7 +102,6 @@ var Enemy = function (x, y)
 
     this.update = function (dt, target, enemies, loot)
     {
-        this._tooltip.update();
         this._loot = loot;
         if (this._hitTimer < 1)
         {
@@ -213,6 +212,8 @@ var Enemy = function (x, y)
                 }
             }
         }
+
+        this._tooltip.update();
     }
 
     this.killed = function()
