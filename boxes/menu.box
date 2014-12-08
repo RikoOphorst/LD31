@@ -1,4 +1,5 @@
 load("texture","textures/ui/logo_wide.png")
+load("texture","textures/ui/logo_breath.png")
 load("texture","textures/ui/logo_head.png")
 load("texture","textures/ui/logo_light.png")
 load("texture","textures/level/torch/torch_light.png")

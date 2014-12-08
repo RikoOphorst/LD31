@@ -9,10 +9,6 @@ var Menu = function ()
     this._torch.setBlend(1,0.9,0.4);
     this._torch.setScale(5, 5);
 
-    this._play = Text.new();
-    this._play.setText("Daniel zn penis is best wel mooi gevormd");
-    //this._play.spawn("UI");
-
     this._logo = Widget.new();
     this._logo.setTexture("textures/ui/logo_wide.png");
     this._logo.setToTexture();
@@ -26,6 +22,13 @@ var Menu = function ()
     this._logoHead.setOffset(0.5, 0.5);
     this._logoHead.setTranslation(-260, -53, 2);
     this._logoHead.spawn("Default");
+
+    this._logoBreath = Widget.new();
+    this._logoBreath.setTexture("textures/ui/logo_breath.png");
+    this._logoBreath.setToTexture();
+    this._logoBreath.setOffset(0.5, 0.5);
+    this._logoBreath.setTranslation(-280, 10, 3);
+    this._logoBreath.spawn("Default");
 
     this._rain = Widget.new();
     this._rain.setOffset(0.5, 0.5);
@@ -111,8 +114,10 @@ var Menu = function ()
         this._rain.setUniform("float2", "Offset", this._rainOffset/2, -this._rainOffset*2);
         this._rain.setAlpha(0.5 + Math.abs(Math.sin(this.timer)) * 0.5);
 
-        var mousePos = Mouse.position(Mouse.Relative);
-        this._logoHead.setTranslation(-260 - mousePos.x / 100, -53 - mousePos.y / 100, 2);
+        this._logoHead.setTranslation(-260, -58 + Math.sin(this.timer) * 10, 2);
+        this._logoBreath.setAlpha(Math.sin(this.timer) + (Math.sin(this.timer * 13) * 0.05));
+
+        this._logoHead.setAlpha(this.timer * 1.4);
 
         this._torch.setAlpha(0.7 + Math.abs(Math.sin(this.timer * 2)) * 0.3);
         this._logo.setAlpha(this.timer);
