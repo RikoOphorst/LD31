@@ -105,6 +105,8 @@ var Level = function(camera)
 	this._shakeTimer = 0;
 	this._shakeMagnitude = 0;
 
+	this._windModifier = 0;
+
 	for (var i = 0; i < 4; ++i)
 	{
 		this._trees.push(new Tree(-640+Math.random()*1280, -150 + Math.random()*510, this._loot));
@@ -190,6 +192,26 @@ var Level = function(camera)
 			}
 		}
 
+		if (this._rainModifier > 1)
+		{
+			this._rainModifier = 1;
+		}
+
+		if (this._snowModifier > 1)
+		{
+			this._snowModifier = 1;
+		}
+
+		if (this._rainModifier < 0)
+		{
+			this._rainModifier = 0;
+		}
+
+		if (this._snowModifier < 0)
+		{
+			this._snowModifier = 0;
+		}
+
 		this._rainOffset += dt;
 
 		this._rain.setUniform("float2", "Offset", this._rainOffset/3, -this._rainOffset*2);
@@ -202,6 +224,11 @@ var Level = function(camera)
 
 		this._snowOffset.x = Math.sin(this._snowTimer)/40 + this._snowTimer/100;
 		this._snowOffset.y = this._snowTimer/20;
+
+		this._windModifier += dt;
+
+		SoundSystem.setChannelGroupVolume("Rain", this._rainModifier);
+		SoundSystem.setChannelGroupVolume("Wind", Math.abs(Math.sin(this._windModifier/2)));
 
 		if (this._thunderDecay > 0 && this._thunderDecay <= 1)
 		{

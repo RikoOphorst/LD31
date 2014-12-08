@@ -97,12 +97,15 @@ var Player = function(level)
 
 	for (var i = 0; i < 9; ++i)
 	{
-		frames.push({
-			x: i*222,
-			y: 0,
-			width: 222,
-			height: 218
-		});
+		if (i % 2 == 0)
+		{
+			frames.push({
+				x: i*222,
+				y: 0,
+				width: 222,
+				height: 218
+			});
+		}
 	}
 
 	this._animationAttack1 = new SpriteAnimation(this, frames);
@@ -179,6 +182,8 @@ var Player = function(level)
 	this._exampleTorch.spawn("Default");
 
 	this._lanternOn = false;
+	this._footstep = false;
+	this._oldFootstep = 1;
 
 	this.setSelectedEnemy = function(selected)
 	{
@@ -378,6 +383,32 @@ var Player = function(level)
 			this._position.x += movement.x;
 			this._position.y += movement.y;
 
+			if (Math.round(Math.sin(this._wobble*Math.PI*0.75)) == 1)
+			{
+				if (this._footstep == false)
+				{
+					var rand = Math.floor(Math.random()*3)+1;
+					while (rand == this._oldFootstep)
+					{
+						rand = Math.floor(Math.random()*3)+1
+					}
+
+					var t = this.translation();
+
+					if (Math.distance(t.x, t.y, 0, 0) < 300)
+					{
+						rand = Math.floor(Math.random()*2)+4;
+					}
+					SoundSystem.play("sounds/footstep_" + rand + ".wav", "SFX", false);
+					this._footstep = true;
+					this._oldFootstep = rand;
+				}
+			}
+			else
+			{
+				this._footstep = false;
+			}
+
 			this.moveEnvironment(horizons, surface, torches, trees, loot, movement.x, movement.y);
 
 			var clamped = false;
@@ -445,6 +476,9 @@ var Player = function(level)
 				this._moveTarget.tree.chop();
 				this._moveTarget.tree.setUniform("float", "Selected", 0);
 
+				var rand = Math.floor(Math.random()*3)+1;
+				SoundSystem.play("sounds/chop_sound_" + rand + ".wav", "SFX", false);
+
 				this._chopTimer = 0;
 				this._currentAnimation.stop();
 				this._animationAxe.start();
@@ -471,9 +505,8 @@ var Player = function(level)
 		if (this._attackTimer < 1)
 		{
 			this._idleTimer = 0;
-			this._attackTimer += dt*10;
+			this._attackTimer += dt*7;
 			var s = Math.abs(this.scale().x)/this.scale().x;
-			this.setRotation(0, 0, Math.sin(this._attackTimer*Math.PI*2)/8*s);
 			this._lanternStick.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
 			this._lantern.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
 
@@ -525,6 +558,7 @@ var Player = function(level)
 		if (Keyboard.isPressed("E"))
 		{
 			this._lanternOn = !this._lanternOn;
+			SoundSystem.play("sounds/toggle_light.wav", "SFX", false);
 		}	
 
 		if (this._lanternOn == true)

@@ -30,6 +30,12 @@ Game.Initialise = function()
 	Game.speed = 1;
 
 	StateManager.switchState(LevelState);
+
+	SoundSystem.addChannelGroup("SFX");
+	SoundSystem.addChannelGroup("Music");
+	SoundSystem.addChannelGroup("Rain");
+	SoundSystem.addChannelGroup("Snow");
+	SoundSystem.addChannelGroup("Wind");
 }
 
 Game.Update = function(dt)
