@@ -1,6 +1,7 @@
 load("texture","textures/level/background.png")
 load("texture","textures/level/torch/torch_1.png")
 load("texture","textures/level/torch/torch_light.png")
+load("texture","textures/level/torch/torch_held.png")
 load("texture","textures/ui/waypoint.png")
 load("texture","textures/ui/hud.png")
 load("texture","textures/ui/flints_icon.png")

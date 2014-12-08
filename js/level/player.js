@@ -159,6 +159,15 @@ var Player = function(level)
 	this._idleTimer = 0;
 	this._idle = false;
 
+	this._exampleTorch = Quad2D.new();
+	this._exampleTorch.setTexture("textures/level/torch/torch_held.png");
+	this._exampleTorch.setToTexture();
+	this._exampleTorch.setAlpha(0);
+	this._exampleTorch.setOffset(0.5, 1);
+	this._exampleTorch.setTranslation(0, 0, 1000);
+	this._exampleTorch.setBlend(3, 3, 3);
+	this._exampleTorch.spawn("Default");
+
 	this.setSelectedEnemy = function(selected)
 	{
 		this._selectedEnemy = selected;
@@ -217,6 +226,20 @@ var Player = function(level)
 			this._moveTarget = Mouse.position(Mouse.Relative);
 			this._moveSpeed = 900;
 			this._dashTimer = 0;
+		}
+
+		if (Keyboard.isDown("W"))
+		{
+			this._exampleTorch.setAlpha(1);
+
+			this._exampleTorch.setTranslation(this.translation().x + 100 * this.scale().x, this.translation().y, 1000);
+		}
+
+		if (Keyboard.isReleased("W"))
+		{
+			this._exampleTorch.setAlpha(0);
+
+			torches.push(new Torch(this._exampleTorch.translation().x, this._exampleTorch.translation().y));
 		}
 
 		if (Mouse.isDown(0)  && this._attackTimer >= 1)
