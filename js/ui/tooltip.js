@@ -1,4 +1,4 @@
-var Tooltip = function (parent, text, padding, bordersize, alpha) {
+var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, alpha) {
 
     this._background = Widget.new();
     this._text = Text.new(this._background);
@@ -6,9 +6,9 @@ var Tooltip = function (parent, text, padding, bordersize, alpha) {
     this._text.setFontFamily("fonts/test.ttf");
     this._text.setFontSize(12);
     this._text.setText(text);
-    this._text.setTranslation(padding, padding, 801);
+    this._text.setTranslation(paddingWidth, paddingHeight, 801);
 
-    this._background.setSize(this._text.metrics().width + padding * 2, this._text.metrics().height + padding * 2);
+    this._background.setSize(this._text.metrics().width + paddingWidth * 2, this._text.metrics().height + paddingHeight * 2);
     this._background.setTexture('textures/ui/tooltip_bg.png');
     this._background.setAlpha(alpha !== undefined ? alpha : 1);
 
@@ -40,30 +40,23 @@ var Tooltip = function (parent, text, padding, bordersize, alpha) {
     this._bottomBorder.setTranslation(this._background.size().w, this._background.size().h, 801);
 
     this._cornerTopLeft = Widget.new(this._background);
-    this._cornerTopLeft.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerTopLeft.setTexture('textures/ui/tooltip_corner_topleft.png');
     this._cornerTopLeft.setToTexture();
-    this._cornerTopLeft.setOffset(0, 0);
     this._cornerTopLeft.setTranslation(0, 0, 802);
 
     this._cornerTopRight = Widget.new(this._background);
-    this._cornerTopRight.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerTopRight.setTexture('textures/ui/tooltip_corner_topright.png');
     this._cornerTopRight.setToTexture();
-    this._cornerTopRight.setOffset(1, 0);
-    this._cornerTopRight.setRotation(0, 0, Math.PI / 2);
-    this._cornerTopRight.setTranslation(this._background.size().w, this._cornerTopRight.size().h, 802);
+    this._cornerTopRight.setTranslation(this._background.size().w - this._cornerTopRight.size().w, 0, 802);
 
     this._cornerBottomLeft = Widget.new(this._background);
-    this._cornerBottomLeft.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerBottomLeft.setTexture('textures/ui/tooltip_corner_bottomleft.png');
     this._cornerBottomLeft.setToTexture();
-    this._cornerBottomLeft.setOffset(0, 1);
-    this._cornerBottomLeft.setRotation(0, 0, -Math.PI / 2);
-    this._cornerBottomLeft.setTranslation(this._cornerTopRight.size().w, this._background.size().h, 802);
+    this._cornerBottomLeft.setTranslation(0, this._background.size().h - this._cornerBottomLeft.size().h, 802);
 
     this._cornerBottomRight = Widget.new(this._background);
-    this._cornerBottomRight.setTexture('textures/ui/tooltip_corner.png');
+    this._cornerBottomRight.setTexture('textures/ui/tooltip_corner_bottomright.png');
     this._cornerBottomRight.setToTexture();
-    this._cornerBottomRight.setOffset(1, 1);
-    this._cornerBottomRight.setRotation(0, 0, -Math.PI);
     this._cornerBottomRight.setTranslation(this._background.size().w - this._cornerBottomRight.size().w, this._background.size().h - this._cornerBottomRight.size().h, 802);
 
     this.update = function (dt) {
