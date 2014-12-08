@@ -49,30 +49,55 @@ var Tooltip = function (parent, text, padding, bordersize, alpha) {
     this._cornerTopRight.setTexture('textures/ui/tooltip_corner.png');
     this._cornerTopRight.setToTexture();
     this._cornerTopRight.setOffset(1, 0);
-    this._cornerTopRight.setTranslation(this._background.size().w, 0, 802);
+    this._cornerTopRight.setRotation(0, 0, Math.PI / 2);
+    this._cornerTopRight.setTranslation(this._background.size().w, this._cornerTopRight.size().h, 802);
 
     this._cornerBottomLeft = Widget.new(this._background);
     this._cornerBottomLeft.setTexture('textures/ui/tooltip_corner.png');
     this._cornerBottomLeft.setToTexture();
     this._cornerBottomLeft.setOffset(0, 1);
-    this._cornerBottomLeft.setTranslation(0, this._background.size().h, 802);
+    this._cornerBottomLeft.setRotation(0, 0, -Math.PI / 2);
+    this._cornerBottomLeft.setTranslation(this._cornerTopRight.size().w, this._background.size().h, 802);
 
     this._cornerBottomRight = Widget.new(this._background);
     this._cornerBottomRight.setTexture('textures/ui/tooltip_corner.png');
     this._cornerBottomRight.setToTexture();
     this._cornerBottomRight.setOffset(1, 1);
-    this._cornerBottomRight.setTranslation(this._background.size().w, this._background.size().h, 802);
+    this._cornerBottomRight.setRotation(0, 0, -Math.PI);
+    this._cornerBottomRight.setTranslation(this._background.size().w - this._cornerBottomRight.size().w, this._background.size().h - this._cornerBottomRight.size().h, 802);
 
     this.update = function (dt) {
         var mousePos = Mouse.position(Mouse.Relative);
         var trans = parent.translation();
         var size = parent.size();
+
         if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
             mousePos.y <= trans.y && mousePos.y >= trans.y - size.h)
         {
             this.spawn();
 
-            this._background.setTranslation(mousePos.x - this._background.size().w, mousePos.y - this._background.size().h, 800);
+            if (mousePos.x - this._background.size().w < -RenderSettings.resolution().w / 2)
+            {
+                if (mousePos.y - this._background.size().h > -RenderSettings.resolution().h / 2)
+                {
+                    this._background.setTranslation(mousePos.x, mousePos.y - this._background.size().h, 800);
+                }
+                else
+                {
+                    this._background.setTranslation(mousePos.x, mousePos.y, 800);
+                }
+            }
+            else
+            {
+                if (mousePos.y - this._background.size().h > -RenderSettings.resolution().h / 2)
+                {
+                    this._background.setTranslation(mousePos.x - this._background.size().w, mousePos.y - this._background.size().h, 800);
+                }
+                else
+                {
+                    this._background.setTranslation(mousePos.x - this._background.size().w, mousePos.y, 800);
+                }
+            }
         }
         else
         {
