@@ -167,7 +167,7 @@ var Player = function(level)
 	this._idleTimer = 0;
 	this._idle = false;
 
-	this._chopTimer = 3;
+	this._chopTimer = 1;
 
 	this._exampleTorch = Quad2D.new();
 	this._exampleTorch.setTexture("textures/level/torch/torch_held.png");
@@ -244,6 +244,23 @@ var Player = function(level)
 
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
 	{
+		if (this._chopTimer < 1)
+		{
+			this._chopTimer += dt;
+			this.setScale(Math.abs(this.scale().x)*-1,this.scale().y);
+			
+			this._animation.stop();
+
+			this._currentAnimation.update(dt);
+
+			return;
+		}
+		else
+		{
+			this._animation.start();
+			this._chopTimer = 1;
+		}
+
 		this._lightTimer += dt;
 		this._enemies = enemies;
 
@@ -422,7 +439,7 @@ var Player = function(level)
 				this._movementMargin = 190;
 				this._moveTarget = {x: this._moveTarget.enemy.translation().x, y: this._moveTarget.enemy.translation().y }
 			}
-			else if (this._moveTarget.tree !== undefined && this._chopTimer >= 1.75 && this._moveTarget.tree.canChop())
+			else if (this._moveTarget.tree !== undefined && this._chopTimer >= 1 && this._moveTarget.tree.canChop())
 			{
 				this._level.shakeCamera(2, 2);
 				this._moveTarget.tree.chop();
@@ -486,15 +503,6 @@ var Player = function(level)
 			var t = Math.sin(this._dashTimer*Math.PI)*3000*dt*s;
 			this._lanternStick.translateBy(t, 0, 0);
 			this._lantern.translateBy(t, 0, 0);
-		}
-
-		if (this._chopTimer < 1.75)
-		{
-			this._chopTimer += dt;
-		}
-		else
-		{
-			this._chopTimer = 1.75;
 		}
 
 		if (this._idleTimer < 5)

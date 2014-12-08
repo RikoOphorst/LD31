@@ -38,7 +38,7 @@ SamplerState SampleType;
 
 float4 PS(VOut input) : SV_TARGET
 {
-	input.texcoord.y += sin(input.texcoord.x*10+Time*2)*(0.05+abs(sin(Time*2))/20);
+	input.texcoord.y += sin(input.texcoord.x*10+Time*4)/2*(0.05+abs(sin(Time*2))/100);
 
 	float doClip = input.texcoord.y;
 
@@ -47,6 +47,8 @@ float4 PS(VOut input) : SV_TARGET
 	float4 textureColour = textures[0].Sample(SampleType, input.texcoord);
 	float4 colour = float4(textureColour.rgb * Blend * input.colour.rgb, textureColour.a);
 	colour.a *= Alpha;
+
+	colour.a = lerp(0, 1, input.texcoord.y*2);
 
 	return colour;
 }
