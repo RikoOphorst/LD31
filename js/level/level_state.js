@@ -7,6 +7,7 @@ var LevelState = function()
 
 	this.initialise = function()
 	{
+		ShownTooltip = undefined;
 		ContentManager.load("box", "boxes/level.box");
 		ContentManager.loadFont("fonts/test.ttf", 12);
 		ContentManager.loadFont("fonts/test.ttf", 16);
@@ -33,12 +34,11 @@ var LevelState = function()
 
 	this.reload = function(path)
 	{
-		ShownTooltip = null;
 		this._level = new Level(this._camera);
 	}
 
 	this.destroy = function()
 	{
-		ContentManager.unload("box", "boxes/level.box")
+		
 	}
 }

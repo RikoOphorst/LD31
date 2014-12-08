@@ -13,7 +13,7 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
         this._started = true;
     };
 
-    this.update = function (trees, dt)
+    this.update = function (dt)
     {
         if (this.turnTimer <= 0)
         {
@@ -72,11 +72,6 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
             if (1 - this.t * 2 <= 0.1 && this.op == 'minus' && !this.spawned)
             {
                 this.spawned = true;
-
-                for (var i = 0; i < trees.length; ++i)
-                {
-                    trees[i].grow();
-                }
 
                 this.spawnWave();
             }
