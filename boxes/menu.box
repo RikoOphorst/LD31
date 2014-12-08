@@ -1,6 +1,7 @@
 load("texture","textures/ui/logo_wide.png")
 load("texture","textures/ui/logo_breath.png")
 load("texture","textures/ui/logo_shadow.png")
+load("texture","textures/ui/logo_text.png")
 load("texture","textures/ui/logo_head.tif")
 load("texture","textures/ui/logo_light.png")
 load("texture","textures/ui/menu_background_down.png")

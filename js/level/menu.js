@@ -30,6 +30,14 @@ var Menu = function ()
     this._logoHead.setTranslation(-260, -53, 2);
     this._logoHead.spawn("Default");
 
+    this._logoText = Widget.new();
+    this._logoText.setTexture("textures/ui/logo_text.png");
+    this._logoText.setToTexture();
+    this._logoText.setOffset(0.5, 0.5);
+    this._logoText.setTranslation(380, -80, 2);
+    this._logoText.setScale(0.7, 0.7);
+    this._logoText.spawn("Default");
+
     this._logoBreath = Widget.new();
     this._logoBreath.setTexture("textures/ui/logo_breath.png");
     this._logoBreath.setToTexture();
@@ -61,6 +69,14 @@ var Menu = function ()
     this._rain.setUniform("float2", "Offset", 0, 0);
     this._rainModifier = 0;
     this._rainOffset = 0;
+
+    this._thunderFlash = Widget.new();
+    this._thunderFlash.setSize(1280, 430);
+    this._thunderFlash.setAlpha(0);
+    this._thunderFlash.setOffset(0.5, 0.5);
+    this._thunderFlash.setTranslation(0, 0, 50);
+    this._thunderFlash.setBlend(1, 0.9, 1);
+    this._thunderFlash.spawn("Default");
 
     this._topBorder = Widget.new();
     this._topBorder.setSize(1280, 30);
@@ -117,6 +133,9 @@ var Menu = function ()
     this._cornerBottomRight.setScale(0.5, 0.5);
 
     this.timer = 0;
+    this.thunderTimer = -1;
+
+    RenderTargets.lighting.setShader("shaders/post_processing.fx");
 
     this.update = function (dt) {
         this.timer += dt;
@@ -135,6 +154,20 @@ var Menu = function ()
             StateManager.switchState(LevelState);
         }
 
+        this._thunderFlash.setAlpha(0);
+        if (this.thunderTimer > 0)
+        {
+            this._thunderFlash.setAlpha(Math.sin(this.timer * 40) * 0.4);
+        }
+        else
+        {
+            if (Math.round(Math.randomRange(1, 400)) == 50)
+            {
+                this.thunderTimer = Math.randomRange(0.6, 0.7);
+            }
+        }
+        this.thunderTimer -= dt;
+
         this._rainOffset += dt * 1.2;
 
         this._rain.setUniform("float2", "Offset", this._rainOffset/2, -this._rainOffset*2);
@@ -143,10 +176,12 @@ var Menu = function ()
         this._logoHead.setTranslation(-260, -58 + Math.sin(this.timer) * 10, 2);
         this._logoBreath.setAlpha(Math.sin(this.timer) + (Math.sin(this.timer * 13) * 0.05));
 
-        this._logoHead.setAlpha(this.timer * 1.4);
+        this._logoText.setScale(0.6 + Math.sin(this.timer) * 0.01, 0.6 + Math.sin(this.timer) * 0.01);
+
+        this._logoHead.setAlpha(this.timer * 1.4 < 1 ? this.timer * 1.4 : 1);
 
         this._torch.setAlpha(0.7 + Math.abs(Math.sin(this.timer * 2)) * 0.3);
-        this._logo.setAlpha(this.timer);
+        this._logo.setAlpha(this.timer < 1 ? this.timer : 1);
     };
 
     this.spawn = function () {
