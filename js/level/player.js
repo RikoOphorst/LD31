@@ -164,7 +164,7 @@ var Player = function(level)
 		this._selectedEnemy = selected;
 	}
 
-	this.moveEnvironment = function(horizons, surface, torches, loot, x, y)
+	this.moveEnvironment = function(horizons, surface, torches, trees, loot, x, y)
 	{
 		for (var i = 0; i < horizons.length; ++i)
 		{
@@ -182,9 +182,14 @@ var Player = function(level)
 		{
 			torches[i].translateBy(-x/50, -y/50, 0);
 		}
+
+		for (var i = 0; i < trees.length; ++i)
+		{
+			trees[i].translateBy(-x/50, -y/50, 0);
+		}
 	}
 
-	this.update = function(dt, horizons, surface, torches, enemies, loot)
+	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
 	{
 		this._lightTimer += dt;
 		this._enemies = enemies;
@@ -268,34 +273,34 @@ var Player = function(level)
 			this._position.x += movement.x;
 			this._position.y += movement.y;
 
-			this.moveEnvironment(horizons, surface, torches, loot, movement.x, movement.y);
+			this.moveEnvironment(horizons, surface, torches, trees, loot, movement.x, movement.y);
 
 			var clamped = false;
 			while (this._position.x - this.size().w / 2 < -(RenderSettings.resolution().w / 2))
 			{
 				this._position.x += 1;
-				this.moveEnvironment(horizons, surface, torches, loot, 1, 0);
+				this.moveEnvironment(horizons, surface, torches, trees, loot, 1, 0);
 				clamped = true;
 			}
 
 			while (this._position.x + this.size().w / 2 > (RenderSettings.resolution().w / 2))
 			{
 				this._position.x -= 1;
-				this.moveEnvironment(horizons, surface, torches, loot, -1, 0);
+				this.moveEnvironment(horizons, surface, torches, trees, loot, -1, 0);
 				clamped = true;
 			}
 
 			while (this._position.y - this.size().h < -(RenderSettings.resolution().h / 2))
 			{
 				this._position.y += 1;
-				this.moveEnvironment(horizons, surface, torches, loot, 0, 1);
+				this.moveEnvironment(horizons, surface, torches, trees, loot, 0, 1);
 				clamped = true; 
 			}
 
 			while (this._position.y > (RenderSettings.resolution().h / 2))
 			{
 				this._position.y -= 1;
-				this.moveEnvironment(horizons, surface, torches, loot, 0, -1);
+				this.moveEnvironment(horizons, surface, torches, trees, loot, 0, -1);
 				clamped = true;
 			}
 
@@ -317,7 +322,7 @@ var Player = function(level)
 		{
 			if (this._moveTarget.enemy !== undefined && this._attackTimer >= 1)
 			{
-				this._level.shakeCamera(10,3);
+				this._level.shakeCamera(4,2);
 				this._moveTarget.enemy.damage(20);
 				this._moveTarget.enemy.setUniform("float", "Selected", 0);
 				this._attackTimer = 0;
@@ -346,7 +351,7 @@ var Player = function(level)
 		if (this._attackTimer < 1)
 		{
 			this._idleTimer = 0;
-			this._attackTimer += dt*2;
+			this._attackTimer += dt*10;
 			var s = Math.abs(this.scale().x)/this.scale().x;
 			this.setRotation(0, 0, Math.sin(this._attackTimer*Math.PI*2)/8*s);
 			this._lanternStick.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);

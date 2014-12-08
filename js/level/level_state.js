@@ -4,7 +4,7 @@ var LevelState = function()
 {
 	this.name = "Level";
 	this._camera = Camera.new("orthographic");
-	this._camera.setZoom(1.05);
+	this._camera.setZoom(1.075);
 
 	this.initialise = function()
 	{
