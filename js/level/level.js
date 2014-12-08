@@ -9,6 +9,7 @@ require("js/level/loot");
 require("js/ui/tooltip");
 require("js/level/loot_data");
 require("js/level/tree");
+require("js/level/dino");
 
 enumerator("WeatherEffects", [
 	"None",
@@ -107,10 +108,7 @@ var Level = function(camera)
 
 	this._windModifier = 0;
 
-	for (var i = 0; i < 4; ++i)
-	{
-		this._trees.push(new Tree(-640+Math.random()*1280, -150 + Math.random()*510, this._loot));
-	}
+	this._dino = new Dino();
 
 	this.shakeCamera = function(magnitude, duration)
 	{
@@ -136,6 +134,7 @@ var Level = function(camera)
 	this.update = function(dt)
 	{
 		this._hud.update(dt);
+		this._dino.update(dt, this._waveManager);
 		this._camera.setTranslation(0, 0, 0);
 		if (this._effect == WeatherEffects.Rain)
 		{

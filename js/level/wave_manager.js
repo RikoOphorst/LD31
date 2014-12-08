@@ -6,6 +6,8 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
     this.turnTimer = 0;
     this.op = 'plus';
 
+    this._additive = 0;
+
     Log.watch("Wave manager level", level);
 
     this.start = function ()
@@ -35,18 +37,18 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
             var t = this.t * 2;
 
             this._lightOverlay._overlay.setBlend(
-                Math.lerp(0.03, 0.22, t),
-                Math.lerp(0.0, 0.3, t),
-                Math.lerp(0.07, 0.27, t)
+                Math.lerp(0.03 - this._additive, 0.22 - this._additive, t),
+                Math.lerp(0.0 - this._additive, 0.3 - this._additive, t),
+                Math.lerp(0.07 - this._additive, 0.27 - this._additive, t)
             );
         }
         else if (this.t < 1)
         {
             var t = (this.t - 0.5) * 2;
             this._lightOverlay._overlay.setBlend(
-                Math.lerp(0.22, 0.62, t),
-                Math.lerp(0.3, 0.7, t),
-                Math.lerp(0.27, 0.67, t)
+                Math.lerp(0.22 - this._additive, 0.62 - this._additive, t),
+                Math.lerp(0.3 - this._additive, 0.7 - this._additive, t),
+                Math.lerp(0.27 - this._additive, 0.67 - this._additive, t)
             );
         }
         
@@ -85,6 +87,11 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
         }
     };
 
+    this.setAdditive = function (additive)
+    {
+        this._additive = additive;
+    };
+
     this.spawnWave = function ()
     {
         var amountMobs = Math.floor(2 + ((++this._currentWave) * Math.random()) * 0.5);
@@ -101,6 +108,8 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
         {
             level.setWeatherEffect(WeatherEffects.None);
         }
+
+        level.setWeatherEffect(WeatherEffects.None);
 
         for (var i = 0; i < amountMobs; i++)
         {
