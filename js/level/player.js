@@ -250,7 +250,6 @@ var Player = function(level)
         if (this._hitTimer > 0)
         {
             this.setUniform("float", "Hit", Math.round(Math.abs(Math.sin(this._hitTimer * 25))));
-            return;
         }
         else
         {
