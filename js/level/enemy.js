@@ -87,6 +87,7 @@ var Enemy = function (x, y)
         if (this._hitTimer < 1)
         {
             this._hitTimer += dt*10;
+            this.setRotation(0, 0, Math.sin(this._hitTimer/10*Math.PI*2)/2*-this.scale().x);
             return;
         }
         else

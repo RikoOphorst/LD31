@@ -8,6 +8,7 @@ require("js/level/wave_manager");
 require("js/level/loot");
 require("js/ui/tooltip");
 require("js/level/loot_data");
+require("js/level/tree");
 
 enumerator("WeatherEffects", [
 	"None",
@@ -86,9 +87,16 @@ var Level = function(camera)
 	this._snowOffset = {x: 0, y: 0};
 	this._snowTimer = 0;
 
+	this._trees = [];
+
 	for (var i = 0; i < 4; ++i)
 	{
 		this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
+	}
+
+	for (var i = 0; i < 4; ++i)
+	{
+		this._trees.push(new Tree(-640+Math.random()*1280, -150 + Math.random()*510));
 	}
 
 	RenderTargets.lighting.setShader("shaders/lighting.fx");
@@ -223,10 +231,10 @@ var Level = function(camera)
 			this._thunderDecay = 1;
 		}
 
-		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._enemies, this._loot, this);
+		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._trees, this._enemies, this._loot, this);
 		this._lightOverlay.update(dt);
 
-		this._waveManager.update(dt);
+		this._waveManager.update(this._trees, dt);
 
 		for (var i = 0; i < this._torches.length; ++i)
 		{
@@ -276,6 +284,11 @@ var Level = function(camera)
 			{
 				this._loot.splice(i, 1);
 			}
+		}
+
+		for (var i = this._trees.length - 1; i >= 0; --i)
+		{
+			this._trees[i].update(dt);
 		}
 
 		if (this._shakeTimer > 0)
