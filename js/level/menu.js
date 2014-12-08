@@ -132,6 +132,50 @@ var Menu = function ()
     this._cornerBottomRight.setTranslation(641, 228, 802);
     this._cornerBottomRight.setScale(0.5, 0.5);
 
+    this._tutorialButton = Widget.new();
+    this._tutorialButton.setTexture("textures/ui/tutorial_up_button.png");
+    this._tutorialButton.setToTexture();
+    this._tutorialButton.setOffset(0.5, 0);
+    this._tutorialButton.setTranslation(-250, 245, 1000);
+    this._tutorialButtonMA = MouseArea.new(this._tutorialButton);
+
+    this._tutorialButtonMA.setOnPressed(function (self) {
+        self._tutorialButton.setTexture("textures/ui/tutorial_down_button.png");
+    }, this);
+    this._tutorialButtonMA.setOnReleased(function (self) {
+        self._tutorialButton.setTexture("textures/ui/tutorial_up_button.png");
+    }, this);
+
+    this._playButton = Widget.new();
+    this._playButton = Widget.new();
+    this._playButton.setTexture("textures/ui/play_up_button.png");
+    this._playButton.setToTexture();
+    this._playButton.setOffset(0.5, 0);
+    this._playButton.setTranslation(0, 245, 1000);
+    this._playButtonMA = MouseArea.new(this._playButton);
+    this._playButtonMA.setOnPressed(function (self) {
+        self._playButton.setTexture("textures/ui/play_down_button.png");
+    }, this);
+    this._playButtonMA.setOnReleased(function (self) {
+        self._playButton.setTexture("textures/ui/play_up_button.png");
+        StateManager.switchState(LevelState);
+    }, this);
+
+    this._quitButton = Widget.new();
+    this._quitButton = Widget.new();
+    this._quitButton.setTexture("textures/ui/quit_up_button.png");
+    this._quitButton.setToTexture();
+    this._quitButton.setOffset(0.5, 0);
+    this._quitButton.setTranslation(250, 245, 1000);
+    this._quitButtonMA = MouseArea.new(this._quitButton);
+    this._quitButtonMA.setOnPressed(function (self) {
+        self._quitButton.setTexture("textures/ui/quit_down_button.png");
+    }, this);
+    this._quitButtonMA.setOnReleased(function (self) {
+        self._quitButton.setTexture("textures/ui/quit_up_button.png");
+        Game.quit();
+    }, this);
+
     this.timer = 0;
     this.thunderTimer = -1;
 
@@ -193,6 +237,9 @@ var Menu = function ()
         this._cornerTopRight.spawn("UI");
         this._cornerBottomLeft.spawn("UI");
         this._cornerBottomRight.spawn("UI");
+        this._tutorialButton.spawn("UI");
+        this._playButton.spawn("UI");
+        this._quitButton.spawn("UI");
     };
 
     this.destroy = function () 

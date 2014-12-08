@@ -1,5 +1,6 @@
 require("js/level/player");
-require("js/level/enemy");
+require("js/level/enemy_tree");
+require("js/level/enemy_oil");
 require("js/level/hud");
 require("js/level/light_overlay");
 require("js/level/storage");
