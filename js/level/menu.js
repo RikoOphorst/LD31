@@ -185,7 +185,6 @@ var Menu = function ()
     };
 
     this.spawn = function () {
-        ShownTooltip = this;
         this._topBorder.spawn("UI");
         this._leftBorder.spawn("UI");
         this._rightBorder.spawn("UI");
