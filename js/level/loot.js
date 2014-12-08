@@ -15,7 +15,7 @@ var Loot = function (x, y, loot)
     this.pickupRange = 35;
     this.alive = true;
 
-    this._tooltip = new Tooltip(this, loot.text, 50, 80, 27, 0.9);
+    this._tooltip = new Tooltip(this, loot.text, 30, 40, 29, 0.8);
 
     this._shadow = Quad2D.new();
     this._shadow.setTexture("textures/ui/shadow_loot.png");
