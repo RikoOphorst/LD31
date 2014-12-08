@@ -24,7 +24,7 @@ var Menu = function ()
     this._logoShadow.spawn("Default");
 
     this._logoHead = Widget.new();
-    this._logoHead.setTexture("textures/ui/logo_head.png");
+    this._logoHead.setTexture("textures/ui/logo_head.tif");
     this._logoHead.setToTexture();
     this._logoHead.setOffset(0.5, 0.5);
     this._logoHead.setTranslation(-260, -53, 2);
@@ -114,6 +114,11 @@ var Menu = function ()
         else
         {
             this._rainModifier = 1;
+        }
+
+        if (Keyboard.lastPressed() !== "None")
+        {
+            StateManager.switchState(LevelState);
         }
 
         this._rainOffset += dt * 1.2;
