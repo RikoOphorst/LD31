@@ -113,7 +113,9 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
 
         for (var i = 0; i < amountMobs; i++)
         {
-            enemies.push(new Enemy(Math.ceil(Math.random() * 2) == 1 ? RenderSettings.resolution().w / 2 : -(RenderSettings.resolution().w / 2), Math.random() * RenderSettings.resolution().h));
+            var enemyType = Math.round(Math.random()) === 1 ? EnemyTree : EnemyOil;
+
+            enemies.push(new enemyType(Math.ceil(Math.random() * 2) == 1 ? RenderSettings.resolution().w / 2 : -(RenderSettings.resolution().w / 2), Math.random() * RenderSettings.resolution().h));
         }
     }
 };
