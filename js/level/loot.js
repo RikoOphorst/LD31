@@ -31,7 +31,7 @@ var Loot = function (x, y, loot)
         {
             if (Math.distance(this.translation(), player.translation()) <= this.pickupRange)
             {
-                //this.pickUp(player);
+                this.pickUp(player);
             }
 
             this.timer += dt;
@@ -47,7 +47,7 @@ var Loot = function (x, y, loot)
                 );
             }
 
-            if (this.timer >= 500)
+            if (this.timer >= 10)
             {
                 var t = (this.timer - 10);
 
