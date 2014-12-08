@@ -110,11 +110,6 @@ var Level = function(camera)
 
 	this._dino = new Dino();
 
-	for (var i = 0; i < 4; ++i)
-	{
-		this._trees.push(new Tree(-640+Math.random()*1280, -150 + Math.random()*510, this._loot));
-	}
-
 	this.shakeCamera = function(magnitude, duration)
 	{
 		this._shakeTimer = duration;
