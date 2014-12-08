@@ -46,6 +46,8 @@ var Torch = function(x,y)
 
 	this._hitTimer = 0;
 
+	this._tooltip = new Tooltip(this, "It's a [colour=92bf67]Torch[/colour], this will attract enemies and\nkeep things lit up for you...", 30, 30, 29, 0.7);
+
     this.damage = function(dmg)
     {
         this._hitTimer = 0.2;
@@ -63,11 +65,13 @@ var Torch = function(x,y)
     	this._alive = false;
         this.destroy();
         this._light.destroy();
+        this._tooltip.destroy();
     };
 
 	this.update = function(dt)
 	{
 		this._animation.update(dt);
+		this._tooltip.update(dt);
 
 		this._timer += dt;
 
