@@ -50,7 +50,7 @@ var Enemy = function (x, y)
 
     frames[3].event = function ()
     {
-        this._target.damage(1);
+        this._target.damage(Math.floor(Math.randomRange(2,6)));
     };
 
     frames[3].ctx = this;

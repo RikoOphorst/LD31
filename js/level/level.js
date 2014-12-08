@@ -130,6 +130,7 @@ var Level = function(camera)
 
 	this.update = function(dt)
 	{
+		this._hud.update(dt);
 		this._camera.setTranslation(0, 0, 0);
 		if (this._effect == WeatherEffects.Rain)
 		{

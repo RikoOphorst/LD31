@@ -12,6 +12,8 @@ var Player = function(level)
 	this.setTranslation(0, 0, 360 + 8);
 	this.spawn("Default");
 
+	this._hitsound = false;
+
 	this._moveSpeed = 275;
 	this._movementMargin = 8;
 	this._moveTarget = {
@@ -185,6 +187,8 @@ var Player = function(level)
 	this._footstep = false;
 	this._oldFootstep = 1;
 
+	this._footsteps = [];
+
 	this.setSelectedEnemy = function(selected)
 	{
 		this._selectedEnemy = selected;
@@ -225,6 +229,11 @@ var Player = function(level)
 		{
 			trees[i].translateBy(-x/50, -y/50, 0);
 		}
+
+		for (var i = 0; i < this._footsteps.length; ++i)
+		{
+			this._footsteps[i].translateBy(-x/50, -y/50, 0);
+		}
 	}
 
 	this._hitTimer = 0;
@@ -235,6 +244,13 @@ var Player = function(level)
         this._stats.health -= dmg;
         this.setUniform("float", "Hit", 1);
 
+        if (this._hitsound == false)
+        {
+        	var rand = Math.floor(Math.random()*3)+1;
+        	SoundSystem.play("sounds/player_hit_" + rand + ".wav", "SFX", false);
+        	this._hitsound = true;
+        }
+
         if (this._stats.health <= 0)
         {
         	this._stats.health = 0;
@@ -244,11 +260,36 @@ var Player = function(level)
 
     this.kill = function () 
     {
-        //assert('JIJ WEET NIET WIE IK BEN');
+        
     };
 
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
 	{
+		for (var i = this._footsteps.length - 1; i >= 0; --i)
+		{
+			var footstep = this._footsteps[i];
+
+			var a = footstep.alpha();
+
+			if (a > 0)
+			{
+				a -= dt / 5;
+			}
+			else
+			{
+				a = 0;
+			}
+
+			if (a <= 0)
+			{
+				footstep.destroy();
+				this._footsteps.splice(i, 1);
+				continue;
+			}
+
+			footstep.setAlpha(a);
+		}
+
 		if (this._chopTimer < 1)
 		{
 			this._chopTimer += dt;
@@ -276,6 +317,7 @@ var Player = function(level)
         }
         else
         {
+        	this._hitsound = false;
             this.setUniform("float", "Hit", 0);
         }
 
@@ -402,6 +444,30 @@ var Player = function(level)
 					SoundSystem.play("sounds/footstep_" + rand + ".wav", "SFX", false);
 					this._footstep = true;
 					this._oldFootstep = rand;
+
+					var scale = 1 + t.y / 360;
+
+					var footstep = Quad2D.new();
+					footstep.setTexture("textures/characters/footstep.png");
+					footstep.setToTexture();
+					footstep.setOffset(0.5, 0.5);
+					footstep.setTranslation(t.x, t.y - 10, 360 + t.y - 5);
+					footstep.spawn("Default");
+					footstep.setScale(scale*s, scale);
+					footstep.setAlpha(0.75);
+
+					this._footsteps.push(footstep);
+
+					footstep = Quad2D.new();
+					footstep.setTexture("textures/characters/footstep.png");
+					footstep.setToTexture();
+					footstep.setOffset(0.5, 0.5);
+					footstep.setTranslation(t.x + 15 * s, t.y - 20, 360 + t.y - 5);
+					footstep.spawn("Default");
+					footstep.setScale(scale*s, scale);
+					footstep.setAlpha(0.75);
+
+					this._footsteps.push(footstep);
 				}
 			}
 			else
@@ -505,7 +571,7 @@ var Player = function(level)
 		if (this._attackTimer < 1)
 		{
 			this._idleTimer = 0;
-			this._attackTimer += dt*7;
+			this._attackTimer += dt*5;
 			var s = Math.abs(this.scale().x)/this.scale().x;
 			this._lanternStick.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
 			this._lantern.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
