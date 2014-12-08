@@ -8,6 +8,7 @@ require("js/utility/sprite_animation");
 require("js/test_state");
 require("js/level/level_state");
 require("js/level/menu_state");
+require("js/level/end_game_state");
 
 var RenderTargets = RenderTargets || {
 	default: RenderTarget.new("Default"),

@@ -208,13 +208,15 @@ var HUD = function ()
         switch (reason)
         {
             case KillReasons.Dead:
-                this._deadText.setText("You've been overrun by the creatures of nature..\n\n[size=32]Press ENTER to restart[/size]");
+                GLOBALKILLTEXT = "[size=28]You've been overrun by\nthe creatures of nature..[/size]";
                 break;
 
             case KillReasons.Light:
-                this._deadText.setText("The slumbering darkness has overwhelmed you..\n\n[size=32]Press ENTER to restart[/size]");
+                GLOBALKILLTEXT = "[size=28]The slumbering darkness\nhas overwhelmed you..[/size]";
                 break;
         }
+
+        StateManager.switchState(EndGameState);
     }
 
     this.wood = function()

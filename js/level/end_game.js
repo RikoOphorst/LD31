@@ -1,4 +1,4 @@
-var Menu = function ()
+var EndGame = function ()
 {
     this._torch = Widget.new();
     this._torch.setTexture("textures/level/torch/torch_light.png");
@@ -132,26 +132,6 @@ var Menu = function ()
     this._cornerBottomRight.setTranslation(641, 228, 802);
     this._cornerBottomRight.setScale(0.5, 0.5);
 
-    this._tutorialButton = Widget.new();
-    this._tutorialButton.setTexture("textures/ui/tutorial_up_button.png");
-    this._tutorialButton.setToTexture();
-    this._tutorialButton.setOffset(0.5, 0);
-    this._tutorialButton.setTranslation(-250, 245, 1000);
-    this._tutorialButtonMA = MouseArea.new(this._tutorialButton);
-
-    this._tutorialButtonMA.setOnPressed(function (self) {
-        self._tutorialButton.setTexture("textures/ui/tutorial_down_button.png");
-    }, this);
-    this._tutorialButtonMA.setOnReleased(function (self) {
-        self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
-    }, this);
-    this._tutorialButtonMA.setOnEnter(function (self) {
-        self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
-    }, this);
-    this._tutorialButtonMA.setOnLeave(function (self) {
-        self._tutorialButton.setTexture("textures/ui/tutorial_up_button.png");
-    }, this);
-
     this._playButton = Widget.new();
     this._playButton = Widget.new();
     this._playButton.setTexture("textures/ui/play_up_button.png");
@@ -164,6 +144,7 @@ var Menu = function ()
     }, this);
     this._playButtonMA.setOnReleased(function (self) {
         self._playButton.setTexture("textures/ui/play_move_button.png");
+        self.destroy();
         StateManager.switchState(LevelState);
     }, this);
     this._playButtonMA.setOnEnter(function (self) {
@@ -173,29 +154,10 @@ var Menu = function ()
         self._playButton.setTexture("textures/ui/play_up_button.png");
     }, this);
 
-    this._quitButton = Widget.new();
-    this._quitButton = Widget.new();
-    this._quitButton.setTexture("textures/ui/quit_up_button.png");
-    this._quitButton.setToTexture();
-    this._quitButton.setOffset(0.5, 0);
-    this._quitButton.setTranslation(250, 245, 1000);
-    this._quitButtonMA = MouseArea.new(this._quitButton);
-    this._quitButtonMA.setOnPressed(function (self) {
-        self._quitButton.setTexture("textures/ui/quit_down_button.png");
-    }, this);
-    this._quitButtonMA.setOnReleased(function (self) {
-        self._quitButton.setTexture("textures/ui/quit_move_button.png");
-        Game.quit();
-    }, this);
-    this._quitButtonMA.setOnEnter(function (self) {
-        self._quitButton.setTexture("textures/ui/quit_move_button.png");
-    }, this);
-    this._quitButtonMA.setOnLeave(function (self) {
-        self._quitButton.setTexture("textures/ui/quit_up_button.png");
-    }, this);
-
     this.timer = 0;
     this.thunderTimer = -1;
+
+    this._tooltip = new Tooltip({}, GLOBALKILLTEXT, 30, 30, 29, 0.8, true, {x: 200, y: 0, z: 999999});
 
     RenderTargets.lighting.setShader("shaders/post_processing.fx");
 
@@ -211,11 +173,6 @@ var Menu = function ()
             this._rainModifier = 1;
         }
 
-        if (Keyboard.lastPressed() !== "None")
-        {
-            StateManager.switchState(LevelState);
-        }
-
         this._thunderFlash.setAlpha(0);
         if (this.thunderTimer > 0)
         {
@@ -228,6 +185,9 @@ var Menu = function ()
                 this.thunderTimer = Math.randomRange(0.6, 0.7);
             }
         }
+
+        this._tooltip.update(dt);
+
         this.thunderTimer -= dt;
 
         this._rainOffset += dt * 1.2;
@@ -255,9 +215,7 @@ var Menu = function ()
         this._cornerTopRight.spawn("UI");
         this._cornerBottomLeft.spawn("UI");
         this._cornerBottomRight.spawn("UI");
-        this._tutorialButton.spawn("UI");
         this._playButton.spawn("UI");
-        this._quitButton.spawn("UI");
     };
 
     this.destroy = function () 
@@ -266,9 +224,6 @@ var Menu = function ()
         {
             ShownTooltip = undefined;
         }
-        
-        this._text.destroy();
-        this._background.destroy();
         this._topBorder.destroy();
         this._leftBorder.destroy();
         this._rightBorder.destroy();
@@ -277,6 +232,7 @@ var Menu = function ()
         this._cornerTopRight.destroy();
         this._cornerBottomLeft.destroy();
         this._cornerBottomRight.destroy();
+        this._tooltip.destroy();
     };
 
     this.spawn();
