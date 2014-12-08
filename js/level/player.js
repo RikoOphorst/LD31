@@ -322,7 +322,7 @@ var Player = function(level)
 		{
 			if (this._moveTarget.enemy !== undefined && this._attackTimer >= 1)
 			{
-				this._level.shakeCamera(5,3);
+				this._level.shakeCamera(4,2);
 				this._moveTarget.enemy.damage(20);
 				this._moveTarget.enemy.setUniform("float", "Selected", 0);
 				this._attackTimer = 0;
@@ -351,7 +351,7 @@ var Player = function(level)
 		if (this._attackTimer < 1)
 		{
 			this._idleTimer = 0;
-			this._attackTimer += dt*4;
+			this._attackTimer += dt*10;
 			var s = Math.abs(this.scale().x)/this.scale().x;
 			this.setRotation(0, 0, Math.sin(this._attackTimer*Math.PI*2)/8*s);
 			this._lanternStick.translateBy(0, Math.sin(this._attackTimer*Math.PI*2)*80*dt, 0);
