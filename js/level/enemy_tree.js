@@ -291,20 +291,30 @@ var EnemyTree = function (x, y)
 
     this.kill = function()
     {
-        var rand = Math.random();
+        this.setUniform("float", "Selected", 0);
+        this.setUniform("float", "Hit", 0);
 
-        if (rand < 0.2)
+        var r = Math.random();
+
+        var data = LootData.WOOD;
+
+        if (r < 0.2)
         {
-            this.setUniform("float", "Selected", 0);
-            this.setUniform("float", "Hit", 0);
-            this._loot.push(
-                new Loot(
-                    this.translation().x + (-50 + Math.random() * 100), 
-                    this.translation().y + (-50 + Math.random() * 100), 
-                    LootData.WOOD
-                )
-            );
+            data = LootData.SEEDS;
         }
+
+        if (r > 0.8)
+        {
+            data = LootData.FLINTS;
+        }
+
+        this._loot.push(
+            new Loot(
+                this.translation().x + (-50 + Math.random() * 100), 
+                this.translation().y + (-50 + Math.random() * 100), 
+                data
+            )
+        );
         
         this._killTimer = 0;
     }

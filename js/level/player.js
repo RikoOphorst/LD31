@@ -188,6 +188,15 @@ var Player = function(level)
 	this._exampleTorch.setBlend(3, 3, 3);
 	this._exampleTorch.spawn("Default");
 
+	this._exampleSapling = Quad2D.new();
+	this._exampleSapling.setTexture("textures/level/trees/tree_sapling.png");
+	this._exampleSapling.setToTexture();
+	this._exampleSapling.setAlpha(0);
+	this._exampleSapling.setOffset(0.5, 1);
+	this._exampleSapling.setTranslation(0, 0, 1000);
+	this._exampleSapling.setBlend(3, 3, 3);
+	this._exampleSapling.spawn("Default");
+
 	this._lanternOn = false;
 	this._footstep = false;
 	this._oldFootstep = 1;
@@ -395,7 +404,7 @@ var Player = function(level)
 		{
 			this._exampleTorch.setAlpha(1);
 
-			if (this._level.hud().wood() <= 0)
+			if (this._level.hud().wood() <= 0 && this._level.hud().flints() <= 0 && this._level._rainModifier < 1)
 			{
 				this._exampleTorch.setBlend(1, 0, 0);
 			}
@@ -407,14 +416,44 @@ var Player = function(level)
 			this._level.setArea(true);
 		}
 
+		if (Keyboard.isDown("E"))
+		{
+			this._exampleSapling.setAlpha(1);
+
+			if (this._level.hud().seeds() <= 0 && this._level._snowModifier < 1)
+			{
+				this._exampleSapling.setBlend(1, 0, 0);
+			}
+			else
+			{
+				this._exampleSapling.setBlend(3, 3, 3);
+			}
+			this._exampleSapling.setTranslation(this.translation().x + 100 * this.scale().x, this.translation().y, 1000);
+			this._level.setArea(true);
+		}
+
 		if (Keyboard.isReleased("W"))
 		{
 			this._exampleTorch.setAlpha(0);
 
-			if (this._level.hud().wood() > 0)
+			if (this._level.hud().wood() > 0 && this._level.hud().flints() > 0 && this._level._rainModifier < 1)
 			{
 				torches.push(new Torch(this._exampleTorch.translation().x, this._exampleTorch.translation().y));
 				this._level.hud().decrease("wood");
+				this._level.hud().decrease("flints");
+			}
+			
+			this._level.setArea(false);
+		}
+
+		if (Keyboard.isReleased("E"))
+		{
+			this._exampleSapling.setAlpha(0);
+
+			if (this._level.hud().seeds() > 0 && this._level._snowModifier < 1)
+			{
+				trees.push(new Tree(this._exampleSapling.translation().x, this._exampleSapling.translation().y, this._level._loot));
+				this._level.hud().decrease("seeds");
 			}
 			
 			this._level.setArea(false);
@@ -681,7 +720,7 @@ var Player = function(level)
 
 		this._currentAnimation.update(dt);
 
-		if (Keyboard.isPressed("E"))
+		if (Keyboard.isPressed("1"))
 		{
 			this._lanternOn = !this._lanternOn;
 			SoundSystem.play("sounds/toggle_light.wav", "SFX", false);
