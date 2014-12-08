@@ -1,4 +1,4 @@
-var Enemy = function (x, y) 
+var EnemyTree = function (x, y) 
 {
     this._quad2d = Quad2D.new();
 
