@@ -303,10 +303,18 @@ var EnemyTree = function (x, y)
             data = LootData.SEEDS;
         }
 
-        if (r > 0.8)
+        if (r > 0.5)
         {
             data = LootData.FLINTS;
         }
+
+        this._loot.push(
+            new Loot(
+                this.translation().x + (-50 + Math.random() * 100), 
+                this.translation().y + (-50 + Math.random() * 100), 
+                data
+            )
+        );
 
         this._loot.push(
             new Loot(

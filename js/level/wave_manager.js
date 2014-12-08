@@ -17,6 +17,7 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
 
     this.update = function (dt)
     {
+        dt *= 2;
         if (this.turnTimer <= 0)
         {
             switch (this.op)
@@ -109,11 +110,9 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
             level.setWeatherEffect(WeatherEffects.None);
         }
 
-        level.setWeatherEffect(WeatherEffects.None);
-
         for (var i = 0; i < amountMobs; i++)
         {
-            var enemyType = Math.round(Math.random()) === 1 ? EnemyTree : EnemyOil;
+            var enemyType = Math.random() > 0.3 ? EnemyTree : EnemyOil;
 
             enemies.push(new enemyType(Math.ceil(Math.random() * 2) == 1 ? RenderSettings.resolution().w / 2 : -(RenderSettings.resolution().w / 2), Math.random() * RenderSettings.resolution().h));
         }

@@ -50,7 +50,7 @@ var EnemyOil = function (x, y)
 
     frames[6].event = function ()
     {
-        this._target.damage(Math.floor(Math.randomRange(2,6)));
+        this._target.damage(Math.floor(Math.randomRange(6,12)));
     };
 
     frames[6].ctx = this;
@@ -62,7 +62,7 @@ var EnemyOil = function (x, y)
     this._wobble = 0;
     this._radius = 100;
     this._hitTimer = 1;
-    this._health = 100;
+    this._health = 200;
 
     this.setUniform("float", "Hit", 0);
     this.setUniform("float", "Selected", 0);
@@ -291,20 +291,25 @@ var EnemyOil = function (x, y)
 
     this.kill = function()
     {
+        this.setUniform("float", "Selected", 0);
+        this.setUniform("float", "Hit", 0);
+
         var rand = Math.random();
 
-        if (rand < 0.2)
+        var data = LootData.POTION;
+
+        if (rand < 0.25)
         {
-            this.setUniform("float", "Selected", 0);
-            this.setUniform("float", "Hit", 0);
-            this._loot.push(
-                new Loot(
-                    this.translation().x + (-50 + Math.random() * 100), 
-                    this.translation().y + (-50 + Math.random() * 100), 
-                    LootData.WOOD
-                )
-            );
+            data = LootData.OIL;
         }
+
+        this._loot.push(
+            new Loot(
+                this.translation().x + (-50 + Math.random() * 100), 
+                this.translation().y + (-50 + Math.random() * 100), 
+                data
+            )
+        );
         
         this._killTimer = 0;
     }
