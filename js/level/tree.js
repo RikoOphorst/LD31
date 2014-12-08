@@ -19,6 +19,11 @@ var Tree = function(x, y)
 	var rand = Math.random();
 
 	this.x_scale = 1;
+	this.setShader("shaders/animation.fx");
+	this.addPass("shaders/border_animation.fx");
+	this.setUniform("float4", "AnimationMetrics", 0, 0, 1, 1);
+	this.setUniform("float", "Hit", 0);
+	this.setUniform("float", "Selected", 0);
 
 	if (rand < 0.5)
 	{
@@ -51,6 +56,26 @@ var Tree = function(x, y)
 
 		this.setToTexture();
 		this._growTimer = 0;
+	}
+
+	this.hitTest = function()
+	{
+		var mousePos = Mouse.position(Mouse.Relative);
+        var trans = this.translation();
+        var size = this.size();
+
+        if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
+            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h)
+        {
+            return true;
+        }
+
+        return false;
+	}
+
+	this.deselect = function()
+	{
+		this.setUniform("float", "Selected", 0);
 	}
 
 	this.update = function(dt)
