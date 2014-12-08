@@ -23,7 +23,7 @@ var Level = function(camera)
 	this._nightHorizon.setToTexture();
 	this._nightHorizon.spawn("Default");
 	this._nightHorizon.setOffset(0.5, 0.48);
-	this._nightHorizon.setScale(1.1, 1.1);
+	this._nightHorizon.setScale(1.15, 1.15);
 	this._nightHorizon.setTranslation(0, 0, 0);
 
 	this._eveningHorizon = Quad2D.new();
@@ -31,7 +31,7 @@ var Level = function(camera)
 	this._eveningHorizon.setToTexture();
 	this._eveningHorizon.spawn("Default");
 	this._eveningHorizon.setOffset(0.5, 0.48);
-	this._eveningHorizon.setScale(1.1, 1.1);
+	this._eveningHorizon.setScale(1.15, 1.15);
 	this._eveningHorizon.setTranslation(0, 0, 0);
 
 	this._dayHorizon = Quad2D.new();
@@ -39,7 +39,7 @@ var Level = function(camera)
 	this._dayHorizon.setToTexture();
 	this._dayHorizon.spawn("Default");
 	this._dayHorizon.setOffset(0.5, 0.48);
-	this._dayHorizon.setScale(1.1, 1.1);
+	this._dayHorizon.setScale(1.15, 1.15);
 	this._dayHorizon.setTranslation(0, 0, 0);
 
 	this._surface = Quad2D.new();
@@ -48,7 +48,7 @@ var Level = function(camera)
 	this._surface.setToTexture();
 	this._surface.setOffset(0.5, 0.5);
 	this._surface.setTranslation(0,0, 0.1);
-	this._surface.setScale(1.05, 1.05);
+	this._surface.setScale(1.15, 1.15);
 
 	this._rain = Quad2D.new();
 	this._rain.setOffset(0.5, 0.5);
@@ -119,6 +119,11 @@ var Level = function(camera)
 	this.setWeatherEffect = function(effect)
 	{
 		this._effect = effect;
+	}
+
+	this.hud = function()
+	{
+		return this._hud;
 	}
 
 	this.update = function(dt)
