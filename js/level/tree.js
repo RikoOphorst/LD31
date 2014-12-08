@@ -37,20 +37,28 @@ var Tree = function(x, y)
 			return;
 		}
 
+		if (this._tooltip !== undefined)
+		{
+			this._tooltip.destroy();
+		}
+
 		++this._state;
 
 		switch (this._state)
 		{
 			case TreeStates.Sapling:
 				this.setTexture("textures/level/trees/tree_sapling.png");
+				this._tooltip = new Tooltip(this, "This [colour=A1A1A1]Sapling[/colour] will take a while to grow..", 30, 30, 29, 0.8);
 			break;
 			
 			case TreeStates.Small:
 				this.setTexture("textures/level/trees/tree_small.png");
+				this._tooltip = new Tooltip(this, "It's the [colour=bcb541]beginning of a tree[/colour],\njust a little longer!", 30, 30, 29, 0.8);
 			break;
 
 			case TreeStates.Full:
 				this.setTexture("textures/level/trees/tree_full.png");
+				this._tooltip = new Tooltip(this, "Left click to chop [colour=00FF00]tree[/colour] for [colour=92bf67]wood[/colour]", 30, 30, 29, 0.8);
 			break;
 		}
 
@@ -80,6 +88,7 @@ var Tree = function(x, y)
 
 	this.update = function(dt)
 	{
+		this._tooltip.update();
 		if (this._growTimer < 1)
 		{
 			this._growTimer += dt;

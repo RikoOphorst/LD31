@@ -1,3 +1,5 @@
+ShownTooltip = undefined;
+
 var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, alpha) {
 
     this._background = Widget.new();
@@ -6,6 +8,8 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
     this._text.setFontFamily("fonts/test.ttf");
     this._text.setFontSize(12);
     this._text.setText(text);
+    this._text.setShadowOffset(1,1);
+    this._text.setSpacing(-0.5,0);
     this._text.setTranslation(paddingWidth, paddingHeight, 801);
 
     this._background.setSize(this._text.metrics().width + paddingWidth * 2, this._text.metrics().height + paddingHeight * 2);
@@ -87,7 +91,7 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
         var size = parent.size();
 
         if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
-            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h)
+            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h && (ShownTooltip === undefined || ShownTooltip == this))
         {
             this.spawn();
 
@@ -114,13 +118,14 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
                 }
             }
         }
-        else
+        else if (ShownTooltip == this)
         {
             this.destroy();
         }
     }
 
     this.spawn = function () {
+        ShownTooltip = this;
         this._background.spawn("UI");
         this._topBorder.spawn("UI");
         this._leftBorder.spawn("UI");
@@ -135,6 +140,7 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
 
     this.destroy = function () 
     {
+        ShownTooltip = undefined;
         this._text.destroy();
         this._background.destroy();
         this._topBorder.destroy();
