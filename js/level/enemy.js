@@ -33,6 +33,25 @@ var Enemy = function (x, y)
     this._animation.start();
     this._animation.setSpeed(20);
 
+    this._tooltip = new Tooltip(this, "Left click to attack [colour=FF0000]Ent[/colour]", 30, 30, 29, 0.8);
+
+    frames = [];
+
+    for (var i = 0; i < 5; ++i)
+    {
+        frames.push({
+            width: 192,
+            height: 211,
+            x: i*192,
+            y: 0
+        });
+    }
+
+    this._animation = new SpriteAnimation(this,frames);
+    this._animation.setLoop(false);
+    this._animation.start();
+    this._animation.setSpeed(20);
+
     this._wobble = 0;
     this._radius = 100;
     this._hitTimer = 1;
@@ -83,11 +102,12 @@ var Enemy = function (x, y)
 
     this.update = function (dt, target, enemies, loot)
     {
+        this._tooltip.update();
         this._loot = loot;
         if (this._hitTimer < 1)
         {
             this._hitTimer += dt*10;
-            this.setRotation(0, 0, Math.sin(this._hitTimer/10*Math.PI*2)/2*-this.scale().x);
+            this.setRotation(0, 0, Math.sin(this._hitTimer/10*Math.PI*2)/4*-this.scale().x);
             return;
         }
         else
@@ -211,5 +231,6 @@ var Enemy = function (x, y)
         );
         this._killed = true;
         this.destroy();
+        this._tooltip.destroy();
     }
 }
