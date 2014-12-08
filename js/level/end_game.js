@@ -143,9 +143,15 @@ var EndGame = function ()
         self._playButton.setTexture("textures/ui/play_down_button.png");
     }, this);
     this._playButtonMA.setOnReleased(function (self) {
-        self._playButton.setTexture("textures/ui/play_up_button.png");
+        self._playButton.setTexture("textures/ui/play_move_button.png");
         self.destroy();
         StateManager.switchState(LevelState);
+    }, this);
+    this._playButtonMA.setOnEnter(function (self) {
+        self._playButton.setTexture("textures/ui/play_move_button.png");
+    }, this);
+    this._playButtonMA.setOnLeave(function (self) {
+        self._playButton.setTexture("textures/ui/play_up_button.png");
     }, this);
 
     this.timer = 0;

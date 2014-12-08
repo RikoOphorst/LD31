@@ -143,6 +143,12 @@ var Menu = function ()
         self._tutorialButton.setTexture("textures/ui/tutorial_down_button.png");
     }, this);
     this._tutorialButtonMA.setOnReleased(function (self) {
+        self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
+    }, this);
+    this._tutorialButtonMA.setOnEnter(function (self) {
+        self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
+    }, this);
+    this._tutorialButtonMA.setOnLeave(function (self) {
         self._tutorialButton.setTexture("textures/ui/tutorial_up_button.png");
     }, this);
 
@@ -157,8 +163,14 @@ var Menu = function ()
         self._playButton.setTexture("textures/ui/play_down_button.png");
     }, this);
     this._playButtonMA.setOnReleased(function (self) {
-        self._playButton.setTexture("textures/ui/play_up_button.png");
+        self._playButton.setTexture("textures/ui/play_move_button.png");
         StateManager.switchState(LevelState);
+    }, this);
+    this._playButtonMA.setOnEnter(function (self) {
+        self._playButton.setTexture("textures/ui/play_move_button.png");
+    }, this);
+    this._playButtonMA.setOnLeave(function (self) {
+        self._playButton.setTexture("textures/ui/play_up_button.png");
     }, this);
 
     this._quitButton = Widget.new();
@@ -172,8 +184,14 @@ var Menu = function ()
         self._quitButton.setTexture("textures/ui/quit_down_button.png");
     }, this);
     this._quitButtonMA.setOnReleased(function (self) {
-        self._quitButton.setTexture("textures/ui/quit_up_button.png");
+        self._quitButton.setTexture("textures/ui/quit_move_button.png");
         Game.quit();
+    }, this);
+    this._quitButtonMA.setOnEnter(function (self) {
+        self._quitButton.setTexture("textures/ui/quit_move_button.png");
+    }, this);
+    this._quitButtonMA.setOnLeave(function (self) {
+        self._quitButton.setTexture("textures/ui/quit_up_button.png");
     }, this);
 
     this.timer = 0;
