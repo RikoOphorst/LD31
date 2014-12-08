@@ -32,6 +32,7 @@ var Enemy = function (x, y)
     this._animation.setLoop(true);
     this._animation.start();
     this._animation.setSpeed(20);
+    this._currentAnimation = this._animation;
 
     this._tooltip = new Tooltip(this, "Left click to attack [colour=FF0000]Ent[/colour]", 30, 30, 29, 0.8);
 
@@ -40,17 +41,16 @@ var Enemy = function (x, y)
     for (var i = 0; i < 5; ++i)
     {
         frames.push({
-            width: 192,
-            height: 211,
-            x: i*192,
+            width: 209,
+            height: 216,
+            x: i*209,
             y: 0
         });
     }
 
-    this._animation = new SpriteAnimation(this,frames);
-    this._animation.setLoop(false);
-    this._animation.start();
-    this._animation.setSpeed(20);
+    this._animationAttack = new SpriteAnimation(this,frames);
+    this._animationAttack.setLoop(false);
+    this._animationAttack.setSpeed(20);
 
     this._wobble = 0;
     this._radius = 100;
@@ -116,7 +116,7 @@ var Enemy = function (x, y)
             this.setUniform("float", "Hit", 0);
         }
 
-        this._animation.update(dt);
+        this._currentAnimation.update(dt);
         var translation = this.translation();
 
         var tTranslation = target.translation();
@@ -163,7 +163,8 @@ var Enemy = function (x, y)
 
         if (Math.distance(x1, y1, x2, y2) >= movementMargin + tSize.w / 2)
         {
-             this._animation.setSpeed(20);
+            this.playWalk();
+            this._animation.setSpeed(20);
 
             this._wobble += dt*8;
 
@@ -171,6 +172,8 @@ var Enemy = function (x, y)
         }
         else
         {
+            this.playAttack();
+
             this._animation.setSpeed(0);
             this.setRotation(0,0,0);
         }
@@ -215,6 +218,30 @@ var Enemy = function (x, y)
         }
 
         this._tooltip.update();
+    }
+
+    this.playWalk = function ()
+    {
+        if (this._currentAnimation !== this._animation)
+        {
+            this.setTexture("textures/characters/tree_walk.png");
+            this._currentAnimation.stop();
+            this._currentAnimation = this._animation;
+            this._currentAnimation.start();
+            this._currentAnimation.setToFrame(0);
+        }
+    }
+
+    this.playAttack = function ()
+    {
+        if (this._currentAnimation !== this._animationAttack)
+        {
+            this.setTexture("textures/characters/tree_attack.png");
+            this._currentAnimation.stop();
+            this._currentAnimation = this._animationAttack;
+            this._currentAnimation.start();
+            this._currentAnimation.setToFrame(0);
+        }
     }
 
     this.killed = function()
