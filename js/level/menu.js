@@ -70,6 +70,14 @@ var Menu = function ()
     this._rainModifier = 0;
     this._rainOffset = 0;
 
+    this._thunderFlash = Widget.new();
+    this._thunderFlash.setSize(1280, 430);
+    this._thunderFlash.setAlpha(0);
+    this._thunderFlash.setOffset(0.5, 0.5);
+    this._thunderFlash.setTranslation(0, 0, 50);
+    this._thunderFlash.setBlend(1, 0.9, 1);
+    this._thunderFlash.spawn("Default");
+
     this._topBorder = Widget.new();
     this._topBorder.setSize(1280, 30);
     this._topBorder.setTexture('textures/ui/tooltip_border.png');
@@ -125,6 +133,9 @@ var Menu = function ()
     this._cornerBottomRight.setScale(0.5, 0.5);
 
     this.timer = 0;
+    this.thunderTimer = -1;
+
+    RenderTargets.lighting.setShader("shaders/post_processing.fx");
 
     this.update = function (dt) {
         this.timer += dt;
@@ -142,6 +153,20 @@ var Menu = function ()
         {
             StateManager.switchState(LevelState);
         }
+
+        this._thunderFlash.setAlpha(0);
+        if (this.thunderTimer > 0)
+        {
+            this._thunderFlash.setAlpha(Math.sin(this.timer * 40) * 0.4);
+        }
+        else
+        {
+            if (Math.round(Math.randomRange(1, 400)) == 50)
+            {
+                this.thunderTimer = Math.randomRange(0.6, 0.7);
+            }
+        }
+        this.thunderTimer -= dt;
 
         this._rainOffset += dt * 1.2;
 
