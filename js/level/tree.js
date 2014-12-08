@@ -14,12 +14,13 @@ var Tree = function(x, y, loot)
 	this._quad2D = Quad2D.new();
 	extend(this, this._quad2D);
 
-	this._state = 1;
+	this._state = -1;
 	this.setOffset(0.5, 1);
 	this.spawn("Default");
 
 	this.setTranslation(x, y, 360 + y);
 	this._growTimer = 0;
+	this._farmTimer = 0;
 
 	var rand = Math.random();
 
@@ -162,6 +163,16 @@ var Tree = function(x, y, loot)
 
 	this.update = function(dt)
 	{
+		if (this._farmTimer < 15)
+		{
+			this._farmTimer += dt;
+		}
+		else
+		{
+			this._farmTimer = 0;
+			this.grow();
+		}
+		
 		if (this._growTimer < 1)
 		{
 			this._growTimer += dt;
