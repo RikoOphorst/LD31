@@ -34,8 +34,9 @@ var Dino = function ()
     this.update = function (dt, waveManager) {
         this.timer += dt;
         waveManager.setAdditive(0);
+        var seed = Math.round(Math.randomRange(1, 2000));
 
-        if (Math.round(Math.randomRange(1, 250)) === 25 && !this._dropTarget)
+        if (seed === 5 && !this._dropTarget)
         {
             this._dropTarget = {
                 x: Math.round(Math.randomRange(this._dropArea.x, this._dropArea.w)),
@@ -48,8 +49,9 @@ var Dino = function ()
         {
             if (this._dropTarget)
             {
+                this._print.setAlpha(1);
                 var t = this.timer;
-                waveManager.setAdditive(t);
+                waveManager.setAdditive(0 + t*0.06);
 
                 if (this.soundPlayed === undefined)
                 {
@@ -124,8 +126,6 @@ var Dino = function ()
 
                     var direction = Math.atan2(this.translation().y - this._dropTarget.y, this.translation().x - this._dropTarget.x + 48);
 
-                    Log.fatal(direction * 180 / Math.PI)
-
                     this.setRotation(0, 0, direction / 8);
 
                     if (this.fallTimer >= 1)
@@ -171,7 +171,7 @@ var Dino = function ()
                         if (this.riseTimer > 2)
                         {
                             this._print.setAlpha(1-(this.riseTimer-2) < 0 ? 0 : 1-(this.riseTimer-2));
-                            waveManager.setAdditive(1-(this.riseTimer-2) < 0 ? 0 : 1-(this.riseTimer-2))
+                            waveManager.setAdditive((1-(this.riseTimer-2) < 0 ? 0 : 1-(this.riseTimer-2))*0.06);
 
                             if (this._print.alpha() <= 0)
                             {
@@ -180,7 +180,6 @@ var Dino = function ()
                                 this.riseTimer = undefined;
                                 this.shadowTimer = undefined;
                                 this.soundPlayed = undefined;
-                                this._print.setAlpha(1);
                                 this._print.destroy();
                                 this.destroy();
                             }
