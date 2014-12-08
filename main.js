@@ -7,6 +7,7 @@ require("js/utility/sprite_animation");
 
 require("js/test_state");
 require("js/level/level_state");
+require("js/level/menu_state");
 
 var RenderTargets = RenderTargets || {
 	default: RenderTarget.new("Default"),
@@ -29,7 +30,7 @@ Game.Initialise = function()
 	Game.debug = true;
 	Game.speed = 1;
 
-	StateManager.switchState(LevelState);
+	StateManager.switchState(MenuState);
 }
 
 Game.Update = function(dt)
