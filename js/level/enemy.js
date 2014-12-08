@@ -163,9 +163,8 @@ var Enemy = function (x, y)
 
         if (Math.distance(x1, y1, x2, y2) >= movementMargin + tSize.w / 2)
         {
-            this._currentAnimation = this._animation;
+            this.playWalk();
             this._animation.setSpeed(20);
-            this.setTexture("textures/characters/tree_walk.png");
 
             this._wobble += dt*8;
 
@@ -173,13 +172,10 @@ var Enemy = function (x, y)
         }
         else
         {
+            this.playAttack();
+
             this._animation.setSpeed(0);
             this.setRotation(0,0,0);
-
-            this._animationAttack.start();
-            this._animation.stop();
-            this.setTexture("textures/characters/tree_attack.png");
-            this._currentAnimation = this._animationAttack;
         }
 
         for (var i = 0; i < enemies.length; ++i)
@@ -222,6 +218,30 @@ var Enemy = function (x, y)
         }
 
         this._tooltip.update();
+    }
+
+    this.playWalk = function ()
+    {
+        if (this._currentAnimation !== this._animation)
+        {
+            this.setTexture("textures/characters/tree_walk.png");
+            this._currentAnimation.stop();
+            this._currentAnimation = this._animation;
+            this._currentAnimation.start();
+            this._currentAnimation.setToFrame(0);
+        }
+    }
+
+    this.playAttack = function ()
+    {
+        if (this._currentAnimation !== this._animationAttack)
+        {
+            this.setTexture("textures/characters/tree_attack.png");
+            this._currentAnimation.stop();
+            this._currentAnimation = this._animationAttack;
+            this._currentAnimation.start();
+            this._currentAnimation.setToFrame(0);
+        }
     }
 
     this.killed = function()
