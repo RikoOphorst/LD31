@@ -140,7 +140,11 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
 
     this.destroy = function () 
     {
-        ShownTooltip = undefined;
+        if (ShownTooltip == this)
+        {
+            ShownTooltip = undefined;
+        }
+        
         this._text.destroy();
         this._background.destroy();
         this._topBorder.destroy();

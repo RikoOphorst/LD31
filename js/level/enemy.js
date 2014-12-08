@@ -97,6 +97,7 @@ var Enemy = function (x, y)
             return true;
         }
 
+        this._tooltip.destroy();
         return false;
     }
 
