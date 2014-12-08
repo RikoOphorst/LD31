@@ -30,6 +30,7 @@ var LevelState = function()
 
 	this.reload = function(path)
 	{
+		ShownTooltip = null;
 		this._level = new Level(this._camera);
 	}
 

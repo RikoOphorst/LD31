@@ -262,13 +262,19 @@ var Enemy = function (x, y)
 
     this.kill = function()
     {
-        this._loot.push(
-            new Loot(
-                this.translation().x + (-50 + Math.random() * 100), 
-                this.translation().y + (-50 + Math.random() * 100), 
-                LootData.WOOD
-            )
-        );
+        var rand = Math.random();
+
+        if (rand < 0.2)
+        {
+            this._loot.push(
+                new Loot(
+                    this.translation().x + (-50 + Math.random() * 100), 
+                    this.translation().y + (-50 + Math.random() * 100), 
+                    LootData.WOOD
+                )
+            );
+        }
+        
         this._killed = true;
         this.destroy();
         this._tooltip.destroy();

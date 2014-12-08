@@ -61,6 +61,11 @@ Game.Update = function(dt)
 			Log.rgb("Game speed changed to: " + Game.speed, 255, 255, 255, 127, 127, 127);
 		}
 
+		if (Keyboard.isPressed("P"))
+		{
+			Game.speed = 0.01;
+		}
+
 		dt *= Game.speed;
 	}
 	StateManager.update(dt);

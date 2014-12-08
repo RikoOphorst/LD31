@@ -1,5 +1,9 @@
 var Torch = function(x,y)
 {
+	if (x > 640 - 120)
+	{
+		x = 640 - 121;
+	}
 	this._quad = Quad2D.new();
 
 	extend(this, this._quad);

@@ -131,6 +131,11 @@ var Level = function(camera)
 		return this._hud;
 	}
 
+	this.setArea = function(bool)
+	{
+		this._surface.setTexture(bool == true ? "textures/level/background_area.png" : "textures/level/background.png");
+	}
+
 	this.update = function(dt)
 	{
 		this._hud.update(dt);
@@ -395,7 +400,7 @@ var Level = function(camera)
 			}
 		}
 
-		if (Math.distance(me.translation().x, me.translation().y, this._player.translation().x, this._player.translation().y) < 250)
+		if (Math.distance(me.translation().x, me.translation().y, this._player.translation().x, this._player.translation().y) < 150)
 		{
 			return this._player;
 		}

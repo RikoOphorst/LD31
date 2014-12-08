@@ -209,8 +209,6 @@ var Player = function(level)
 		return this._stats;
 	}
 
-
-
 	this.moveEnvironment = function(horizons, surface, torches, trees, loot, x, y)
 	{
 		for (var i = 0; i < horizons.length; ++i)
@@ -263,6 +261,7 @@ var Player = function(level)
         if (this._stats.health <= 0)
         {
         	this._stats.health = 0;
+        	this._level.hud().setHealth(this._stats.health, this._maxHealth);
             this.kill();
         }
     };
@@ -397,6 +396,7 @@ var Player = function(level)
 			this._exampleTorch.setAlpha(1);
 
 			this._exampleTorch.setTranslation(this.translation().x + 100 * this.scale().x, this.translation().y, 1000);
+			this._level.setArea(true);
 		}
 
 		if (Keyboard.isReleased("W"))
@@ -404,6 +404,7 @@ var Player = function(level)
 			this._exampleTorch.setAlpha(0);
 
 			torches.push(new Torch(this._exampleTorch.translation().x, this._exampleTorch.translation().y));
+			this._level.setArea(false);
 		}
 
 		if (Mouse.isDown(0)  && this._attackTimer >= 1)
