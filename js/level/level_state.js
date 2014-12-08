@@ -7,8 +7,6 @@ var LevelState = function()
 
 	this.initialise = function()
 	{
-		ShownTooltip = undefined;
-		ContentManager.load("box", "boxes/level.box");
 		ContentManager.loadFont("fonts/test.ttf", 12);
 		ContentManager.loadFont("fonts/test.ttf", 16);
 		ContentManager.loadFont("fonts/test.ttf", 24);
@@ -39,6 +37,9 @@ var LevelState = function()
 
 	this.destroy = function()
 	{
-		
+		if (ShownTooltip != undefined)
+		{
+			ShownTooltip.destroy();
+		}
 	}
 }

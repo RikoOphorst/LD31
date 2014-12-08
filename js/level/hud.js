@@ -169,6 +169,14 @@ var HUD = function ()
         this["_" + name + "Icon"].text.setText("[b]" + ++this["_" + name + "Value"] + "[/b]");
     }
 
+    this.decrease = function(name)
+    {
+        this["_" + name + "Timer"] = 0;
+        this["_" + name + "Icon"].setScale(0, 0);
+
+        this["_" + name + "Icon"].text.setText("[b]" + --this["_" + name + "Value"] + "[/b]");
+    }
+
     this.easeScale = function(timer, icon, dt)
     {
         if (timer < 1)

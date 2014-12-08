@@ -18,6 +18,11 @@ var RenderTargets = RenderTargets || {
 Game.Initialise = function()
 {
 	ContentManager.load("box", "boxes/boot.box");
+	ContentManager.load("box", "boxes/level.box");
+	ContentManager.load("box", "boxes/menu.box");
+    ContentManager.loadFont("fonts/test.ttf", 12);
+    ContentManager.loadFont("fonts/test.ttf", 16);
+    ContentManager.loadFont("fonts/test.ttf", 24);
 
 	Game.setName("Dwindling Fire");
 

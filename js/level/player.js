@@ -395,6 +395,14 @@ var Player = function(level)
 		{
 			this._exampleTorch.setAlpha(1);
 
+			if (this._level.hud().wood() <= 0)
+			{
+				this._exampleTorch.setBlend(1, 0, 0);
+			}
+			else
+			{
+				this._exampleTorch.setBlend(3, 3, 3);
+			}
 			this._exampleTorch.setTranslation(this.translation().x + 100 * this.scale().x, this.translation().y, 1000);
 			this._level.setArea(true);
 		}
@@ -403,7 +411,12 @@ var Player = function(level)
 		{
 			this._exampleTorch.setAlpha(0);
 
-			torches.push(new Torch(this._exampleTorch.translation().x, this._exampleTorch.translation().y));
+			if (this._level.hud().wood() > 0)
+			{
+				torches.push(new Torch(this._exampleTorch.translation().x, this._exampleTorch.translation().y));
+				this._level.hud().decrease("wood");
+			}
+			
 			this._level.setArea(false);
 		}
 

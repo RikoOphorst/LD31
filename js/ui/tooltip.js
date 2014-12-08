@@ -125,7 +125,6 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
     }
 
     this.spawn = function () {
-        ShownTooltip = this;
         this._background.spawn("UI");
         this._topBorder.spawn("UI");
         this._leftBorder.spawn("UI");
@@ -136,15 +135,12 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
         this._cornerBottomLeft.spawn("UI");
         this._cornerBottomRight.spawn("UI");
         this._text.spawn("UI");
+
+        ShownTooltip = this;
     }
 
     this.destroy = function () 
     {
-        if (ShownTooltip == this)
-        {
-            ShownTooltip = undefined;
-        }
-        
         this._text.destroy();
         this._background.destroy();
         this._topBorder.destroy();
@@ -155,5 +151,11 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
         this._cornerTopRight.destroy();
         this._cornerBottomLeft.destroy();
         this._cornerBottomRight.destroy();
+
+        if (ShownTooltip == this)
+        {
+            ShownTooltip = undefined;
+        }
+        
     };
 }
