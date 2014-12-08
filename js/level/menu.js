@@ -37,6 +37,20 @@ var Menu = function ()
     this._logoBreath.setTranslation(-280, 10, 3);
     this._logoBreath.spawn("Default");
 
+    this._menuBottom = Widget.new();
+    this._menuBottom.setTexture("textures/ui/menu_background_down.png");
+    this._menuBottom.setToTexture();
+    this._menuBottom.setOffset(0.5, 1);
+    this._menuBottom.setTranslation(0, 360, 100);
+    this._menuBottom.spawn("Default");
+
+    this._menuTop = Widget.new();
+    this._menuTop.setTexture("textures/ui/menu_background_up.png");
+    this._menuTop.setToTexture();
+    this._menuTop.setOffset(0.5, 0);
+    this._menuTop.setTranslation(0, -360, 100);
+    this._menuTop.spawn("Default");
+
     this._rain = Widget.new();
     this._rain.setOffset(0.5, 0.5);
     this._rain.setTexture("textures/level/rain_menu.png");
