@@ -49,7 +49,6 @@ var Level = function(camera)
 	this._surface.setOffset(0.5, 0.5);
 	this._surface.setTranslation(0,0, 0.1);
 	this._surface.setScale(1.05, 1.05);
-	this._torches = [];
 
 	this._rain = Quad2D.new();
 	this._rain.setOffset(0.5, 0.5);
@@ -88,11 +87,12 @@ var Level = function(camera)
 	this._snowTimer = 0;
 
 	this._trees = [];
+	this._torches = [];
 
-	for (var i = 0; i < 4; ++i)
+	/*for (var i = 0; i < 4; ++i)
 	{
 		this._torches.push(new Torch(-640+Math.random()*1280, -150 + Math.random()*510));
-	}
+	}*/
 
 	for (var i = 0; i < 4; ++i)
 	{
