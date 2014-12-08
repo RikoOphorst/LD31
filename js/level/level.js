@@ -286,9 +286,33 @@ var Level = function(camera)
 			}
 		}
 
+		hitTest = false;
+		var testedTree = undefined;
+
 		for (var i = this._trees.length - 1; i >= 0; --i)
 		{
-			this._trees[i].update(dt);
+			var tree = this._trees[i];
+			
+			tree.update(dt);
+
+			if (hitTest == false)
+			{
+				if (tree.hitTest() == true)
+				{
+					hitTest = true;
+					testedTree = tree;
+					tree.setUniform("float", "Selected", 1);
+					continue;
+				}
+			}
+		}
+
+		for (var i = 0; i < this._trees.length; ++i)
+		{
+			if (this._trees[i] != testedTree)
+			{
+				this._trees[i].deselect();
+			}
 		}
 
 		if (this._shakeTimer > 0)
