@@ -91,7 +91,7 @@ var Tooltip = function (parent, text, paddingWidth, paddingHeight, bordersize, a
         var size = parent.size();
 
         if (mousePos.x >= trans.x - size.w / 2 && mousePos.x <= trans.x + size.w / 2 &&
-            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h && (ShownTooltip === undefined || ShownTooltip == this))
+            mousePos.y <= trans.y && mousePos.y >= trans.y - size.h && (ShownTooltip === undefined || ShownTooltip == null || ShownTooltip == this))
         {
             this.spawn();
 

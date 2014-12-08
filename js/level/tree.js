@@ -6,6 +6,11 @@ enumerator("TreeStates", [
 
 var Tree = function(x, y, loot)
 {
+	if (x > 640 - 300)
+	{
+		x = 640 - 300;
+	}
+
 	this._quad2D = Quad2D.new();
 	extend(this, this._quad2D);
 
@@ -31,6 +36,7 @@ var Tree = function(x, y, loot)
 	this._wobble = 0;
 	this._fell = false;
 	this._loot = loot;
+
 
 	this.fell = function()
 	{

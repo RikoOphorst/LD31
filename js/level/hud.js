@@ -1,12 +1,23 @@
 var HUD = function () 
 {
+    this.addText = function(icon)
+    {
+        var text = Text.new(icon);
+        text.setText("[b]0[/b]");
+        text.spawn("UI");
+        text.setTranslation(10, 7, 3);
+        text.setFontSize(20);
+        text.setShadowOffset(1,1);
+
+        icon.text = text;
+    }
+
     this._background = Widget.new();
     this._background.setTexture("textures/ui/hud.png");
     this._background.setOffset(0, 1);
     this._background.setToTexture();
     this._background.setTranslation(-640, 360, 0);
     this._background.spawn("UI");
-
    
     this._healthBar = Widget.new(this._background);
     this._healthBar.setOffset(0, 1);
@@ -55,6 +66,7 @@ var HUD = function ()
     this._oilText.setOffset(0, 0.5);
     this._oilText.setShadowOffset(1,1);
     this._oilText.setFontSize(20);
+    this._oilText.setShadowOffset(1,1);
 
     this._flintsIcon = Widget.new(this._background);
     this._flintsIcon.setTexture("textures/ui/flints_icon.png");
@@ -77,6 +89,13 @@ var HUD = function ()
     this._seedsIcon.setOffset(0.5, 0.5);
     this._seedsIcon.setTranslation(235, -35, 1);
 
+    this._potionIcon = Widget.new(this._background);
+    this._potionIcon.setTexture("textures/ui/health_potion_icon.png");
+    this._potionIcon.setToTexture();
+    this._potionIcon.spawn("UI");
+    this._potionIcon.setOffset(0.5, 0.5);
+    this._potionIcon.setTranslation(305, -35, 1);
+
     this._woodTimer = 0;
     this._flintsTimer = 0;
     this._seedsTimer = 0;
@@ -85,7 +104,7 @@ var HUD = function ()
     this._overlay.setSize(1280, 720);
     this._overlay.spawn("UI");
     this._overlay.setOffset(0.5, 0.5);
-    this._overlay.setTranslation(0, 0, 3);
+    this._overlay.setTranslation(0, 0, 822);
     this._overlay.setBlend(0, 0, 0);
     this._overlay.setAlpha(0);
 
@@ -95,11 +114,20 @@ var HUD = function ()
     this._deadText.spawn("UI");
     this._deadText.setOffset(0, 0.5);
     this._deadText.setAlignment(Text.Center);
-    this._deadText.setTranslation(0, 0, 4);
+    this._deadText.setTranslation(0, 0, 826);
 
     this._dead = false;
     this._deathTimer = 0;
 
+    this.addText(this._woodIcon);
+    this.addText(this._flintsIcon);
+    this.addText(this._seedsIcon);
+    this.addText(this._potionIcon);
+
+    this._woodValue = 0;
+    this._flintsValue = 0;
+    this._seedsValue = 0;
+    this._potionValue = 0;
 
     this.setHealth = function(val, max)
     {
@@ -137,6 +165,8 @@ var HUD = function ()
     {
         this["_" + name + "Timer"] = 0;
         this["_" + name + "Icon"].setScale(0, 0);
+
+        this["_" + name + "Icon"].text.setText("[b]" + ++this["_" + name + "Value"] + "[/b]");
     }
 
     this.easeScale = function(timer, icon, dt)
@@ -174,11 +204,32 @@ var HUD = function ()
         }
     }
 
+    this.wood = function()
+    {
+        return this._woodValue;
+    }
+
+    this.flints = function()
+    {
+        return this._flintsValue;
+    }
+
+    this.seeds = function()
+    {
+        return this._seedsValue;
+    }
+
+    this.potions = function()
+    {
+        return this._potionValue;
+    }
+
     this.update = function(dt)
     {
         this._woodTimer = this.easeScale(this._woodTimer, this._woodIcon, dt);
         this._flintsTimer = this.easeScale(this._flintsTimer, this._flintsIcon, dt);
         this._seedsTimer = this.easeScale(this._seedsTimer, this._seedsIcon, dt); 
+        this._potionTimer = this.easeScale(this._potionTimer, this._potionIcon, dt); 
 
         if (this._deathTimer < 1)
         {

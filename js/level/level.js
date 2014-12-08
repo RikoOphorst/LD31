@@ -128,6 +128,11 @@ var Level = function(camera)
 		return this._hud;
 	}
 
+	this.setArea = function(bool)
+	{
+		this._surface.setTexture(bool == true ? "textures/level/background_area.png" : "textures/level/background.png");
+	}
+
 	this.update = function(dt)
 	{
 		this._hud.update(dt);

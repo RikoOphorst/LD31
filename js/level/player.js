@@ -396,6 +396,7 @@ var Player = function(level)
 			this._exampleTorch.setAlpha(1);
 
 			this._exampleTorch.setTranslation(this.translation().x + 100 * this.scale().x, this.translation().y, 1000);
+			this._level.setArea(true);
 		}
 
 		if (Keyboard.isReleased("W"))
@@ -403,6 +404,7 @@ var Player = function(level)
 			this._exampleTorch.setAlpha(0);
 
 			torches.push(new Torch(this._exampleTorch.translation().x, this._exampleTorch.translation().y));
+			this._level.setArea(false);
 		}
 
 		if (Mouse.isDown(0)  && this._attackTimer >= 1)
