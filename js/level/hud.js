@@ -81,6 +81,25 @@ var HUD = function ()
     this._flintsTimer = 0;
     this._seedsTimer = 0;
 
+    this._overlay = Widget.new();
+    this._overlay.setSize(1280, 720);
+    this._overlay.spawn("UI");
+    this._overlay.setOffset(0.5, 0.5);
+    this._overlay.setTranslation(0, 0, 3);
+    this._overlay.setBlend(0, 0, 0);
+    this._overlay.setAlpha(0);
+
+    this._deadText = Text.new();
+    this._deadText.setFontSize(48);
+    this._deadText.setFontFamily("fonts/test.ttf");
+    this._deadText.spawn("UI");
+    this._deadText.setOffset(0, 0.5);
+    this._deadText.setAlignment(Text.Center);
+    this._deadText.setTranslation(0, 0, 4);
+
+    this._dead = false;
+    this._deathTimer = 0;
+
 
     this.setHealth = function(val, max)
     {
@@ -138,10 +157,45 @@ var HUD = function ()
         return timer;
     }
 
+    this.setDead = function(dead, reason)
+    {
+        this._dead = dead;
+        this._deathTimer = 0;
+
+        switch (reason)
+        {
+            case KillReasons.Dead:
+                this._deadText.setText("You've been overrun by the creatures of nature..\n\n[size=32]Press ENTER to restart[/size]");
+                break;
+
+            case KillReasons.Light:
+                this._deadText.setText("The slumbering darkness has overwhelmed you..\n\n[size=32]Press ENTER to restart[/size]");
+                break;
+        }
+    }
+
     this.update = function(dt)
     {
         this._woodTimer = this.easeScale(this._woodTimer, this._woodIcon, dt);
         this._flintsTimer = this.easeScale(this._flintsTimer, this._flintsIcon, dt);
         this._seedsTimer = this.easeScale(this._seedsTimer, this._seedsIcon, dt); 
+
+        if (this._deathTimer < 1)
+        {
+            this._deathTimer += dt;
+            this._overlay.setAlpha(this._dead == true ? this._deathTimer : (1-this._deathTimer));
+        }
+        else
+        {
+            this._deathTimer = 1;
+        }
+
+        if (this._deathTimer >= 1 && this._dead == true)
+        {
+            if (Keyboard.isPressed("Enter"))
+            {
+               StateManager.switchState(LevelState); 
+            }
+        }
     }
 }

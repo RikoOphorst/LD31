@@ -1,5 +1,10 @@
 require("js/ui/waypoint");
 
+enumerator("KillReasons", [
+	"Dead",
+	"Light"
+	]);
+
 var Player = function(level)
 {
 	this._quad = Quad2D.new();
@@ -240,6 +245,10 @@ var Player = function(level)
 
     this.damage = function(dmg)
     {
+    	if (this._killed == true)
+    	{
+    		return;
+    	}
         this._hitTimer = 0.2;
         this._stats.health -= dmg;
         this.setUniform("float", "Hit", 1);
@@ -258,13 +267,50 @@ var Player = function(level)
         }
     };
 
-    this.kill = function () 
+    this._killed = false;
+    this._killTimer = 0;
+    this._killReason = KillReasons.Dead;
+
+    this.kill = function (reason) 
     {
-        
+        this._killed = true;
+        this._killTimer = 0;
+        this._killReason = reason || KillReasons.Dead;
     };
 
 	this.update = function(dt, horizons, surface, torches, trees, enemies, loot)
 	{
+		if (this._killed == true)
+		{
+			if (this._killTimer < 1)
+			{
+				this._lanternStick.setAlpha(0);
+				this._lantern.setAlpha(0);
+				this._killTimer += dt/2;
+				this.setAlpha((1-this._killTimer));
+				this.setUniform("float", "Hit", 0);
+				this.rotateBy(0, 0, -dt/2*Math.abs(this.scale().x)/this.scale().x);
+			}
+			else
+			{
+				if (this._showDead == true)
+				{
+					this._killTimer = 1;
+					this.setAlpha(0);
+					this._level.hud().setDead(true, this._killReason);
+					this._showDead = false;
+				}
+			}
+			return;
+		}
+		else
+		{
+			this._lanternStick.setAlpha(1);
+			this._lantern.setAlpha(1);
+			this.setAlpha(1);
+		}
+
+		this._showDead = true;
 		for (var i = this._footsteps.length - 1; i >= 0; --i)
 		{
 			var footstep = this._footsteps[i];
