@@ -391,7 +391,7 @@ var Level = function(camera)
 			}
 		}
 
-		if (Math.distance(me.translation().x, me.translation().y, this._player.translation().x, this._player.translation().y) < 250)
+		if (Math.distance(me.translation().x, me.translation().y, this._player.translation().x, this._player.translation().y) < 150)
 		{
 			return this._player;
 		}

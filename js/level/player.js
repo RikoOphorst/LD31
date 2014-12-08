@@ -209,8 +209,6 @@ var Player = function(level)
 		return this._stats;
 	}
 
-
-
 	this.moveEnvironment = function(horizons, surface, torches, trees, loot, x, y)
 	{
 		for (var i = 0; i < horizons.length; ++i)
@@ -263,6 +261,7 @@ var Player = function(level)
         if (this._stats.health <= 0)
         {
         	this._stats.health = 0;
+        	this._level.hud().setHealth(this._stats.health, this._maxHealth);
             this.kill();
         }
     };
