@@ -12,7 +12,7 @@ var Loot = function (x, y, loot)
 
     this.position = this.translation();
     this.timer = 0;
-    this.pickupRange = 48;
+    this.pickupRange = 120;
     this.alive = true;
 
     this._tooltip = new Tooltip(this, loot.text, 30, 40, 29, 0.8);

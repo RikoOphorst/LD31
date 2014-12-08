@@ -421,7 +421,7 @@ var Player = function(level)
 			}
 			else
 			{
-				if (this._selectedEnemy !== undefined)
+				if (this._selectedEnemy !== undefined && this._selectedEnemy.canAttack())
 				{
 					this._moveTarget = this._selectedEnemy.translation();
 					this._moveTarget.enemy = this._selectedEnemy;

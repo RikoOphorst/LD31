@@ -68,6 +68,8 @@ var Enemy = function (x, y)
     this.setUniform("float", "Selected", 0);
     this.addPass("shaders/border_animation.fx");
 
+    this._killTimer = 1;
+
     this._killed = false;
 
     this.radius = function()
@@ -113,6 +115,28 @@ var Enemy = function (x, y)
 
     this.update = function (dt, target, enemies, loot)
     {
+        if (this._killTimer < 1)
+        {
+            this._killTimer += dt;
+
+            var a = (1-this._killTimer);
+
+            if (a < 0)
+            {
+                a = 0;
+            }
+
+            this.setAlpha(a);
+            this.rotateBy(0, 0, -dt*Math.abs(this.scale().x)/this.scale().x / 2)
+
+            if (this._killTimer >= 1)
+            {
+                this._killed = true;
+                this.destroy();
+                this._tooltip.destroy();
+            }
+            return
+        }
         this._loot = loot;
         this._target = target;
         if (this._hitTimer < 1)
@@ -260,12 +284,19 @@ var Enemy = function (x, y)
         return this._killed;
     }
 
+    this.canAttack = function()
+    {
+        return this._killTimer >= 1;
+    }
+
     this.kill = function()
     {
         var rand = Math.random();
 
         if (rand < 0.2)
         {
+            this.setUniform("float", "Selected", 0);
+            this.setUniform("float", "Hit", 0);
             this._loot.push(
                 new Loot(
                     this.translation().x + (-50 + Math.random() * 100), 
@@ -275,8 +306,6 @@ var Enemy = function (x, y)
             );
         }
         
-        this._killed = true;
-        this.destroy();
-        this._tooltip.destroy();
+        this._killTimer = 0;
     }
 }

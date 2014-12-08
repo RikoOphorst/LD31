@@ -267,7 +267,7 @@ var Level = function(camera)
 		this._player.update(dt, [this._nightHorizon, this._eveningHorizon, this._dayHorizon], this._surface, this._torches, this._trees, this._enemies, this._loot, this);
 		this._lightOverlay.update(dt);
 
-		this._waveManager.update(this._trees, dt);
+		this._waveManager.update(dt);
 
 		for (var i = this._torches.length - 1; i >= 0; --i)
 		{
@@ -296,7 +296,7 @@ var Level = function(camera)
 			enemy.update(dt, this.calculateClosestTarget(enemy, [[this._player], this._torches]), this._enemies, this._loot);
 			if (hitTest == false)
 			{
-				if (enemy.hitTest() == true)
+				if (enemy.hitTest() == true && enemy.canAttack())
 				{
 					hitTest = true;
 					testedEnemy = enemy;

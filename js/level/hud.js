@@ -245,7 +245,7 @@ var HUD = function ()
         {
             if (Keyboard.isPressed("Enter"))
             {
-               StateManager.switchState(LevelState);
+                StateManager.switchState(LevelState);
             }
         }
     }
