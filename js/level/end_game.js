@@ -185,6 +185,7 @@ var EndGame = function ()
             if (Math.round(Math.randomRange(1, 400)) == 50)
             {
                 this.thunderTimer = Math.randomRange(0.6, 0.7);
+                SoundSystem.play("sounds/thunder.wav", "SFX", false);
             }
         }
 
