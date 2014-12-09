@@ -16,6 +16,25 @@ var Menu = function ()
     this._logo.setTranslation(0, 0, 1);
     this._logo.spawn("Default");
 
+    this._tutorial = [];
+
+    for (var i = 0; i < 8; ++i)
+    {
+        var tut = Widget.new();
+        tut.setTexture("textures/tutorial/background_images/tutorial_background_" + (i+1) + ".png");
+        tut.setToTexture();
+        tut.setOffset(0.5, 0.5);
+        tut.setTranslation(0, 0, 4+i);
+        tut.spawn("Default");
+        tut.setAlpha(0);
+
+        this._tutorial.push(tut);
+    }
+
+    this._tutorialIndex = 0;
+    this._tutorialStarted = false;
+    this._tutorialTimer = 1;
+
     this._logoShadow = Widget.new();
     this._logoShadow.setTexture("textures/ui/logo_shadow.png");
     this._logoShadow.setToTexture();
@@ -132,6 +151,83 @@ var Menu = function ()
     this._cornerBottomRight.setTranslation(641, 228, 802);
     this._cornerBottomRight.setScale(0.5, 0.5);
 
+    this._tutorialLeftButton = Widget.new();
+    this._tutorialLeftButton.setTexture("textures/tutorial/buttons/left_arrow_up_button.png")
+    this._tutorialLeftButton.setToTexture();
+    this._tutorialLeftButton.setOffset(0.5, 0.5);
+    this._tutorialLeftButton.setTranslation(-500, 295, 804);
+    this._tutorialLeftButton.spawn("UI");
+
+    this._tutorialRightButton = Widget.new();
+    this._tutorialRightButton.setTexture("textures/tutorial/buttons/right_arrow_up_button.png")
+    this._tutorialRightButton.setToTexture();
+    this._tutorialRightButton.setOffset(0.5, 0.5);
+    this._tutorialRightButton.setTranslation(500, 295, 804);
+    this._tutorialRightButton.spawn("UI");
+
+    this._tutorialRightButton.setAlpha(0);
+    this._tutorialLeftButton.setAlpha(0);
+
+    this._tutorialLeftButtonMA = MouseArea.new(this._tutorialLeftButton);
+    this._tutorialRightButtonMA = MouseArea.new(this._tutorialRightButton);
+
+    this._tutorialLeftButtonMA.setActivated(false);
+    this._tutorialRightButtonMA.setActivated(false);
+
+    this._tutorialLeftButtonMA.setOnPressed(function(self){
+        self._tutorialLeftButton.setTexture("textures/tutorial/buttons/left_arrow_down_button.png")
+    }, this);
+
+    this._tutorialLeftButtonMA.setOnReleased(function(self){
+        self._tutorialLeftButton.setTexture("textures/tutorial/buttons/left_arrow_move_button.png")
+        SoundSystem.play("sounds/menu_click.wav", "SFX", false);
+        
+        self._tutorialIndex--;
+
+        if (self._tutorialIndex < 0)
+        {
+            self._tutorialIndex = 7;
+        }
+
+        self._tutorialTimer = 0;
+    }, this);
+
+    this._tutorialLeftButtonMA.setOnEnter(function(self){
+        self._tutorialLeftButton.setTexture("textures/tutorial/buttons/left_arrow_move_button.png")
+        SoundSystem.play("sounds/menu_move.wav", "SFX", false);
+    }, this);
+
+    this._tutorialLeftButtonMA.setOnLeave(function(self){
+        self._tutorialLeftButton.setTexture("textures/tutorial/buttons/left_arrow_up_button.png")
+    }, this);
+
+    this._tutorialRightButtonMA.setOnPressed(function(self){
+        self._tutorialRightButton.setTexture("textures/tutorial/buttons/right_arrow_down_button.png")
+    }, this);
+
+    this._tutorialRightButtonMA.setOnReleased(function(self){
+        self._tutorialRightButton.setTexture("textures/tutorial/buttons/right_arrow_move_button.png")
+        SoundSystem.play("sounds/menu_click.wav", "SFX", false);
+        
+        self._tutorialIndex++;
+
+        if (self._tutorialIndex > 7)
+        {
+            self._tutorialIndex = 0;
+        }
+
+        self._tutorialTimer = 0;
+    }, this);
+
+    this._tutorialRightButtonMA.setOnEnter(function(self){
+        self._tutorialRightButton.setTexture("textures/tutorial/buttons/right_arrow_move_button.png")
+        SoundSystem.play("sounds/menu_move.wav", "SFX", false);
+    }, this);
+
+    this._tutorialRightButtonMA.setOnLeave(function(self){
+        self._tutorialRightButton.setTexture("textures/tutorial/buttons/right_arrow_up_button.png")
+    }, this);
+
     this._tutorialButton = Widget.new();
     this._tutorialButton.setTexture("textures/ui/tutorial_up_button.png");
     this._tutorialButton.setToTexture();
@@ -145,6 +241,28 @@ var Menu = function ()
     this._tutorialButtonMA.setOnReleased(function (self) {
         self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
         SoundSystem.play("sounds/menu_click.wav", "SFX", false);
+
+        if (self._tutorialStarted == false)
+        {
+            self._tutorialStarted = true;
+            self._tutorialTimer = 0;
+            self._tutorialIndex = 0;
+            self._tutorialLeftButtonMA.setActivated(true);
+            self._tutorialRightButtonMA.setActivated(true);
+            self._logo.setBlend(0,0,0);
+            self._logoHead.setBlend(0,0,0);
+            self._logoText.setBlend(0,0,0);
+        }
+        else
+        {
+            self._tutorialStarted = false;
+            self._tutorialTimer = 0;
+            self._tutorialLeftButtonMA.setActivated(false);
+            self._tutorialRightButtonMA.setActivated(false);
+            self._logo.setBlend(1,1,1);
+            self._logoHead.setBlend(1,1,1);
+            self._logoText.setBlend(1,1,1);
+        }
     }, this);
     this._tutorialButtonMA.setOnEnter(function (self) {
         self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
@@ -236,6 +354,42 @@ var Menu = function ()
 
         this._rain.setUniform("float2", "Offset", this._rainOffset/2, -this._rainOffset*2);
         this._rain.setAlpha(0.5 + Math.abs(Math.sin(this.timer)) * 0.5);
+
+        if (this._tutorialStarted == true)
+        {
+            if (this._tutorialTimer < 1)
+            {
+                this._tutorialTimer += dt;
+                this._tutorial[this._tutorialIndex].setAlpha(this._tutorialTimer);
+
+                var next = this._tutorialIndex + 1;
+
+                if (next > 7)
+                {
+                    next = 0;
+                }
+
+                var prev = this._tutorialIndex - 1;
+
+                if (prev < 0)
+                {
+                    prev = 7;
+                }
+
+                this._tutorial[next].setAlpha(0);
+                this._tutorial[prev].setAlpha(0);
+            }
+
+            this._tutorialRightButton.setAlpha(1);
+            this._tutorialLeftButton.setAlpha(1);
+        }
+        else if (this._tutorialTimer < 1)
+        {
+            this._tutorialTimer += dt;
+            this._tutorial[this._tutorialIndex].setAlpha((1-this._tutorialTimer));
+            this._tutorialRightButton.setAlpha(0);
+            this._tutorialLeftButton.setAlpha(0);
+        }
 
         this._logoHead.setTranslation(-260, -58 + Math.sin(this.timer) * 10, 2);
         this._logoBreath.setAlpha(Math.sin(this.timer) + (Math.sin(this.timer * 13) * 0.05));

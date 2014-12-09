@@ -33,7 +33,7 @@ Game.Initialise = function()
 	RenderSettings.setWindowSize(1280,720);
 	RenderSettings.setCullMode(RenderSettings.CullNone);
 
-	Game.debug = true;
+	Game.debug = false;
 	Game.speed = 1;
 
 	StateManager.switchState(MenuState);
