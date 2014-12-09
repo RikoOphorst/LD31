@@ -95,6 +95,7 @@ var WaveManager = function (lightOverlay, nightHorizon, eveningHorizon, dayHoriz
 
     this.spawnWave = function ()
     {
+        level.hud().toast(++Days);
         var amountMobs = Math.floor(2 + ((++this._currentWave) * Math.random()) * 0.5);
 
         var rand = Math.random();

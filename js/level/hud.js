@@ -1,3 +1,5 @@
+var Days = 1;
+
 var HUD = function () 
 {
     this.addText = function(icon)
@@ -134,6 +136,24 @@ var HUD = function ()
     this._seedsIcon.text.setText("[b]" + this._seedsValue + "[/b]");
     this._potionIcon.text.setText("[b]" + this._potionValue + "[/b]");
 
+    this._toaster = Widget.new();
+    this._toaster.setTexture("textures/ui/toaster.png");
+    this._toaster.setToTexture();
+    this._toaster.setTranslation(0, -360, 1000);
+    this._toaster.setOffset(0.5, 0);
+    this._toaster.spawn("UI");
+
+    this._toasterText = Text.new(this._toaster);
+    this._toasterText.setTranslation(0, 30, 1001);
+    this._toasterText.setOffset(0.5, 0.5);
+    this._toasterText.setText("Day 1");
+    this._toasterText.setFontSize(24);
+    this._toasterText.spawn("UI");
+    this._toasterText.setShadowOffset(1,1);
+
+    this._toasterTimer = 0;
+
+
     this.setHealth = function(val, max)
     {
         this._healthBar.setScale(val/max, 1);
@@ -239,6 +259,12 @@ var HUD = function ()
         return this._potionValue;
     }
 
+    this.toast = function(day)
+    {
+        this._toasterText.setText("Day " + day);
+        this._toasterTimer = 0;
+    }
+
     this.update = function(dt)
     {
         this._woodTimer = this.easeScale(this._woodTimer, this._woodIcon, dt);
@@ -261,6 +287,25 @@ var HUD = function ()
             if (Keyboard.isPressed("Enter"))
             {
                 StateManager.switchState(LevelState);
+            }
+        }
+
+        if (this._toasterTimer < 6)
+        {
+            this._toasterTimer += dt;
+            this._toaster.setTranslation(0, -360 - 200, 1000);
+
+            if (this._toasterTimer < 2)
+            {
+                this._toaster.translateBy(0, this._toasterTimer/2 * 200, 0);
+            }
+            else if (this._toasterTimer < 4)
+            {
+                this._toaster.translateBy(0, 200, 0);
+            }
+            else
+            {  
+                this._toaster.translateBy(0, 200 * (1 - (this._toasterTimer-4)/2), 0);
             }
         }
     }

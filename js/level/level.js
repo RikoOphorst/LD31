@@ -19,6 +19,7 @@ enumerator("WeatherEffects", [
 
 var Level = function(camera)
 {
+	Days = 0;
 	this._camera = camera;
 	this._nightHorizon = Quad2D.new();
 	this._nightHorizon.setTexture("textures/level/night_sky.png");
