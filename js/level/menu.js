@@ -211,11 +211,6 @@ var Menu = function ()
             this._rainModifier = 1;
         }
 
-        if (Keyboard.lastPressed() !== "None")
-        {
-            StateManager.switchState(LevelState);
-        }
-
         this._thunderFlash.setAlpha(0);
         if (this.thunderTimer > 0)
         {
