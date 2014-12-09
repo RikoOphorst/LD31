@@ -83,6 +83,7 @@ var Level = function(camera)
 	this._thunderTimer = 0;
 	this._thunderDecay = 1.1;
 	this._thunderInterval = 2;
+	this._thunderPlayed = false;
 
 	this._rainOffset = 0;
 	this._snowOffset = {x: 0, y: 0};
@@ -252,6 +253,12 @@ var Level = function(camera)
 
 			RenderTargets.lighting.setUniform("float", "Thunder", value * this._rainModifier);
 			this._thunder.setAlpha(value * this._rainModifier);
+
+			if (this._thunderPlayed == false && this._rainModifier >= 1)
+			{
+				SoundSystem.play("sounds/thunder.wav", "SFX", false);
+				this._thunderPlayed = true;
+			}
 		}
 		else if (this._thunderTimer >= this._thunderInterval && this._thunderDecay <= 1)
 		{
@@ -259,6 +266,7 @@ var Level = function(camera)
 			this._thunderDecay = 1.1;
 
 			this._thunderInterval = Math.randomRange(8, 12);
+			this._thunderPlayed = false;
 		}
 
 		if (this._thunderTimer < this._thunderInterval)
