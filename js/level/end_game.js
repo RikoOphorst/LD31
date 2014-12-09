@@ -146,9 +146,11 @@ var EndGame = function ()
         self._playButton.setTexture("textures/ui/play_move_button.png");
         self.destroy();
         StateManager.switchState(LevelState);
+        SoundSystem.play("sounds/menu_click.wav", "SFX", false);
     }, this);
     this._playButtonMA.setOnEnter(function (self) {
         self._playButton.setTexture("textures/ui/play_move_button.png");
+        SoundSystem.play("sounds/menu_move.wav", "SFX", false);
     }, this);
     this._playButtonMA.setOnLeave(function (self) {
         self._playButton.setTexture("textures/ui/play_up_button.png");

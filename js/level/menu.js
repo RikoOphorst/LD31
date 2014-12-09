@@ -144,9 +144,11 @@ var Menu = function ()
     }, this);
     this._tutorialButtonMA.setOnReleased(function (self) {
         self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
+        SoundSystem.play("sounds/menu_click.wav", "SFX", false);
     }, this);
     this._tutorialButtonMA.setOnEnter(function (self) {
         self._tutorialButton.setTexture("textures/ui/tutorial_move_button.png");
+        SoundSystem.play("sounds/menu_move.wav", "SFX", false);
     }, this);
     this._tutorialButtonMA.setOnLeave(function (self) {
         self._tutorialButton.setTexture("textures/ui/tutorial_up_button.png");
@@ -165,9 +167,11 @@ var Menu = function ()
     this._playButtonMA.setOnReleased(function (self) {
         self._playButton.setTexture("textures/ui/play_move_button.png");
         StateManager.switchState(LevelState);
+        SoundSystem.play("sounds/menu_click.wav", "SFX", false);
     }, this);
     this._playButtonMA.setOnEnter(function (self) {
         self._playButton.setTexture("textures/ui/play_move_button.png");
+        SoundSystem.play("sounds/menu_move.wav", "SFX", false);
     }, this);
     this._playButtonMA.setOnLeave(function (self) {
         self._playButton.setTexture("textures/ui/play_up_button.png");
@@ -186,9 +190,11 @@ var Menu = function ()
     this._quitButtonMA.setOnReleased(function (self) {
         self._quitButton.setTexture("textures/ui/quit_move_button.png");
         Game.quit();
+        SoundSystem.play("sounds/menu_click.wav", "SFX", false);
     }, this);
     this._quitButtonMA.setOnEnter(function (self) {
         self._quitButton.setTexture("textures/ui/quit_move_button.png");
+        SoundSystem.play("sounds/menu_move.wav", "SFX", false);
     }, this);
     this._quitButtonMA.setOnLeave(function (self) {
         self._quitButton.setTexture("textures/ui/quit_up_button.png");
